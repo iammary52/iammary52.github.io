@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>김규민 - 이력서</title>
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #fafbfc;
+            --bg-secondary: #ffffff;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent: #6366f1;
+            --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --accent-dark: #4f46e5;
+            --border: #e2e8f0;
+            --card-shadow: rgba(15, 23, 42, 0.08);
+            --card-shadow-hover: rgba(15, 23, 42, 0.12);
+            --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #131829;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border: #1e293b;
+            --card-shadow: rgba(0, 0, 0, 0.4);
+            --card-shadow-hover: rgba(0, 0, 0, 0.6);
+            --accent: #818cf8;
+            --accent-dark: #6366f1;
+        }
+
+        body {
+            font-family: 'Pretendard', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            background: var(--bg-primary);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.05) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.05) 0px, transparent 50%);
+            color: var(--text-primary);
+            line-height: 1.7;
+            transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 100vh;
+        }
+
+        [data-theme="dark"] body {
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(236, 72, 153, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, rgba(59, 130, 246, 0.1) 0px, transparent 50%);
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            background: var(--accent-gradient);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+        }
+
+        .theme-toggle:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .theme-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+
+        .resume-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .resume-header {
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            gap: 3.5rem;
+            margin-bottom: 3rem;
+            padding: 3rem;
+            background: var(--bg-secondary);
+            border-radius: 24px;
+            box-shadow: 0 20px 60px var(--card-shadow), 0 0 0 1px var(--border);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .resume-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-gradient);
+        }
+
+        .resume-header:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 72px var(--card-shadow-hover), 0 0 0 1px var(--border);
+        }
+
+        .profile-photo {
+            width: 220px;
+            height: 220px;
+            border-radius: 20px;
+            object-fit: cover;
+            object-position: center 20%;
+            border: 4px solid transparent;
+            background: var(--accent-gradient);
+            background-clip: padding-box;
+            box-shadow: 0 12px 40px rgba(99, 102, 241, 0.25), 0 0 0 4px rgba(99, 102, 241, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 16px 48px rgba(99, 102, 241, 0.35), 0 0 0 4px rgba(99, 102, 241, 0.2);
+        }
+
+        .header-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .name {
+            font-size: 3rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
+        }
+
+        .name-en {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-bottom: 2rem;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.8rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .contact-item:hover {
+            background: var(--bg-primary);
+        }
+
+        .contact-item strong {
+            color: var(--text-primary);
+            min-width: 90px;
+            font-weight: 500;
+        }
+
+        .resume-content {
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 2.5rem;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .section {
+            background: var(--bg-secondary);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--card-shadow), 0 0 0 1px var(--border);
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--accent-gradient);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px var(--card-shadow-hover), 0 0 0 1px var(--border);
+        }
+
+        .section:hover::before {
+            opacity: 1;
+        }
+
+        .section-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            position: relative;
+            letter-spacing: -0.01em;
+            font-family: 'Plus Jakarta Sans', 'Pretendard', sans-serif;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-gradient);
+            border-radius: 2px;
+        }
+
+        .education-item,
+        .experience-item,
+        .project-item {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            padding-left: 2rem;
+            border-left: 3px solid transparent;
+            border-radius: 12px;
+            background: var(--bg-primary);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .education-item:hover,
+        .experience-item:hover,
+        .project-item:hover {
+            border-left-color: var(--accent);
+            transform: translateX(8px);
+            box-shadow: 0 4px 16px var(--card-shadow);
+        }
+
+        .education-item:last-child,
+        .experience-item:last-child,
+        .project-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+
+        .item-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.005em;
+        }
+
+        .item-period {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            padding: 0.4rem 0.8rem;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            font-weight: 500;
+        }
+
+        .item-company {
+            font-size: 1.1rem;
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.005em;
+        }
+
+        .item-description {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.85;
+            font-weight: 400;
+        }
+
+        .item-description ul {
+            margin-left: 1.5rem;
+            margin-top: 0.75rem;
+            list-style: none;
+        }
+
+        .item-description li {
+            margin-bottom: 0.6rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .item-description li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .skills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .skill-category {
+            margin-bottom: 1rem;
+        }
+
+        .skill-category h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-tag {
+            padding: 0.5rem 1rem;
+            background: var(--bg-primary);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            font-weight: 400;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--accent-gradient);
+            opacity: 0.1;
+            transition: left 0.3s ease;
+        }
+
+        .skill-tag:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+        }
+
+        .skill-tag:hover::before {
+            left: 0;
+        }
+
+        .license-item {
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            border-radius: 12px;
+            background: var(--bg-primary);
+            border: 1.5px solid var(--border);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .license-item:hover {
+            border-color: var(--accent);
+            transform: translateX(4px);
+            box-shadow: 0 4px 12px var(--card-shadow);
+        }
+
+        .license-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .license-item strong {
+            background: var(--accent-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .section {
+            animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+        }
+
+        .sidebar .section:nth-child(1) { animation-delay: 0.1s; }
+        .sidebar .section:nth-child(2) { animation-delay: 0.2s; }
+        .sidebar .section:nth-child(3) { animation-delay: 0.3s; }
+        .sidebar .section:nth-child(4) { animation-delay: 0.4s; }
+
+        .resume-header {
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .experience-item,
+        .project-item {
+            animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+        }
+
+        .experience-item:nth-child(1) { animation-delay: 0.1s; }
+        .experience-item:nth-child(2) { animation-delay: 0.15s; }
+        .experience-item:nth-child(3) { animation-delay: 0.2s; }
+        .experience-item:nth-child(4) { animation-delay: 0.25s; }
+        .experience-item:nth-child(5) { animation-delay: 0.3s; }
+        .experience-item:nth-child(6) { animation-delay: 0.35s; }
+
+        .project-item:nth-child(1) { animation-delay: 0.1s; }
+        .project-item:nth-child(2) { animation-delay: 0.15s; }
+        .project-item:nth-child(3) { animation-delay: 0.2s; }
+        .project-item:nth-child(4) { animation-delay: 0.25s; }
+        .project-item:nth-child(5) { animation-delay: 0.3s; }
+        .project-item:nth-child(6) { animation-delay: 0.35s; }
+        .project-item:nth-child(7) { animation-delay: 0.4s; }
+        .project-item:nth-child(8) { animation-delay: 0.45s; }
+
+        @media print {
+            .theme-toggle {
+                display: none;
+            }
+            body {
+                background: white;
+            }
+            .resume-container {
+                max-width: 100%;
+                padding: 0;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .resume-content {
+                grid-template-columns: 1fr;
+            }
+
+            .resume-header {
+                grid-template-columns: 150px 1fr;
+                gap: 2rem;
+            }
+
+            .profile-photo {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .resume-header {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .profile-photo {
+                margin: 0 auto;
+            }
+
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+
+            .name {
+                font-size: 2rem;
+            }
+
+            .theme-toggle {
+                top: 1rem;
+                right: 1rem;
+                width: 45px;
+                height: 45px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="theme-toggle" id="themeToggle" aria-label="테마 전환">
+        <svg id="sunIcon" style="display: none;" viewBox="0 0 24 24">
+            <path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.166a.75.75 0 00-1.06-1.06l-1.591 1.59a.75.75 0 101.06 1.061l1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5H21a.75.75 0 01.75.75zM17.834 18.894a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 10-1.061 1.06l1.59 1.591zM12 18a.75.75 0 01.75.75V21a.75.75 0 01-1.5 0v-2.25A.75.75 0 0112 18zM7.758 17.303a.75.75 0 00-1.061-1.06l-1.591 1.59a.75.75 0 001.06 1.061l1.591-1.59zM6 12a.75.75 0 01-.75.75H3a.75.75 0 010-1.5h2.25A.75.75 0 016 12zM6.697 7.757a.75.75 0 001.06-1.06l-1.59-1.591a.75.75 0 00-1.061 1.06l1.59 1.591z"/>
+        </svg>
+        <svg id="moonIcon" viewBox="0 0 24 24">
+            <path d="M9.528 1.718a.75.75 0 01.162.819A8.97 8.97 0 009 6a9 9 0 009 9 8.97 8.97 0 003.463-.69.75.75 0 01.981.98 10 10 0 01-19.47 0 .75.75 0 01.982-.98zM6.75 12a5.25 5.25 0 1110.5 0 5.25 5.25 0 01-10.5 0z"/>
+        </svg>
+    </button>
+
+    <div class="resume-container">
+        <div class="resume-header">
+            <img src="사진_김규민.jpg" alt="김규민 프로필 사진" class="profile-photo">
+            <div class="header-info">
+                <h1 class="name">김 규 민</h1>
+                <p class="name-en">KYUMIN KIM</p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <strong>생년월일:</strong>
+                        <span>1980.06.05</span>
+                    </div>
+                    <div class="contact-item">
+                        <strong>주소:</strong>
+                        <span>서울시 서초구 서초중앙로 209 해성빌딩 3층 회계법인리안</span>
+                    </div>
+                    <div class="contact-item">
+                        <strong>휴대폰:</strong>
+                        <span>010-8863-6129</span>
+                    </div>
+                    <div class="contact-item">
+                        <strong>E-mail:</strong>
+                        <span>kyumkim@liancg.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="resume-content">
+            <div class="sidebar">
+                <section class="section">
+                    <h2 class="section-title">Education</h2>
+                    <div class="education-item">
+                        <div class="item-header">
+                            <div>
+                                <div class="item-title">대학교</div>
+                            </div>
+                            <div class="item-period">1999.03 - 2004.02</div>
+                        </div>
+                    </div>
+                    <div class="education-item">
+                        <div class="item-header">
+                            <div>
+                                <div class="item-title">고등학교</div>
+                            </div>
+                            <div class="item-period">1996.03 - 1999.02</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Military Service</h2>
+                    <div class="item-period">2005.03 - 2008.06</div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">License</h2>
+                    <div class="license-item">
+                        <strong>한국공인회계사(KICPA)</strong>
+                        <span>1/2차 동차합격</span>
+                        <div class="item-period">2009.09</div>
+                    </div>
+                    <div class="license-item">
+                        <strong>정보처리기사</strong>
+                        <div class="item-period">2003-04</div>
+                    </div>
+                    <div class="license-item">
+                        <strong>일반기계기사</strong>
+                        <div class="item-period">2003-04</div>
+                    </div>
+                    <div class="license-item">
+                        <strong>건설기계기사</strong>
+                        <div class="item-period">2003-04</div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Skills</h2>
+                    <div class="skills-list">
+                        <div class="skill-category">
+                            <h4>Business Analytics Skill</h4>
+                            <div class="skill-items">
+                                <span class="skill-tag">SQL을 활용한 데이터 분석</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h4>Computer Skills</h4>
+                            <div class="skill-items">
+                                <span class="skill-tag">MS Office</span>
+                                <span class="skill-tag">PowerPoint</span>
+                                <span class="skill-tag">Excel</span>
+                                <span class="skill-tag">MS Word</span>
+                                <span class="skill-tag">VBA</span>
+                                <span class="skill-tag">Excel Macro</span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <div class="main-content">
+                <section class="section">
+                    <h2 class="section-title">Work Experience</h2>
+                    
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <div class="item-company">회계법인리안, 회계사</div>
+                            <div class="item-period">2018.12 - 현재</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>상장사 및 비상장사 회계감사, 실사 등</li>
+                                <li>법인세조정, 비상장주식평가, 경정청구 등 Tax Service</li>
+                                <li>공기업 중장기 재정운영계획 수립 및 검증</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <div class="item-company">데일리푸드홀딩스, 부장</div>
+                            <div class="item-period">2018.07 - 2018.12</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>종속회사 공헌이익 산출 로직 및 엑셀모델 개발 및 실적분석</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <div class="item-company">법무법인 이제, 회계사</div>
+                            <div class="item-period">2018.05 - 2018.07</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>공기업 중장기 재정운영계획 수립 및 검증</li>
+                                <li>법률자문업체 회계 및 세무검토</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <div class="item-company">코어택스 세무회계, 회계사</div>
+                            <div class="item-period">2017.10 - 2018.04</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>공기업 중장기 재정운영계획 수립 및 검증</li>
+                                <li>각종 세무/회계관련 의견서 작성업무 등</li>
+                                <li>연결재무제표 작성 대행업무 등</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <div class="item-company">세림회계법인, 회계사</div>
+                            <div class="item-period">2015.09 - 2017.09</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>회계감사</li>
+                                <li>법인세조정, 조세불복, 세무조사 대응 등 Tax Service</li>
+                                <li>회생 조사위원, 재무실사, 연결 Package 개발 등 Finance Service</li>
+                                <li>공기업 중장기 재정운영계획 수립 및 검증</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="experience-item">
+                        <div class="item-header">
+                            <div class="item-company">삼일회계법인, Risk Assurance Services, Manager</div>
+                            <div class="item-period">2009.10 - 2015.08</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>시스템 Report 설계: 상시모니터링, 세무목적 Report 등 설계 (한수원, 삼성전자 등)</li>
+                                <li>내부통제 진단: 프로세스 별 내부통제 취약점 진단 및 개선안 제시 (R사, N사 등)</li>
+                                <li>부정적발 업무 (R사, N사 등)</li>
+                                <li>데이터 분석을 통한 부정적발 업무</li>
+                                <li>포렌직 기법을 통한 공모에 의한 부정 이익취득, 횡령 등 적발업무</li>
+                                <li>공기업 중장기 재정운영계획 수립 (경기도시공사 등)</li>
+                                <li>전산감사 (삼성전자 등)</li>
+                                <li>각종 액셀 자동 계산/Reporting 모델 개발 (중부발전 등)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">Project Experience</h2>
+                    
+                    <div class="project-item">
+                        <div class="item-header">
+                            <div class="item-company">삼성전자</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>전산감사 (2010-2012)</li>
+                                <li>해외법인(베트남, 필리핀) 세무 Report 개발 (2010, 2012)</li>
+                                <li>무선사업부 로열티 검증 (2012)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="item-header">
+                            <div class="item-company">경기도시공사, 경상북도개발공사</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>중장기 재정운영계획 수립 (2013-2018)</li>
+                                <li>사업타당성 검토 모델 개발 (2015)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="item-header">
+                            <div class="item-company">한국수력원자력</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>감사정보체계 고도화 (2014)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="item-header">
+                            <div class="item-company">동양네트웍스</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>경영정상화를 위한 사업전략수립 (2014)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="item-header">
+                            <div class="item-company">르노삼성</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>구매부문 내부통제진단 (2014)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="item-header">
+                            <div class="item-company">효성</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>재감사(과거 10개년 지급내역 추적) (2013)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="item-header">
+                            <div class="item-company">삼성화재</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>회계기간 변경 시스템 컨설팅 (2013)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="project-item">
+                        <div class="item-header">
+                            <div class="item-company">금호석유화학, 한국산업기술시험원(KTL)</div>
+                        </div>
+                        <div class="item-description">
+                            <ul>
+                                <li>상시모니터링 시스템 컨설팅</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const html = document.documentElement;
+
+        // 로컬 스토리지에서 테마 불러오기
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', currentTheme);
+        updateIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateIcon(newTheme);
+        });
+
+        function updateIcon(theme) {
+            if (theme === 'dark') {
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+            } else {
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
+
