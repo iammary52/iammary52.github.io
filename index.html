@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCADE ZONE - P1's HIDEOUT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg: #04040a;
+            --panel: #080f1c;
+            --green: #00ff41;
+            --blue: #00b4ff;
+            --red: #ff1a3a;
+            --yellow: #ffcc00;
+            --purple: #c800ff;
+            --orange: #ff8c00;
+            --white: #cccccc;
+            --dim: #2a2a3a;
+            --glow-green: 0 0 6px #00ff41, 0 0 14px #00ff41, 0 0 28px #00ff41;
+            --glow-blue:  0 0 6px #00b4ff, 0 0 14px #00b4ff, 0 0 28px #00b4ff;
+            --glow-red:   0 0 6px #ff1a3a, 0 0 14px #ff1a3a, 0 0 28px #ff1a3a;
+            --glow-yellow:0 0 6px #ffcc00, 0 0 14px #ffcc00, 0 0 28px #ffcc00;
+            --glow-purple:0 0 6px #c800ff, 0 0 14px #c800ff, 0 0 28px #c800ff;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background-color: var(--bg);
+            color: var(--green);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── CRT EFFECTS ───────────────────────────────────────── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0,0,0,0.12) 0px,
+                rgba(0,0,0,0.12) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            pointer-events: none;
+            z-index: 9000;
+        }
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,0.75) 100%);
+            pointer-events: none;
+            z-index: 9001;
+        }
+
+        /* ── ANIMATIONS ────────────────────────────────────────── */
+        @keyframes blink     { 0%,49%{opacity:1} 50%,100%{opacity:0} }
+        @keyframes fastblink { 0%,40%{opacity:1} 41%,100%{opacity:0} }
+        @keyframes flicker   { 0%,94%,100%{opacity:1} 95%{opacity:.7} 97%{opacity:.5} }
+        @keyframes slide-in  { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+        @keyframes float     { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+        @keyframes pulse-glow-green { 0%,100%{text-shadow:var(--glow-green)} 50%{text-shadow:none} }
+        @keyframes pulse-glow-yellow{ 0%,100%{text-shadow:var(--glow-yellow)} 50%{text-shadow:none} }
+        @keyframes marquee   { from{transform:translateX(100vw)} to{transform:translateX(-100%)} }
+        @keyframes scan      { 0%{top:-10%} 100%{top:110%} }
+        @keyframes glitch {
+            0%,90%,100%{transform:translate(0)} 92%{transform:translate(-3px,1px)} 94%{transform:translate(3px,-1px)} 96%{transform:translate(-1px,2px)}
+        }
+        @keyframes zap {
+            0%{box-shadow:0 0 0 2px var(--yellow)}
+            50%{box-shadow:0 0 20px 4px var(--yellow)}
+            100%{box-shadow:0 0 0 2px var(--yellow)}
+        }
+        @keyframes fire-up {
+            from{transform:translateY(30px);opacity:0}
+            to{transform:translateY(0);opacity:1}
+        }
+
+        /* Moving scan line */
+        .scanline {
+            position: fixed; left:0; width:100%; height:3px;
+            background: linear-gradient(transparent, rgba(0,255,65,0.06), transparent);
+            animation: scan 5s linear infinite;
+            pointer-events: none;
+            z-index: 9002;
+        }
+
+        /* ── TICKER ────────────────────────────────────────────── */
+        .ticker {
+            background: var(--red);
+            border-bottom: 2px solid #800;
+            overflow: hidden;
+            padding: 6px 0;
+            position: relative;
+            z-index: 500;
+        }
+        .ticker-inner {
+            display: inline-block;
+            white-space: nowrap;
+            animation: marquee 30s linear infinite;
+            font-size: 8px;
+            color: var(--yellow);
+            letter-spacing: 1px;
+        }
+
+        /* ── HEADER / HUD ──────────────────────────────────────── */
+        header {
+            position: sticky; top: 0; z-index: 400;
+            background: var(--panel);
+            border-bottom: 3px solid var(--green);
+            box-shadow: 0 3px 0 #000, 0 6px 0 rgba(0,255,65,.15);
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .hud-stat {
+            font-size: 8px;
+            color: var(--blue);
+            min-width: 120px;
+        }
+        .hud-stat span { color: var(--yellow); }
+        .logo {
+            font-size: clamp(16px, 4vw, 22px);
+            color: var(--yellow);
+            text-shadow: var(--glow-yellow);
+            animation: flicker 9s infinite;
+            letter-spacing: 2px;
+        }
+        .logo em { color: var(--red); font-style: normal; text-shadow: var(--glow-red); }
+
+        /* ── HERO ──────────────────────────────────────────────── */
+        .hero {
+            min-height: 70vh;
+            display: flex; align-items: center; justify-content: center;
+            text-align: center;
+            padding: 60px 20px;
+            position: relative;
+            background:
+                linear-gradient(rgba(4,4,10,.9), rgba(4,4,10,.9)),
+                repeating-linear-gradient(90deg,  transparent, transparent 50px, rgba(0,255,65,.015) 50px, rgba(0,255,65,.015) 51px),
+                repeating-linear-gradient(0deg,   transparent, transparent 50px, rgba(0,255,65,.015) 50px, rgba(0,255,65,.015) 51px);
+        }
+        .hero-inner { max-width: 680px; }
+        .hero-tag {
+            font-size: 9px;
+            color: var(--blue);
+            letter-spacing: 3px;
+            margin-bottom: 28px;
+        }
+        .hero-title {
+            font-size: clamp(26px, 6vw, 44px);
+            color: var(--yellow);
+            text-shadow: var(--glow-yellow);
+            line-height: 1.6;
+            margin-bottom: 32px;
+            animation: pulse-glow-yellow 4s ease-in-out infinite;
+        }
+        .hero-desc {
+            font-size: 9px;
+            color: var(--white);
+            line-height: 2.5;
+            margin-bottom: 44px;
+        }
+        .insert-coin {
+            font-size: 12px;
+            color: var(--red);
+            text-shadow: var(--glow-red);
+            animation: blink 1.1s infinite;
+            letter-spacing: 2px;
+        }
+        .lives {
+            margin-top: 22px;
+            font-size: 22px;
+            letter-spacing: 12px;
+            color: var(--red);
+            text-shadow: var(--glow-red);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        /* ── SECTION HEADER ────────────────────────────────────── */
+        .sec-head {
+            text-align: center;
+            padding: 50px 20px 16px;
+        }
+        .sec-head h2 {
+            font-size: clamp(13px, 3vw, 18px);
+            color: var(--green);
+            text-shadow: var(--glow-green);
+            letter-spacing: 3px;
+        }
+        .sec-divider {
+            border: none;
+            height: 2px;
+            max-width: 560px;
+            margin: 18px auto 44px;
+            background: linear-gradient(90deg, transparent, var(--green), transparent);
+        }
+
+        /* ── GAME CARDS ────────────────────────────────────────── */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 28px;
+            padding: 0 32px 64px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .game-card {
+            background: var(--panel);
+            border: 3px solid;
+            padding: 24px;
+            position: relative;
+            transition: transform .2s, box-shadow .2s;
+            overflow: hidden;
+        }
+        .game-card:hover {
+            transform: translateY(-5px);
+            animation: zap .6s ease;
+        }
+        .game-card::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 2px;
+        }
+        .game-card.mario  { border-color: var(--yellow); box-shadow: 0 0 18px rgba(255,204,0,.25); }
+        .game-card.mario::before { background: var(--yellow); box-shadow: var(--glow-yellow); }
+        .game-card.sf     { border-color: var(--red);    box-shadow: 0 0 18px rgba(255,26,58,.25); }
+        .game-card.sf::before    { background: var(--red);    box-shadow: var(--glow-red); }
+        .game-card.sc     { border-color: var(--blue);   box-shadow: 0 0 18px rgba(0,180,255,.25); }
+        .game-card.sc::before    { background: var(--blue);   box-shadow: var(--glow-blue); }
+
+        .game-badge {
+            display: inline-block;
+            font-size: 6px;
+            padding: 4px 8px;
+            margin-bottom: 14px;
+            letter-spacing: 1px;
+        }
+        .mario .game-badge { background: var(--yellow); color: #000; }
+        .sf    .game-badge { background: var(--red);    color: #fff; }
+        .sc    .game-badge { background: var(--blue);   color: #000; }
+
+        .game-name {
+            font-size: clamp(11px, 2.5vw, 14px);
+            margin-bottom: 6px;
+        }
+        .mario .game-name { color: var(--yellow); }
+        .sf    .game-name { color: var(--red); }
+        .sc    .game-name { color: var(--blue); }
+
+        .game-year { font-size: 7px; color: var(--dim); margin-bottom: 18px; }
+
+        .game-art {
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            line-height: 1.6;
+            padding: 14px 12px;
+            margin: 16px 0;
+            background: rgba(0,0,0,.4);
+            border-left: 3px solid;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        .mario .game-art { border-color: var(--yellow); color: var(--yellow); }
+        .sf    .game-art { border-color: var(--red);    color: var(--red); }
+        .sc    .game-art { border-color: var(--blue);   color: var(--blue); }
+
+        .game-quote {
+            font-size: 8px;
+            color: var(--white);
+            line-height: 2.2;
+            margin-bottom: 16px;
+        }
+        .game-stats {
+            display: flex; gap: 16px; flex-wrap: wrap;
+            padding-top: 14px;
+            border-top: 1px solid var(--dim);
+        }
+        .gs { font-size: 7px; color: var(--dim); }
+        .gs span { color: var(--white); }
+
+        /* ── MEMO WALL ─────────────────────────────────────────── */
+        .memo-section {
+            background: var(--panel);
+            border-top: 3px solid var(--purple);
+            border-bottom: 3px solid var(--purple);
+            padding: 50px 20px 60px;
+        }
+        .memo-container { max-width: 780px; margin: 0 auto; }
+
+        .memo-title {
+            text-align: center;
+            font-size: clamp(14px, 3.5vw, 20px);
+            color: var(--purple);
+            text-shadow: var(--glow-purple);
+            margin-bottom: 8px;
+            animation: glitch 6s ease-in-out infinite;
+        }
+        .memo-subtitle {
+            text-align: center;
+            font-size: 8px;
+            color: var(--dim);
+            margin-bottom: 32px;
+            line-height: 2;
+        }
+
+        /* Local-mode banner */
+        .local-banner {
+            display: none;
+            background: rgba(255,204,0,.08);
+            border: 2px solid var(--yellow);
+            border-left: 6px solid var(--yellow);
+            padding: 14px;
+            margin-bottom: 20px;
+            font-size: 7px;
+            color: var(--yellow);
+            line-height: 2.4;
+        }
+        .local-banner a { color: var(--blue); }
+
+        /* Form */
+        .memo-form {
+            border: 2px solid var(--purple);
+            padding: 22px;
+            margin-bottom: 32px;
+            background: rgba(200,0,255,.03);
+            position: relative;
+        }
+        .memo-form::before {
+            content: '[ 낙서판 ]';
+            position: absolute; top: -10px; left: 16px;
+            background: var(--panel);
+            padding: 0 8px;
+            font-size: 7px;
+            color: var(--purple);
+        }
+
+        .memo-input {
+            width: 100%;
+            background: rgba(0,0,0,.55);
+            border: 2px solid var(--dim);
+            color: var(--green);
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            padding: 12px;
+            resize: none;
+            outline: none;
+            line-height: 2;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .memo-input:focus {
+            border-color: var(--purple);
+            box-shadow: 0 0 12px rgba(200,0,255,.35);
+        }
+        .memo-input::placeholder { color: var(--dim); }
+
+        .char-count { font-size: 7px; color: var(--dim); text-align: right; margin: 6px 0 14px; }
+        .char-count.warn   { color: var(--orange); }
+        .char-count.danger { color: var(--red); animation: fastblink .5s infinite; }
+
+        .form-foot {
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px;
+        }
+        .form-hint { font-size: 7px; color: var(--dim); }
+
+        .btn-post {
+            background: var(--purple);
+            color: #fff;
+            border: none;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 9px;
+            padding: 11px 22px;
+            cursor: pointer;
+            transition: all .15s;
+            letter-spacing: 1px;
+        }
+        .btn-post:hover  { background: #df00ff; box-shadow: 0 0 20px rgba(200,0,255,.7); transform: translateY(-2px); }
+        .btn-post:active { transform: translateY(1px); box-shadow: none; }
+        .btn-post:disabled { background: var(--dim); cursor: not-allowed; transform: none; box-shadow: none; }
+
+        /* Memo list */
+        .memo-list { display: flex; flex-direction: column; gap: 14px; }
+        .memo-empty {
+            text-align: center;
+            font-size: 9px;
+            color: var(--dim);
+            padding: 44px;
+            border: 1px dashed var(--dim);
+            line-height: 2.4;
+        }
+        .memo-item {
+            border: 1px solid var(--dim);
+            border-left: 4px solid;
+            padding: 14px 16px;
+            background: rgba(0,0,0,.25);
+            animation: fire-up .35s ease;
+        }
+        .memo-item:nth-child(3n+1) { border-left-color: var(--purple); }
+        .memo-item:nth-child(3n+2) { border-left-color: var(--green); }
+        .memo-item:nth-child(3n+3) { border-left-color: var(--blue); }
+
+        .memo-head { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+        .memo-player { font-size: 8px; color: var(--yellow); }
+        .memo-time   { font-size: 7px; color: var(--dim); }
+        .memo-text   { font-size: 9px; color: var(--white); line-height: 2.2; word-break: break-all; }
+
+        /* ── FOOTER ────────────────────────────────────────────── */
+        footer {
+            background: var(--panel);
+            border-top: 3px solid var(--green);
+            box-shadow: 0 -3px 0 #000, 0 -6px 0 rgba(0,255,65,.08);
+            padding: 50px 20px;
+            text-align: center;
+        }
+        .footer-logo {
+            font-size: clamp(18px, 4vw, 26px);
+            color: var(--yellow);
+            text-shadow: var(--glow-yellow);
+            margin-bottom: 30px;
+            animation: pulse-glow-yellow 5s infinite;
+        }
+        .scoreboard {
+            max-width: 400px;
+            margin: 0 auto 32px;
+            border: 2px solid var(--green);
+            padding: 22px 24px;
+        }
+        .scoreboard-title {
+            font-size: 10px;
+            color: var(--green);
+            text-shadow: var(--glow-green);
+            margin-bottom: 18px;
+            text-align: center;
+        }
+        .score-row {
+            display: flex; justify-content: space-between;
+            font-size: 8px;
+            padding: 7px 0;
+            border-bottom: 1px dashed var(--dim);
+        }
+        .score-row:last-child { border-bottom: none; }
+        .s-name { color: var(--white); }
+        .s-val  { color: var(--yellow); }
+        .footer-copy { font-size: 7px; color: var(--dim); line-height: 2.8; margin-top: 20px; }
+
+        /* ── SCROLLBAR ─────────────────────────────────────────── */
+        ::-webkit-scrollbar       { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--green); }
+        ::-webkit-scrollbar-thumb:hover { background: var(--blue); }
+
+        /* ── RESPONSIVE ────────────────────────────────────────── */
+        @media (max-width: 600px) {
+            .logo { font-size: 14px; }
+            header { flex-direction: column; text-align: center; }
+            .games-grid { padding: 0 16px 48px; }
+            .game-art { font-size: 8px; }
+            .hud-stat { min-width: auto; }
+        }
+    </style>
+</head>
+<body>
+    <div class="scanline"></div>
+
+    <!-- ── TICKER ──────────────────────────────────────────── -->
+    <div class="ticker">
+        <span class="ticker-inner">
+            &nbsp;&nbsp;&nbsp;&#9733; PLAYER 1 HAS ENTERED THE GAME &#9733;&nbsp;&nbsp;&nbsp;
+            "IT'S-A ME, MARIO!" &nbsp;&nbsp;&nbsp;
+            &#9733; HADOUKEN! &#9733;&nbsp;&nbsp;&nbsp;
+            "NUCLEAR LAUNCH DETECTED" &nbsp;&nbsp;&nbsp;
+            &#9733; WORLD 1-1 CLEAR &#9733;&nbsp;&nbsp;&nbsp;
+            "SHORYUKEN!" &nbsp;&nbsp;&nbsp;
+            &#9733; 40대 레트로 게이머 아지트 &#9733;&nbsp;&nbsp;&nbsp;
+            "THE ZERG ARE MOVING OUT!" &nbsp;&nbsp;&nbsp;
+            &#9733; HIGH SCORE: 9,999,999 &#9733;&nbsp;&nbsp;&nbsp;
+            "GAME SET! RYU WINS!" &nbsp;&nbsp;&nbsp;
+            &#9733; PRESS START &#9733;&nbsp;&nbsp;&nbsp;
+        </span>
+    </div>
+
+    <!-- ── HEADER ──────────────────────────────────────────── -->
+    <header>
+        <div class="hud-stat">SCORE:&nbsp;<span id="scoreDisplay">000000</span></div>
+        <div class="logo">ARCADE<em>ZONE</em></div>
+        <div class="hud-stat" style="text-align:right">CREDITS:&nbsp;<span>&#8734;</span></div>
+    </header>
+
+    <!-- ── HERO ────────────────────────────────────────────── -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-tag">&gt;&gt;&nbsp;PLAYER 1 SELECT&nbsp;&lt;&lt;</div>
+            <h1 class="hero-title">WELCOME TO<br>ARCADE ZONE!</h1>
+            <p class="hero-desc">
+                마리오와 함께 버섯 왕국을 누비던 시절.<br>
+                류와 켄의 파동권으로 오락실을 뒤흔들던 기억.<br>
+                새벽 2시 저그 러시에 식은땀 흘리던 그날들.<br>
+                <br>
+                40대 레트로 게이머의 아지트에 오신 걸 환영합니다.
+            </p>
+            <div class="insert-coin">&gt;&nbsp;INSERT COIN&nbsp;&lt;</div>
+            <div class="lives">&#9829;&nbsp;&#9829;&nbsp;&#9829;</div>
+        </div>
+    </section>
+
+    <!-- ── GAMES ────────────────────────────────────────────── -->
+    <div class="sec-head">
+        <h2>&gt;&gt;&nbsp;HALL OF FAME&nbsp;&lt;&lt;</h2>
+    </div>
+    <hr class="sec-divider">
+
+    <div class="games-grid">
+        <!-- MARIO -->
+        <div class="game-card mario">
+            <div class="game-badge">NINTENDO</div>
+            <div class="game-name">SUPER MARIO BROS.</div>
+            <div class="game-year">FAMICOM / 1985 &nbsp;|&nbsp; MIYAMOTO SHIGERU</div>
+            <pre class="game-art">    .####.
+   #O  O##
+  #  __  #
+  # /  \ #
+   '----'
+  [MARIO]
+  =========</pre>
+            <div class="game-quote">"IT'S-A ME, MARIO!"<br>버섯 하나에 무한한 가능성.<br>W8-4 클리어의 짜릿함.</div>
+            <div class="game-stats">
+                <div class="gs">WORLD:&nbsp;<span>8-4</span></div>
+                <div class="gs">COINS:&nbsp;<span>999</span></div>
+                <div class="gs">LIVES:&nbsp;<span>99</span></div>
+            </div>
+        </div>
+
+        <!-- STREET FIGHTER -->
+        <div class="game-card sf">
+            <div class="game-badge">CAPCOM</div>
+            <div class="game-name">STREET FIGHTER II</div>
+            <div class="game-year">ARCADE / 1991 &nbsp;|&nbsp; NISHIYAMA TAKASHI</div>
+            <pre class="game-art"> \O/  VS  \O/
+  |         |
+ / \       / \
+RYU        KEN
+
+>>> HADOUKEN! <<<
+>>> SHORYUKEN! &lt;&lt;&lt;</pre>
+            <div class="game-quote">"GAME SET! RYU WINS!"<br>오락실 마지막 100원의 무게.<br>퍼펙트 승리의 짜릿함.</div>
+            <div class="game-stats">
+                <div class="gs">WINNER:&nbsp;<span>RYU</span></div>
+                <div class="gs">KO:&nbsp;<span>PERFECT</span></div>
+                <div class="gs">ROUND:&nbsp;<span>3</span></div>
+            </div>
+        </div>
+
+        <!-- STARCRAFT -->
+        <div class="game-card sc">
+            <div class="game-badge">BLIZZARD</div>
+            <div class="game-name">STARCRAFT</div>
+            <div class="game-year">PC / 1998 &nbsp;|&nbsp; BLIZZARD ENTERTAINMENT</div>
+            <pre class="game-art">[T] SCV: mining...
+[Z] ZERGLING RUSH!
+[P] CARRIER: ready
+
+!! NUCLEAR LAUNCH !!
+!!   DETECTED...  !!</pre>
+            <div class="game-quote">"NUCLEAR LAUNCH DETECTED"<br>새벽 3시 래더의 긴장감.<br>마린 vs 저글링의 혈전.</div>
+            <div class="game-stats">
+                <div class="gs">RACE:&nbsp;<span>TERRAN</span></div>
+                <div class="gs">APM:&nbsp;<span>320</span></div>
+                <div class="gs">WIN:&nbsp;<span>ALL-IN</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── MEMO / GRAFFITI WALL ─────────────────────────────── -->
+    <section class="memo-section" id="graffiti">
+        <div class="memo-container">
+            <div class="memo-title">&lt;&lt;&nbsp;GRAFFITI WALL&nbsp;&gt;&gt;</div>
+            <div class="memo-subtitle">
+                &#9733; 낙서장 &#9733;<br>
+                방문 기념으로 익명 메모를 남겨주세요!<br>
+                자동으로 게임 캐릭터 닉네임이 배정됩니다.
+            </div>
+
+            <!-- 로컬 모드 배너 (Firebase 미설정 시) -->
+            <div class="local-banner" id="localBanner">
+                [LOCAL MODE] 현재 이 기기에만 낙서가 저장됩니다.<br>
+                방문자 전체가 공유하려면 Firebase 연결 필요.<br>
+                &rarr; index.html 하단 FIREBASE_CONFIG 주석 참고
+            </div>
+
+            <!-- 메모 입력 폼 -->
+            <div class="memo-form">
+                <textarea
+                    class="memo-input"
+                    id="memoInput"
+                    rows="3"
+                    maxlength="140"
+                    placeholder="&gt; 낙서를 입력하세요... (익명, Ctrl+Enter로 전송)"
+                ></textarea>
+                <div class="char-count" id="charCount">0 / 140</div>
+                <div class="form-foot">
+                    <span class="form-hint">[ 익명 &bull; 랜덤 닉네임 자동 배정 ]</span>
+                    <button class="btn-post" id="submitBtn" onclick="postMemo()">POST &gt;</button>
+                </div>
+            </div>
+
+            <!-- 메모 목록 -->
+            <div class="memo-list" id="memoList"></div>
+        </div>
+    </section>
+
+    <!-- ── FOOTER ────────────────────────────────────────────── -->
+    <footer>
+        <div class="footer-logo">ARCADE ZONE</div>
+        <div class="scoreboard">
+            <div class="scoreboard-title">&gt; HALL OF SCORES &lt;</div>
+            <div class="score-row"><span class="s-name">1. RYU________</span><span class="s-val">9,999,999</span></div>
+            <div class="score-row"><span class="s-name">2. MARIO______</span><span class="s-val">8,888,888</span></div>
+            <div class="score-row"><span class="s-name">3. TERRAN_001_</span><span class="s-val">7,777,777</span></div>
+            <div class="score-row"><span class="s-name">4. KERRIGAN___</span><span class="s-val">6,666,666</span></div>
+            <div class="score-row"><span class="s-name">5. KEN________</span><span class="s-val">5,555,555</span></div>
+        </div>
+        <div class="footer-copy">
+            &copy; ARCADE ZONE 2025. ALL RIGHTS RESERVED.<br>
+            MADE WITH &#9829; AND NOSTALGIA<br>
+            GAME OVER? NEVER.
+        </div>
+    </footer>
+
+    <script>
+    /* ===========================================================
+       FIREBASE 설정 (선택사항 - 방문자 전체 공유 기능)
+       ===========================================================
+       Firebase 없이도 이 기기 내에서 낙서는 저장됩니다.
+       모든 방문자가 낙서를 공유하려면:
+
+       1. https://console.firebase.google.com 접속
+       2. 새 프로젝트 만들기
+       3. Realtime Database 활성화 (테스트 모드로 시작)
+       4. 프로젝트 설정 > 내 앱 추가(웹) > 설정값 복사
+       5. 아래 FIREBASE_CONFIG 주석 해제 후 값 입력
+       =========================================================== */
+    const FIREBASE_CONFIG = null;
+    /*
+    const FIREBASE_CONFIG = {
+        apiKey:            "여기에 apiKey",
+        authDomain:        "프로젝트명.firebaseapp.com",
+        databaseURL:       "https://프로젝트명-default-rtdb.firebaseio.com",
+        projectId:         "프로젝트명",
+        storageBucket:     "프로젝트명.appspot.com",
+        messagingSenderId: "숫자",
+        appId:             "앱 ID"
+    };
+    */
+
+    /* ── 게임 캐릭터 닉네임 풀 ──────────────────────────────── */
+    const NAMES = [
+        'RYU','KEN','CHUN_LI','GUILE','BLANKA','ZANGIEF','SAGAT','DHALSIM',
+        'VEGA','BALROG','M_BISON','CAMMY',
+        'MARIO','LUIGI','TOAD','YOSHI','BOWSER','PEACH','WARIO','WALUIGI',
+        'MARINE_001','FIREBAT','GHOST_002','SCV_JIM','MEDIC',
+        'ZERGLING','HYDRALISK','LURKER','ULTRALISK','QUEEN','KERRIGAN',
+        'ZEALOT','DRAGOON','ARBITER','CARRIER','DARK_TEMPLAR','ARTANIS',
+        'LINK','SAMUS','KIRBY','DONKEY_K','PIKACHU','MEWTWO',
+        'MEGA_MAN','SONIC','PACMAN','BOMBERMAN','SIMON',
+    ];
+
+    /* ── 데모 낙서 (처음 방문 시 분위기용) ──────────────────── */
+    const DEMO_MEMOS = [
+        { player: 'MARINE_001', text: '스타크래프트 다시 하고 싶다... 테란 생각에 밤잠 설쳐', ts: Date.now() - 86400000 * 2 },
+        { player: 'RYU',        text: '파동권!! 오락실에서 무패 행진하던 시절이 그립다 ㅋㅋ', ts: Date.now() - 86400000 },
+        { player: 'MARIO_64',   text: '슈퍼마리오 8-4 클리어하던 날 진짜 소리 질렀음 ㅋㅋㅋ 좋은 페이지!', ts: Date.now() - 3600000 * 5 },
+        { player: 'ZERGLING',   text: '저그 러시 기억나냐... 새벽 3시에 래더하다 엄마한테 혼났지 ㅠ', ts: Date.now() - 3600000 * 2 },
+    ];
+
+    /* ── 상태 ────────────────────────────────────────────────── */
+    let useFirebase = false;
+    let fbDB = null;
+
+    /* ── 스코어 카운터 애니메이션 ───────────────────────────── */
+    let score = 0;
+    setInterval(() => {
+        score = Math.min(score + Math.floor(Math.random() * 80 + 10), 999999);
+        document.getElementById('scoreDisplay').textContent = String(score).padStart(6, '0');
+    }, 1200);
+
+    /* ── 글자 수 카운터 ────────────────────────────────────── */
+    document.getElementById('memoInput').addEventListener('input', function () {
+        const n = this.value.length;
+        const el = document.getElementById('charCount');
+        el.textContent = `${n} / 140`;
+        el.className = 'char-count';
+        if (n > 110) el.classList.add('warn');
+        if (n > 130) { el.classList.remove('warn'); el.classList.add('danger'); }
+    });
+
+    /* ── Ctrl+Enter 단축키 ─────────────────────────────────── */
+    document.getElementById('memoInput').addEventListener('keydown', e => {
+        if (e.ctrlKey && e.key === 'Enter') postMemo();
+    });
+
+    /* ── 유틸 ────────────────────────────────────────────────── */
+    function randName() { return NAMES[Math.floor(Math.random() * NAMES.length)]; }
+
+    function fmtTime(ts) {
+        const d = new Date(ts);
+        const p = n => String(n).padStart(2, '0');
+        return `${d.getFullYear()}.${p(d.getMonth()+1)}.${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    }
+
+    function esc(s) {
+        return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+                .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+    }
+
+    /* ── 메모 렌더 ───────────────────────────────────────────── */
+    function renderMemo(m) {
+        const el = document.createElement('div');
+        el.className = 'memo-item';
+        el.innerHTML = `
+            <div class="memo-head">
+                <span class="memo-player">&gt; ${esc(m.player)}</span>
+                <span class="memo-time">${fmtTime(m.ts)}</span>
+            </div>
+            <div class="memo-text">${esc(m.text)}</div>`;
+        return el;
+    }
+
+    function renderAll(memos) {
+        const list = document.getElementById('memoList');
+        list.innerHTML = '';
+        if (!memos || memos.length === 0) {
+            list.innerHTML = `<div class="memo-empty">
+                [ 아직 낙서가 없습니다 ]<br>첫 번째 낙서를 남겨보세요!</div>`;
+            return;
+        }
+        memos.forEach(m => list.appendChild(renderMemo(m)));
+    }
+
+    /* ── localStorage 헬퍼 ───────────────────────────────────── */
+    function loadLocal() {
+        try { return JSON.parse(localStorage.getItem('arcadeMemos') || 'null'); }
+        catch { return null; }
+    }
+    function saveLocal(memo) {
+        const list = loadLocal() || [];
+        list.unshift(memo);
+        if (list.length > 80) list.splice(80);
+        localStorage.setItem('arcadeMemos', JSON.stringify(list));
+    }
+
+    /* ── 메모 게시 ───────────────────────────────────────────── */
+    function postMemo() {
+        const input = document.getElementById('memoInput');
+        const text = input.value.trim();
+        if (!text) {
+            input.focus();
+            input.style.borderColor = 'var(--red)';
+            setTimeout(() => input.style.borderColor = 'var(--dim)', 700);
+            return;
+        }
+        const memo = { player: randName(), text, ts: Date.now() };
+        const btn = document.getElementById('submitBtn');
+        btn.disabled = true; btn.textContent = 'POSTING...';
+
+        const finish = () => {
+            input.value = '';
+            document.getElementById('charCount').textContent = '0 / 140';
+            btn.disabled = false; btn.textContent = 'POST >';
+        };
+
+        if (useFirebase && fbDB) {
+            fbDB.ref('memos').push(memo)
+                .catch(() => { saveLocal(memo); renderAll(loadLocal()); })
+                .finally(finish);
+        } else {
+            saveLocal(memo);
+            const stored = loadLocal();
+            renderAll(stored);
+            finish();
+        }
+    }
+
+    /* ── 로컬 폴백 ───────────────────────────────────────────── */
+    function fallbackLocal() {
+        document.getElementById('localBanner').style.display = 'block';
+        const stored = loadLocal();
+        renderAll(stored || DEMO_MEMOS);
+    }
+
+    /* ── 스크립트 동적 로드 ──────────────────────────────────── */
+    function loadScript(src) {
+        return new Promise((res, rej) => {
+            const s = document.createElement('script');
+            s.src = src; s.onload = res; s.onerror = rej;
+            document.head.appendChild(s);
+        });
+    }
+
+    /* ── 초기화 ──────────────────────────────────────────────── */
+    async function init() {
+        if (!FIREBASE_CONFIG) { fallbackLocal(); return; }
+        try {
+            await loadScript('https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js');
+            await loadScript('https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js');
+            firebase.initializeApp(FIREBASE_CONFIG);
+            fbDB = firebase.database();
+            useFirebase = true;
+            // 실시간 업데이트 구독
+            fbDB.ref('memos').orderByChild('ts').limitToLast(60)
+                .on('value', snap => {
+                    const data = snap.val() || {};
+                    const memos = Object.values(data).sort((a, b) => b.ts - a.ts);
+                    renderAll(memos.length ? memos : DEMO_MEMOS);
+                });
+        } catch (e) {
+            console.error('Firebase init failed:', e);
+            fallbackLocal();
+        }
+    }
+
+    init();
+    </script>
+</body>
+</html>
