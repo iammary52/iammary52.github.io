@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 
@@ -1775,6 +1775,93 @@
                 else if (appMode === 'report') executeReport();
             };
 
+            const sanitizeExcelText = (value, fallback = '미지정') => {
+                const clean = String(value || fallback)
+                    .replace(/[\\/:*?"<>|[\]]/g, '_')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                return clean || fallback;
+            };
+
+            const sanitizeSheetName = (value) => sanitizeExcelText(value).slice(0, 31);
+
+            const getExportMenuName = () => ({
+                dashboard: '전체사업대시보드',
+                management: '마스터프로젝트제어',
+                view: '데이터조회',
+                report: '현금흐름리포트'
+            }[appMode] || '내보내기');
+
+            const getExportFileName = () => {
+                const targetName = (appMode === 'view' || appMode === 'report') ? projectName : '전체사업';
+                return `${sanitizeExcelText(targetName)}_${sanitizeExcelText(getExportMenuName())}.xlsx`;
+            };
+
+            const styleWorksheet = (ws, rows) => {
+                if (!rows || rows.length === 0) return ws;
+
+                const range = XLSX.utils.decode_range(ws['!ref']);
+                const headerFill = { fgColor: { rgb: '1F2937' } };
+                const totalFill = { fgColor: { rgb: 'EEF2FF' } };
+                const border = {
+                    top: { style: 'thin', color: { rgb: 'D9E2EC' } },
+                    bottom: { style: 'thin', color: { rgb: 'D9E2EC' } },
+                    left: { style: 'thin', color: { rgb: 'D9E2EC' } },
+                    right: { style: 'thin', color: { rgb: 'D9E2EC' } }
+                };
+                const widths = [];
+
+                for (let c = range.s.c; c <= range.e.c; c++) {
+                    const headerAddress = XLSX.utils.encode_cell({ r: 0, c });
+                    const headerCell = ws[headerAddress];
+                    const headerText = headerCell?.v ? String(headerCell.v) : '';
+                    let maxWidth = headerText.length;
+
+                    if (headerCell) {
+                        headerCell.s = {
+                            font: { bold: true, color: { rgb: 'FFFFFF' } },
+                            fill: headerFill,
+                            alignment: { horizontal: 'center', vertical: 'center' },
+                            border
+                        };
+                    }
+
+                    for (let r = range.s.r + 1; r <= range.e.r; r++) {
+                        const address = XLSX.utils.encode_cell({ r, c });
+                        const cell = ws[address];
+                        if (!cell) continue;
+
+                        const isNumber = typeof cell.v === 'number';
+                        const isTotalColumn = /총계|총투입|총회수|수지|누적|NCF/.test(headerText);
+                        maxWidth = Math.max(maxWidth, String(cell.v ?? '').length);
+                        cell.s = {
+                            font: { color: { rgb: isNumber && cell.v < 0 ? 'DC2626' : '111827' } },
+                            fill: isTotalColumn ? totalFill : { fgColor: { rgb: 'FFFFFF' } },
+                            alignment: {
+                                horizontal: isNumber ? 'right' : 'left',
+                                vertical: 'center',
+                                wrapText: true
+                            },
+                            border,
+                            numFmt: isNumber ? '#,##0;[Red]-#,##0;0' : undefined
+                        };
+                    }
+
+                    widths.push({ wch: Math.min(Math.max(maxWidth + 2, c === 0 ? 18 : 12), 28) });
+                }
+
+                ws['!cols'] = widths;
+                ws['!rows'] = [{ hpt: 24 }];
+                ws['!autofilter'] = { ref: ws['!ref'] };
+                return ws;
+            };
+
+            const appendStyledSheet = (wb, rows, sheetName) => {
+                const ws = XLSX.utils.json_to_sheet(rows);
+                styleWorksheet(ws, rows);
+                XLSX.utils.book_append_sheet(wb, ws, sanitizeSheetName(sheetName));
+            };
+
             const exportToExcel = () => {
                 if (appMode === 'upload') {
                     setStatus({ type: 'error', message: '내보낼 데이터가 있는 탭으로 이동하세요.' });
@@ -1796,16 +1883,14 @@
                         [`총회수(${unitStr})`]: p.rec / scale,
                         [`수지차액(${unitStr})`]: (p.rec - p.land - p.dev) / scale
                     }));
-                    let ws = XLSX.utils.json_to_sheet(pRows);
-                    XLSX.utils.book_append_sheet(wb, ws, "대시보드_사업별");
+                    appendStyledSheet(wb, pRows, "대시보드_사업별");
 
                     let cRows = dashStats.categoryGrp.map(c => ({
                         '사업분야': c.category,
                         [`총투입(${unitStr})`]: (c.land + c.dev) / scale,
                         [`총회수(${unitStr})`]: c.rec / scale
                     }));
-                    let ws2 = XLSX.utils.json_to_sheet(cRows);
-                    XLSX.utils.book_append_sheet(wb, ws2, "대시보드_소계");
+                    appendStyledSheet(wb, cRows, "대시보드_소계");
                 }
                 else if (appMode === 'management') {
                     if (!manageList.length) return;
@@ -1814,8 +1899,7 @@
                         '현재사업명': m.name,
                         '사업분야': m.category
                     }));
-                    let ws = XLSX.utils.json_to_sheet(mRows);
-                    XLSX.utils.book_append_sheet(wb, ws, "마스터현황");
+                    appendStyledSheet(wb, mRows, "마스터현황");
                 }
                 else if (appMode === 'view') {
                     if (!viewData || viewData.length === 0) return;
@@ -1825,8 +1909,7 @@
                         r[`총계(${unitStr})`] = row.total / scale;
                         return r;
                     });
-                    let ws = XLSX.utils.json_to_sheet(vRows);
-                    XLSX.utils.book_append_sheet(wb, ws, `${projectName}_${TABLES.find(t => t.id === viewTable)?.label}`);
+                    appendStyledSheet(wb, vRows, `${projectName}_${TABLES.find(t => t.id === viewTable)?.label}`);
                 }
                 else if (appMode === 'report') {
                     if (!reportData || reportData.length === 0) return;
@@ -1837,15 +1920,14 @@
                         [`순흐름_NCF(${unitStr})`]: r.netFlow / scale,
                         [`누적자금수지(${unitStr})`]: r.cumulative / scale
                     }));
-                    let ws = XLSX.utils.json_to_sheet(rRows);
-                    XLSX.utils.book_append_sheet(wb, ws, `${projectName}_현금흐름`);
+                    appendStyledSheet(wb, rRows, `${projectName}_현금흐름`);
                 }
 
                 if (!wb.SheetNames.length) {
                     setStatus({ type: 'error', message: '현재 상태에서 내보낼 데이터가 없습니다.' });
                     return;
                 }
-                XLSX.writeFile(wb, `BFS_데이터_Export_${new Date().toISOString().split('T')[0].replace(/-/g, '')}.xlsx`);
+                XLSX.writeFile(wb, getExportFileName());
                 setStatus({ type: 'success', message: `엑셀 다운로드가 완료되었습니다. 출력된 수치는 사용자 맞춤형 출력 단위인 [${unitStr}] 기준입니다.` });
             };
 
