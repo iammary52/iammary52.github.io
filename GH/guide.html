@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GH 사용 안내 | 사업비관리통합시스템</title>
+    <title>재무 의사결정지원 시스템 안내 | GH</title>
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
@@ -80,16 +80,18 @@
         }
 
         .sb-brand {
-            padding: 18px 18px 14px;
+            padding: 18px 18px 16px;
             display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
             border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
         }
 
         .sb-mark {
-            width: 128px;
-            height: 32px;
+            width: 164px;
+            height: 40px;
             display: flex;
             align-items: center;
             flex-shrink: 0;
@@ -103,17 +105,19 @@
         }
 
         .sb-brand-name {
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 800;
             color: var(--text);
-            letter-spacing: -0.01em;
-            line-height: 1.2;
+            letter-spacing: 0;
+            line-height: 1.25;
+            white-space: nowrap;
         }
 
         .sb-brand-sub {
-            font-size: 10.5px;
+            font-size: 10.75px;
             color: var(--text3);
             margin-top: 1px;
+            white-space: nowrap;
         }
 
         .sb-nav {
@@ -1003,8 +1007,8 @@
             <div class="sb-brand">
                 <div class="sb-mark"><img src="gh-header-logo.png" alt="GH 경기주택도시공사 CI"></div>
                 <div>
-                    <div class="sb-brand-name">GH</div>
-                    <div class="sb-brand-sub">경기주택도시공사</div>
+                    <div class="sb-brand-name">재무 의사결정지원 시스템</div>
+                    <div class="sb-brand-sub">Financial Decision Support</div>
                 </div>
             </div>
             <nav class="sb-nav" aria-label="안내 메뉴">
@@ -1036,7 +1040,7 @@
             <div class="topbar">
                 <div class="tb-title">
                     <div class="tb-eyebrow">Documentation</div>
-                    <div class="tb-pagename">GH 사업비관리통합시스템 사용 안내</div>
+                    <div class="tb-pagename">재무 의사결정지원 시스템 안내</div>
                 </div>
                 <div class="tb-meta">
                     <a class="tbtn" href="index.html">메인으로</a>
@@ -1047,15 +1051,15 @@
             <div class="content">
                 <section class="view-hd" id="overview">
                     <div class="vt">SYSTEM OVERVIEW</div>
-                    <div class="vmeta"><span>DB 연동형 사업비 관리 대시보드</span></div>
+                    <div class="vmeta"><span>DB 연동형 재무 분석 대시보드</span></div>
                 </section>
                 <section class="vbody">
                     <div class="intro">
                         <div class="headline">
-                            <h1>GH 사업별 원가, 공급, 회수 데이터를 한 화면에서 관리합니다.</h1>
+                            <h1>사업별 재무 데이터를 의사결정에 바로 쓸 수 있게 정리합니다.</h1>
                             <p>
-                                이 시스템은 엑셀 기반 사업비 자료를 표준 테이블로 정리해 Supabase DB에 적재하고,
-                                프로젝트별 투입·회수 현황을 대시보드, 조회 화면, 재무 리포트로 확인하는 내부 운영 시스템입니다.
+                                이 시스템은 엑셀 기반 원가·공급·회수 자료를 표준 데이터로 정리하고,
+                                프로젝트별 재무 흐름을 대시보드, 조회 화면, 리포트로 확인하는 의사결정지원 도구입니다.
                             </p>
                         </div>
                         <div class="quick">
@@ -1172,7 +1176,7 @@
                                 </div>
                                 <div class="screen-card">
                                     <h3>3. 본문 분석 영역</h3>
-                                    <p>KPI 카드, 차트, 표가 같은 패널 규칙으로 정리되어 보고 자료로 바로 설명하기 쉽습니다.</p>
+                                    <p>KPI 카드, 차트, 표가 같은 패널 규칙으로 정리되어 회의와 보고에서 바로 설명하기 쉽습니다.</p>
                                 </div>
                                 <div class="screen-card">
                                     <h3>4. DB 연동 상태</h3>
@@ -1224,7 +1228,7 @@
                                     <div class="badge">02</div>
                                     <div>
                                         <h3>프로젝트명 지정 후 엑셀 업로드</h3>
-                                        <p>사업명 기준으로 토지비, 조성비, 공급, 회수 자료를 DB 테이블에 적재합니다.</p>
+                                        <p>사업명 기준으로 원가, 공급, 회수 데이터를 DB 테이블에 적재합니다.</p>
                                     </div>
                                 </div>
                                 <div class="flow-step">
@@ -1253,7 +1257,7 @@
                                     <tbody>
                                         <tr>
                                             <td>전체 사업 대시보드</td>
-                                            <td>연동된 사업의 전체 투입, 공급, 회수 현황을 요약합니다.</td>
+                                            <td>연동된 사업의 전체 투자, 공급, 회수 현황을 요약합니다.</td>
                                         </tr>
                                         <tr>
                                             <td>마스터 프로젝트 제어</td>
@@ -1265,7 +1269,7 @@
                                         </tr>
                                         <tr>
                                             <td>데이터 조회</td>
-                                            <td>토지비, 조성비, 공급, 회수 테이블을 사업 단위로 조회합니다.</td>
+                                            <td>원가, 공급, 회수 데이터를 사업 단위로 조회합니다.</td>
                                         </tr>
                                         <tr>
                                             <td>현금흐름 리포트</td>
@@ -1304,7 +1308,7 @@
                                     <li>동일 프로젝트 재업로드 시 기존 데이터 처리 범위를 먼저 검토합니다.</li>
                                     <li>조회 결과가 비어 있으면 사업 선택값과 업로드 완료 상태를 확인합니다.</li>
                                 </ul>
-                                <p class="note" style="margin-top: 12px;">이 안내 페이지는 GH 공식 CI의 블루 계열과 메인 시스템의 업무용 화면 구성을 함께 반영해 설명 자료로 활용할 수 있습니다.</p>
+                                <p class="note" style="margin-top: 12px;">이 안내 페이지는 GH 공식 CI의 블루 계열과 의사결정지원 도구의 업무용 화면 구성을 함께 반영해 설명 자료로 활용할 수 있습니다.</p>
                             </div>
                         </section>
                     </div>

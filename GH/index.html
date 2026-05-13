@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>사업비관리통합시스템 | DB연동</title>
+    <title>재무 의사결정지원 시스템 | GH</title>
     <!-- Fonts & React & Babel & XLSX & Supabase & ChartJS -->
     <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -280,16 +280,18 @@
         }
 
         .sb-brand {
-            padding: 18px 18px 14px;
+            padding: 18px 18px 16px;
             display: flex;
-            align-items: center;
-            gap: 10px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
             border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
         }
 
         .sb-mark {
-            width: 128px;
-            height: 32px;
+            width: 164px;
+            height: 40px;
             display: flex;
             align-items: center;
             flex-shrink: 0;
@@ -303,17 +305,19 @@
         }
 
         .sb-brand-name {
-            font-size: 13px;
-            font-weight: 700;
+            font-size: 14px;
+            font-weight: 800;
             color: var(--text);
-            letter-spacing: -0.01em;
-            line-height: 1.2;
+            letter-spacing: 0;
+            line-height: 1.25;
+            white-space: nowrap;
         }
 
         .sb-brand-sub {
-            font-size: 10.5px;
+            font-size: 10.75px;
             color: var(--text3);
             margin-top: 1px;
+            white-space: nowrap;
         }
 
         .sb-nav {
@@ -1215,7 +1219,7 @@
                         <div className="login-head">
                             <div className="login-mark">
                                 <div className="login-mark-dot"><img src="gh-header-logo.png" alt="GH 경기주택도시공사 CI" /></div>
-                                <div className="login-mark-name">GH · 사업비관리통합시스템</div>
+                                <div className="login-mark-name">GH · 재무 의사결정지원 시스템</div>
                             </div>
                             <div className="login-title">로그인</div>
                             <div className="login-sub">승인된 운영자 계정으로 데이터 파이프라인에 접근합니다</div>
@@ -2037,8 +2041,8 @@
                         <div className="sb-brand">
                             <div className="sb-mark"><img src="gh-header-logo.png" alt="GH 경기주택도시공사 CI" /></div>
                             <div>
-                                <div className="sb-brand-name">GH</div>
-                                <div className="sb-brand-sub">경기주택도시공사</div>
+                                <div className="sb-brand-name">재무 의사결정지원 시스템</div>
+                                <div className="sb-brand-sub">Financial Decision Support</div>
                             </div>
                         </div>
                         <nav className="sb-nav">
