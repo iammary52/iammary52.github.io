@@ -41,10 +41,10 @@
             --text4: #94a3b8;
 
             /* brand */
-            --acc: #4f46e5;
-            --acc-h: #4338ca;
-            --acc-lt: #eef2ff;
-            --acc-soft: #e0e7ff;
+            --acc: #004a9c;
+            --acc-h: #003875;
+            --acc-lt: #eaf6fc;
+            --acc-soft: #d8eef9;
 
             /* semantics */
             --red: #dc2626;
@@ -53,14 +53,14 @@
             --green-lt: #f0fdf4;
             --orange: #ea580c;
             --orange-lt: #fff7ed;
-            --teal: #0891b2;
+            --teal: #0091da;
             --purple: #9333ea;
             --amber: #d97706;
 
             /* legacy aliases used by chart code */
             --hdr: #0f172a;
             --nav: #0f172a;
-            --nav-act: #4f46e5;
+            --nav-act: #004a9c;
 
             /* type */
             --sans: 'Pretendard Variable', Pretendard, 'Inter', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', system-ui, sans-serif;
@@ -103,8 +103,8 @@
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(circle at 18% 22%, rgba(99, 102, 241, 0.18) 0%, transparent 55%),
-                radial-gradient(circle at 82% 78%, rgba(79, 70, 229, 0.12) 0%, transparent 55%),
+                radial-gradient(circle at 18% 22%, rgba(0, 145, 218, 0.20) 0%, transparent 55%),
+                radial-gradient(circle at 82% 78%, rgba(0, 74, 156, 0.14) 0%, transparent 55%),
                 #0f172a;
             display: flex;
             align-items: center;
@@ -149,17 +149,18 @@
         }
 
         .login-mark-dot {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            display: grid;
-            place-items: center;
-            color: #fff;
-            font-weight: 700;
-            font-size: 13px;
-            letter-spacing: -0.02em;
-            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+            width: 128px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .login-mark-dot img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         .login-mark-name {
@@ -287,17 +288,18 @@
         }
 
         .sb-mark {
-            width: 32px;
+            width: 128px;
             height: 32px;
-            border-radius: 8px;
-            background: linear-gradient(135deg, #6366f1, #4f46e5);
-            display: grid;
-            place-items: center;
-            color: #fff;
-            font-weight: 700;
-            font-size: 14px;
-            letter-spacing: -0.02em;
-            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .sb-mark img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
         }
 
         .sb-brand-name {
@@ -1108,7 +1110,7 @@
 
         .log-console div::before {
             content: '› ';
-            color: #6366f1;
+            color: var(--teal);
             opacity: 0.8;
         }
 
@@ -1159,7 +1161,7 @@
         ];
 
         // Chart.js 캔버스 전역 색상
-        const COLORS = ['#4f46e5', '#0891b2', '#16a34a', '#ea580c', '#9333ea', '#dc2626', '#d97706', '#475569'];
+        const COLORS = ['#004a9c', '#0091da', '#16a34a', '#ea580c', '#9333ea', '#dc2626', '#d97706', '#475569'];
 
         // 분야 고정값
         const CAT_OPTIONS = ['택지', '산단', '주택', '기타'];
@@ -1212,8 +1214,8 @@
                     <div className="login-card">
                         <div className="login-head">
                             <div className="login-mark">
-                                <div className="login-mark-dot">B</div>
-                                <div className="login-mark-name">BFS · 사업비관리통합시스템</div>
+                                <div className="login-mark-dot"><img src="gh-header-logo.png" alt="GH 경기주택도시공사 CI" /></div>
+                                <div className="login-mark-name">GH · 사업비관리통합시스템</div>
                             </div>
                             <div className="login-title">로그인</div>
                             <div className="login-sub">승인된 운영자 계정으로 데이터 파이프라인에 접근합니다</div>
@@ -1428,7 +1430,7 @@
                             data: {
                                 labels: p1.map(p => p.name),
                                 datasets: [
-                                    { label: `투자 규모 (용지+조성, ${amountUnit})`, data: p1.map(p => (p.land + p.dev) / scale), backgroundColor: '#4f46e5', borderRadius: 4 },
+                                    { label: `투자 규모 (용지+조성, ${amountUnit})`, data: p1.map(p => (p.land + p.dev) / scale), backgroundColor: '#004a9c', borderRadius: 4 },
                                     { label: `회수 규모 (${amountUnit})`, data: p1.map(p => p.rec / scale), backgroundColor: '#16a34a', borderRadius: 4 },
                                 ]
                             },
@@ -1952,14 +1954,14 @@
                                 {
                                     label: '투자 규모 (Outflow)',
                                     data: dataInv.map(v => Math.abs(v) / scale),
-                                    backgroundColor: 'rgba(79, 70, 229, 0.12)',
-                                    borderColor: '#4f46e5',
+                                    backgroundColor: 'rgba(0, 74, 156, 0.12)',
+                                    borderColor: '#004a9c',
                                     borderWidth: 2,
                                     fill: true,
                                     tension: 0.35,
                                     pointRadius: 2,
                                     pointHoverRadius: 5,
-                                    pointBackgroundColor: '#4f46e5'
+                                    pointBackgroundColor: '#004a9c'
                                 },
                                 {
                                     label: '회수 규모 (Inflow)',
@@ -2033,10 +2035,10 @@
                     {/* 사이드바 */}
                     <aside className="sidebar">
                         <div className="sb-brand">
-                            <div className="sb-mark">B</div>
+                            <div className="sb-mark"><img src="gh-header-logo.png" alt="GH 경기주택도시공사 CI" /></div>
                             <div>
-                                <div className="sb-brand-name">BFS</div>
-                                <div className="sb-brand-sub">사업비 통합 관리</div>
+                                <div className="sb-brand-name">GH</div>
+                                <div className="sb-brand-sub">경기주택도시공사</div>
                             </div>
                         </div>
                         <nav className="sb-nav">
@@ -2430,7 +2432,7 @@
                                 <div className="stsep"></div>
                                 <div className="sti"><b style={{ color: 'var(--green)' }}>● Auth Active</b></div>
                                 <div style={{ flex: 1 }}></div>
-                                <div className="sti">BFS Parser · v3.5</div>
+                                <div className="sti">GH Parser · v3.5</div>
                             </div>
                         </div>
                     </div>
