@@ -1,0 +1,2498 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재무 의사결정지원 시스템 | GH</title>
+    <!-- Fonts & React & Babel & XLSX & Supabase & ChartJS -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            /* surfaces */
+            --bg: #f6f7f9;
+            --panel: #ffffff;
+            --panel-2: #fafbfc;
+            --hover: #f1f3f6;
+
+            /* borders */
+            --border: #e6e8ec;
+            --border2: #d8dbe1;
+            --border3: #bfc4cd;
+
+            /* text */
+            --text: #0f172a;
+            --text2: #334155;
+            --text3: #64748b;
+            --text4: #94a3b8;
+
+            /* brand */
+            --acc: #004a9c;
+            --acc-h: #003875;
+            --acc-lt: #eaf6fc;
+            --acc-soft: #d8eef9;
+
+            /* semantics */
+            --red: #dc2626;
+            --red-lt: #fef2f2;
+            --green: #16a34a;
+            --green-lt: #f0fdf4;
+            --orange: #ea580c;
+            --orange-lt: #fff7ed;
+            --teal: #0091da;
+            --purple: #9333ea;
+            --amber: #d97706;
+
+            /* legacy aliases used by chart code */
+            --hdr: #0f172a;
+            --nav: #0f172a;
+            --nav-act: #004a9c;
+
+            /* type */
+            --sans: 'Pretendard Variable', Pretendard, 'Inter', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', system-ui, sans-serif;
+            --mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+            /* radii / shadow */
+            --r-sm: 6px;
+            --r: 8px;
+            --r-lg: 12px;
+            --shadow-1: 0 1px 2px rgba(15, 23, 42, 0.04), 0 1px 1px rgba(15, 23, 42, 0.03);
+            --shadow-2: 0 4px 12px rgba(15, 23, 42, 0.06), 0 2px 4px rgba(15, 23, 42, 0.04);
+            --shadow-pop: 0 24px 60px rgba(15, 23, 42, 0.18);
+        }
+
+        html,
+        body {
+            height: 100%;
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 13px;
+            line-height: 1.5;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        button, input, select, textarea {
+            font-family: inherit;
+        }
+
+        .shell {
+            display: flex;
+            height: 100vh;
+            background: var(--bg);
+        }
+
+        /* ============== 로그인 화면 ============== */
+        .login-bg {
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(circle at 18% 22%, rgba(0, 145, 218, 0.20) 0%, transparent 55%),
+                radial-gradient(circle at 82% 78%, rgba(0, 74, 156, 0.14) 0%, transparent 55%),
+                #0f172a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            font-family: var(--sans);
+        }
+
+        .login-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+            background-size: 56px 56px;
+            mask-image: radial-gradient(circle at center, black 25%, transparent 75%);
+            pointer-events: none;
+        }
+
+        .login-card {
+            background: #fff;
+            border-radius: 14px;
+            padding: 0;
+            width: 400px;
+            box-shadow: 0 20px 60px rgba(2, 6, 23, 0.45), 0 1px 0 rgba(255, 255, 255, 0.04) inset;
+            border: 1px solid rgba(226, 232, 240, 0.4);
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .login-head {
+            padding: 32px 32px 22px;
+        }
+
+        .login-mark {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 22px;
+        }
+
+        .login-mark-dot {
+            width: 128px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .login-mark-dot img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .login-mark-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2);
+            letter-spacing: 0.02em;
+        }
+
+        .login-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+        }
+
+        .login-sub {
+            font-size: 13px;
+            color: var(--text3);
+            margin-top: 6px;
+        }
+
+        .login-body {
+            padding: 8px 32px 28px;
+        }
+
+        .login-field {
+            margin-bottom: 14px;
+        }
+
+        .login-lbl {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text2);
+            margin-bottom: 6px;
+        }
+
+        .login-inp {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1px solid var(--border2);
+            border-radius: var(--r-sm);
+            font-size: 13px;
+            background: #fff;
+            color: var(--text);
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        .login-inp::placeholder {
+            color: var(--text4);
+        }
+
+        .login-inp:focus {
+            outline: none;
+            border-color: var(--acc);
+            box-shadow: 0 0 0 3px var(--acc-soft);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--text);
+            color: #fff;
+            border: none;
+            border-radius: var(--r-sm);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background .15s, transform .05s;
+        }
+
+        .login-btn:hover {
+            background: #1e293b;
+        }
+
+        .login-btn:active {
+            transform: translateY(1px);
+        }
+
+        .login-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .login-err {
+            background: var(--red-lt);
+            border: 1px solid #fecaca;
+            color: var(--red);
+            padding: 10px 12px;
+            font-size: 12px;
+            border-radius: var(--r-sm);
+            margin-bottom: 12px;
+        }
+
+        .login-footer {
+            padding: 14px 32px;
+            background: var(--panel-2);
+            border-top: 1px solid var(--border);
+            font-size: 11px;
+            color: var(--text4);
+            text-align: center;
+            letter-spacing: 0.02em;
+        }
+
+        /* ============== 사이드바 ============== */
+        .sidebar {
+            width: 240px;
+            flex-shrink: 0;
+            background: #ffffff;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .sb-brand {
+            padding: 18px 18px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbfd 100%);
+        }
+
+        .sb-mark {
+            width: 164px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .sb-mark img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .sb-brand-name {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text);
+            letter-spacing: 0;
+            line-height: 1.25;
+            white-space: nowrap;
+        }
+
+        .sb-brand-sub {
+            font-size: 10.75px;
+            color: var(--text3);
+            margin-top: 1px;
+            white-space: nowrap;
+        }
+
+        .sb-nav {
+            padding: 14px 10px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .sb-grp {
+            font-size: 10.5px;
+            font-weight: 600;
+            color: var(--text4);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            padding: 12px 10px 6px;
+        }
+
+        .sb-grp:first-child {
+            padding-top: 4px;
+        }
+
+        .sb-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            font-size: 13px;
+            color: var(--text2);
+            cursor: pointer;
+            border-radius: var(--r-sm);
+            transition: background .12s, color .12s;
+            margin-bottom: 1px;
+            font-weight: 500;
+        }
+
+        .sb-item:hover {
+            background: var(--hover);
+            color: var(--text);
+        }
+
+        .sb-item.active {
+            background: var(--acc-lt);
+            color: var(--acc);
+            font-weight: 600;
+        }
+
+        .sb-icon {
+            width: 16px;
+            height: 16px;
+            stroke-width: 1.75;
+            flex-shrink: 0;
+            opacity: 0.85;
+        }
+
+        .sb-item.active .sb-icon {
+            opacity: 1;
+        }
+
+        .sb-foot {
+            border-top: 1px solid var(--border);
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sb-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #94a3b8, #475569);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-size: 12px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .sb-user-meta {
+            flex: 1;
+            min-width: 0;
+            line-height: 1.25;
+        }
+
+        .sb-user-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sb-user-status {
+            font-size: 10.5px;
+            color: var(--green);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .sb-user-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.18);
+        }
+
+        .logout-btn {
+            background: transparent;
+            border: 1px solid var(--border2);
+            color: var(--text3);
+            font-size: 11px;
+            font-weight: 500;
+            padding: 5px 10px;
+            border-radius: var(--r-sm);
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .logout-btn:hover {
+            background: var(--red-lt);
+            border-color: #fecaca;
+            color: var(--red);
+        }
+
+        /* ============== 메인 영역 ============== */
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-width: 0;
+        }
+
+        /* 톱바 (페이지 헤더) */
+        .topbar {
+            height: 60px;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 16px;
+            flex-shrink: 0;
+        }
+
+        .tb-title {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+            min-width: 0;
+        }
+
+        .tb-eyebrow {
+            font-size: 11px;
+            color: var(--text3);
+            font-weight: 500;
+            letter-spacing: 0.02em;
+        }
+
+        .tb-pagename {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.01em;
+            margin-top: 2px;
+        }
+
+        .tb-meta {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .tb-stat {
+            font-size: 11.5px;
+            color: var(--text3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tb-stat b {
+            color: var(--text);
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .tb-stat-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--green);
+            box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.15);
+        }
+
+        /* 툴바 */
+        .toolbar {
+            min-height: 52px;
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 8px 24px;
+            gap: 10px;
+            flex-shrink: 0;
+            flex-wrap: wrap;
+        }
+
+        .tb-sec {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .tb-sec + .tb-sec {
+            padding-left: 12px;
+            border-left: 1px solid var(--border);
+            margin-left: 2px;
+        }
+
+        .tb-lbl {
+            color: var(--text3);
+            font-size: 11.5px;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+
+        .tb-lbl b {
+            color: var(--text);
+            font-weight: 700;
+        }
+
+        .popt-inp {
+            padding: 7px 10px;
+            border: 1px solid var(--border2);
+            border-radius: var(--r-sm);
+            min-width: 220px;
+            font-size: 12.5px;
+            background: #fff;
+            color: var(--text);
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        .popt-inp:focus {
+            outline: none;
+            border-color: var(--acc);
+            box-shadow: 0 0 0 3px var(--acc-soft);
+        }
+
+        .tbtn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 12px;
+            border: 1px solid var(--border2);
+            border-radius: var(--r-sm);
+            background: #fff;
+            color: var(--text2);
+            font-size: 12px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            height: 32px;
+            transition: all .12s;
+        }
+
+        .tbtn:hover {
+            border-color: var(--border3);
+            background: var(--panel-2);
+            color: var(--text);
+        }
+
+        .tbtn.pri {
+            background: var(--text);
+            color: #fff;
+            border-color: var(--text);
+        }
+
+        .tbtn.pri:hover {
+            background: #1e293b;
+            border-color: #1e293b;
+            color: #fff;
+        }
+
+        .tbtn.acc {
+            background: var(--acc);
+            color: #fff;
+            border-color: var(--acc);
+        }
+
+        .tbtn.acc:hover {
+            background: var(--acc-h);
+            border-color: var(--acc-h);
+            color: #fff;
+        }
+
+        .tbtn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .tbtn.danger {
+            border-color: #fecaca;
+            color: var(--red);
+            background: #fff;
+        }
+
+        .tbtn.danger:hover {
+            background: var(--red-lt);
+            border-color: #fca5a5;
+            color: var(--red);
+        }
+
+        /* 탭바 */
+        .tabbar {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            padding: 0 24px;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .tab {
+            padding: 11px 14px 12px;
+            font-size: 12.5px;
+            color: var(--text3);
+            cursor: pointer;
+            white-space: nowrap;
+            border-bottom: 2px solid transparent;
+            transition: color .12s, border-color .12s;
+            font-weight: 500;
+            margin-bottom: -1px;
+        }
+
+        .tab:hover {
+            color: var(--text);
+        }
+
+        .tab.active {
+            color: var(--acc);
+            font-weight: 600;
+            border-bottom-color: var(--acc);
+        }
+
+        /* 뷰 헤더 (단위 선택 등) */
+        .view-hd {
+            background: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 24px 4px;
+            flex-shrink: 0;
+        }
+
+        .vt {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text3);
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+        }
+
+        .vmeta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .vmeta span {
+            font-size: 11.5px;
+            color: var(--text3);
+        }
+
+        .vmeta .popt-inp {
+            min-width: 120px;
+            height: 28px;
+            padding: 4px 8px;
+            font-size: 12px;
+        }
+
+        /* 뷰 본문 */
+        .vbody {
+            flex: 1;
+            overflow: auto;
+            padding: 14px 24px 24px;
+            background: var(--bg);
+        }
+
+        /* KPI 카드 */
+        .stat-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .scard {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            padding: 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow .15s, transform .15s;
+        }
+
+        .scard:hover {
+            box-shadow: var(--shadow-2);
+        }
+
+        .scard::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--border2);
+        }
+
+        .scard.b::before { background: var(--acc); }
+        .scard.t::before { background: var(--teal); }
+        .scard.g::before { background: var(--green); }
+        .scard.o::before { background: var(--orange); }
+        .scard.p::before { background: var(--purple); }
+
+        .sl {
+            font-size: 11.5px;
+            color: var(--text3);
+            font-weight: 500;
+            letter-spacing: 0.01em;
+        }
+
+        .sv {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            line-height: 1.15;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .su {
+            font-size: 12px;
+            color: var(--text3);
+            font-weight: 500;
+            margin-left: 4px;
+        }
+
+        .ss {
+            font-size: 11px;
+            color: var(--text4);
+            margin-top: 1px;
+        }
+
+        /* 패널 */
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: var(--r-lg);
+            margin-bottom: 14px;
+            overflow: hidden;
+        }
+
+        .phd {
+            min-height: 44px;
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+        }
+
+        .pt {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: -0.005em;
+        }
+
+        .pt::before {
+            content: '';
+            width: 3px;
+            height: 14px;
+            background: var(--acc);
+            border-radius: 2px;
+            display: inline-block;
+        }
+
+        .pb {
+            padding: 18px;
+        }
+
+        .pb0 {
+            padding: 0;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        /* 데이터 그리드 */
+        .grid-wrap {
+            overflow: auto;
+        }
+
+        .dgrid {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+            white-space: nowrap;
+        }
+
+        .dgrid thead tr {
+            background: var(--panel-2);
+        }
+
+        .dgrid th {
+            padding: 10px 14px;
+            text-align: right;
+            font-weight: 600;
+            color: var(--text3);
+            font-size: 11px;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+            background: var(--panel-2);
+            position: sticky;
+            top: 0;
+            z-index: 5;
+            white-space: nowrap;
+        }
+
+        .dgrid th:first-child {
+            text-align: left;
+            position: sticky;
+            left: 0;
+            z-index: 10;
+            background: var(--panel-2);
+            min-width: 200px;
+        }
+
+        .dgrid td {
+            padding: 11px 14px;
+            text-align: right;
+            border-bottom: 1px solid var(--border);
+            color: var(--text);
+            font-variant-numeric: tabular-nums;
+            background: #fff;
+        }
+
+        .dgrid td.center {
+            text-align: center;
+        }
+
+        .dgrid td:first-child {
+            text-align: left;
+            position: sticky;
+            left: 0;
+            z-index: 4;
+            background: #fff;
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        .dgrid tbody tr:hover td {
+            background: var(--panel-2) !important;
+        }
+
+        .dgrid tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .dgrid .sub td {
+            background: var(--panel-2) !important;
+            font-weight: 600;
+            color: var(--text2);
+        }
+
+        .dgrid .tot td {
+            background: var(--acc-lt) !important;
+            font-weight: 700;
+            color: var(--text);
+            border-top: 1px solid var(--acc-soft);
+        }
+
+        .dgrid .tot td:first-child {
+            color: var(--acc);
+            background: var(--acc-lt) !important;
+        }
+
+        .neg {
+            color: var(--red) !important;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .dash {
+            color: var(--text4) !important;
+        }
+
+        .pos {
+            color: var(--green) !important;
+            font-weight: 600;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* 카테고리 칩 */
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 9px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--panel-2);
+            color: var(--text2);
+            border: 1px solid var(--border);
+            letter-spacing: 0.01em;
+        }
+
+        .chip.택지 { background: var(--acc-lt); color: var(--acc); border-color: var(--acc-soft); }
+        .chip.산단 { background: #ecfeff; color: var(--teal); border-color: #cffafe; }
+        .chip.주택 { background: var(--green-lt); color: var(--green); border-color: #bbf7d0; }
+        .chip.기타 { background: var(--panel-2); color: var(--text3); border-color: var(--border); }
+
+        /* 차트 래핑 */
+        .chart-contain {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 12px;
+        }
+
+        /* 상태 알림 */
+        .alert-box {
+            padding: 10px 14px;
+            margin-bottom: 14px;
+            border-radius: var(--r-sm);
+            font-size: 12.5px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            border: 1px solid;
+            line-height: 1.45;
+        }
+
+        .alert-box b {
+            font-weight: 700;
+        }
+
+        .alert-success {
+            background: var(--green-lt);
+            border-color: #bbf7d0;
+            color: #15803d;
+        }
+
+        .alert-error {
+            background: var(--red-lt);
+            border-color: #fecaca;
+            color: var(--red);
+        }
+
+        .alert-loading {
+            background: var(--acc-lt);
+            border-color: var(--acc-soft);
+            color: var(--acc-h);
+        }
+
+        .alert-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        /* 상태바 */
+        .stbar {
+            height: 32px;
+            background: #fff;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            gap: 18px;
+            flex-shrink: 0;
+        }
+
+        .sti {
+            font-size: 11px;
+            color: var(--text3);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .sti b {
+            color: var(--text2);
+            font-weight: 600;
+        }
+
+        .stsep {
+            width: 1px;
+            height: 12px;
+            background: var(--border);
+        }
+
+        /* ERP Upload Dropzone */
+        .dropzone {
+            border: 2px dashed var(--border2);
+            background: var(--panel-2);
+            padding: 56px 20px;
+            text-align: center;
+            cursor: pointer;
+            color: var(--text3);
+            transition: all 0.18s;
+            border-radius: var(--r-lg);
+        }
+
+        .dropzone:hover {
+            border-color: var(--acc);
+            background: var(--acc-lt);
+            color: var(--acc);
+        }
+
+        .dropzone.dragover {
+            border-color: var(--acc);
+            background: var(--acc-lt);
+            color: var(--acc);
+        }
+
+        .dz-icon {
+            width: 44px;
+            height: 44px;
+            margin: 0 auto 12px;
+            border-radius: 12px;
+            background: #fff;
+            border: 1px solid var(--border);
+            display: grid;
+            place-items: center;
+            color: var(--text3);
+        }
+
+        .dropzone:hover .dz-icon, .dropzone.dragover .dz-icon {
+            color: var(--acc);
+            border-color: var(--acc-soft);
+        }
+
+        .dz-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .dropzone:hover .dz-title, .dropzone.dragover .dz-title {
+            color: var(--acc);
+        }
+
+        .dz-sub {
+            font-size: 12px;
+            color: var(--text3);
+        }
+
+        /* 로그 콘솔 */
+        .log-console {
+            background: #0b1020;
+            color: #cbd5e1;
+            padding: 14px 16px;
+            font-size: 11.5px;
+            font-family: var(--mono);
+            border-radius: var(--r);
+            margin-top: 16px;
+            height: 200px;
+            overflow-y: auto;
+            line-height: 1.7;
+            border: 1px solid #1e293b;
+        }
+
+        .log-console div::before {
+            content: '› ';
+            color: var(--teal);
+            opacity: 0.8;
+        }
+
+        /* 스크롤 */
+        ::-webkit-scrollbar {
+            width: 10px;
+            height: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 8px;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+            border: 2px solid transparent;
+            background-clip: content-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // =========================================================================
+        const SUPABASE_URL = "https://heriqvakrijvudvluzrw.supabase.co"; // <-- 이곳에 URL 입력
+        const SUPABASE_KEY = "sb_publishable_Z-31-p1MTLwBPYCnzEpq6g_6w3QWYmy"; // <-- 이곳에 KEY 입력
+        // =========================================================================
+
+        const { useState, useRef, useEffect, useMemo } = React;
+        const { createClient } = supabase;
+        // ✅ 로그인 세션이 브라우저에 저장되도록 설정 (새로고침해도 로그인 유지)
+        const sbClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
+            auth: { persistSession: true, autoRefreshToken: true }
+        });
+
+        const TABLES = [
+            { id: 'land_costs', label: '용지비' }, { id: 'development_costs', label: '조성비' },
+            { id: 'supplies', label: '공급' }, { id: 'recoveries', label: '회수' }
+        ];
+
+        // Chart.js 캔버스 전역 색상
+        const COLORS = ['#004a9c', '#0091da', '#16a34a', '#ea580c', '#9333ea', '#dc2626', '#d97706', '#475569'];
+
+        // 분야 고정값
+        const CAT_OPTIONS = ['택지', '산단', '주택', '기타'];
+
+
+        // =====================================================================
+        // ✅ 로그인 화면 컴포넌트
+        // =====================================================================
+        function LoginScreen({ onLoginSuccess }) {
+            const [email, setEmail] = useState('');
+            const [password, setPassword] = useState('');
+            const [loading, setLoading] = useState(false);
+            const [error, setError] = useState('');
+
+            const handleLogin = async (e) => {
+                e.preventDefault();
+                if (!email || !password) {
+                    setError('이메일과 비밀번호를 모두 입력해주세요.');
+                    return;
+                }
+                setLoading(true);
+                setError('');
+                try {
+                    const { data, error: authErr } = await sbClient.auth.signInWithPassword({
+                        email: email.trim(),
+                        password: password
+                    });
+                    if (authErr) throw authErr;
+                    if (data?.session) {
+                        onLoginSuccess(data.session);
+                    } else {
+                        throw new Error('세션 발급에 실패했습니다.');
+                    }
+                } catch (err) {
+                    // 에러 메시지를 친절하게 변환
+                    let msg = err.message || '로그인에 실패했습니다.';
+                    if (msg.includes('Invalid login credentials')) {
+                        msg = '이메일 또는 비밀번호가 일치하지 않습니다.';
+                    } else if (msg.includes('Email not confirmed')) {
+                        msg = '계정 이메일 인증이 완료되지 않았습니다. 관리자에게 문의하세요.';
+                    }
+                    setError(msg);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            return (
+                <div className="login-bg">
+                    <div className="login-card">
+                        <div className="login-head">
+                            <div className="login-mark">
+                                <div className="login-mark-dot"><img src="gh-header-logo.png" alt="GH 경기주택도시공사 CI" /></div>
+                                <div className="login-mark-name">GH · 재무 의사결정지원 시스템</div>
+                            </div>
+                            <div className="login-title">로그인</div>
+                            <div className="login-sub">승인된 운영자 계정으로 데이터 파이프라인에 접근합니다</div>
+                        </div>
+                        <form className="login-body" onSubmit={handleLogin}>
+                            {error && <div className="login-err">{error}</div>}
+                            <div className="login-field">
+                                <label className="login-lbl">이메일</label>
+                                <input
+                                    type="email"
+                                    className="login-inp"
+                                    value={email}
+                                    onChange={e => setEmail(e.target.value)}
+                                    placeholder="admin@company.local"
+                                    autoFocus
+                                    disabled={loading}
+                                />
+                            </div>
+                            <div className="login-field">
+                                <label className="login-lbl">비밀번호</label>
+                                <input
+                                    type="password"
+                                    className="login-inp"
+                                    value={password}
+                                    onChange={e => setPassword(e.target.value)}
+                                    placeholder="••••••••"
+                                    disabled={loading}
+                                />
+                            </div>
+                            <button type="submit" className="login-btn" disabled={loading}>
+                                {loading ? '인증 중...' : '로그인'}
+                            </button>
+                        </form>
+                        <div className="login-footer">
+                            Secured by Supabase Auth · 승인된 사용자만 접근 가능
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+
+        // =====================================================================
+        // ✅ 메인 앱 컴포넌트 (로그인 후 렌더링)
+        // =====================================================================
+        function MainApp({ session, onLogout }) {
+            const [nowTime, setNowTime] = useState('');
+            useEffect(() => {
+                const timer = setInterval(() => {
+                    setNowTime(new Date().toLocaleString('ko-KR', { hour12: false }));
+                }, 1000);
+                return () => clearInterval(timer);
+            }, []);
+
+            const [appMode, setAppMode] = useState('dashboard');
+
+            const [projectName, setProjectName] = useState('');
+            const [projectList, setProjectList] = useState([]);
+
+            const [dashStats, setDashStats] = useState(null);
+            const [manageList, setManageList] = useState([]);
+            const [reportStats, setReportStats] = useState(null);
+
+            const dashChartRef1 = useRef(null);
+            const dashChartRef2 = useRef(null);
+            const dashChartInstRef1 = useRef(null);
+            const dashChartInstRef2 = useRef(null);
+
+            const [status, setStatus] = useState(null);
+            const [logs, setLogs] = useState([]);
+
+            const [selectedFile, setSelectedFile] = useState(null);
+            const [isDragging, setIsDragging] = useState(false);
+            const [uploadProjName, setUploadProjName] = useState('');
+            const fileInputRef = useRef(null);
+
+            const [viewTable, setViewTable] = useState('land_costs');
+            const [viewData, setViewData] = useState([]);
+            const [viewYears, setViewYears] = useState([]);
+
+            const [reportData, setReportData] = useState([]);
+            const chartCanvasRef = useRef(null);
+            const chartInstanceRef = useRef(null);
+
+            const [amountUnit, setAmountUnit] = useState('억원');
+
+            const getScale = () => {
+                if (amountUnit === '백만원') return 1000;
+                if (amountUnit === '억원') return 100000;
+                return 1;
+            };
+
+            const formatAmount = (v) => {
+                if (v == null || v === 0) return '0';
+                return Math.round(v / getScale()).toLocaleString();
+            };
+
+            const fetchAllRows = async (tableName, projName = null) => {
+                let allData = [];
+                let from = 0;
+                const limit = 1000;
+                while (true) {
+                    let query = sbClient.from(tableName).select('*').range(from, from + limit - 1);
+                    if (projName) query = query.eq('project_name', projName);
+
+                    const { data, error } = await query;
+                    if (error) {
+                        if (error.code === '42P01') return [];
+                        throw error;
+                    }
+                    if (!data || data.length === 0) break;
+                    allData = allData.concat(data);
+                    if (data.length < limit) break;
+                    from += limit;
+                }
+                return allData;
+            };
+
+            const loadDashboard = async () => {
+                setStatus({ type: 'loading', message: '전체 사업 DB 및 마스터 테이블 동기화 중...' });
+                try {
+                    const [master, land, dev, sup, rec] = await Promise.all([
+                        fetchAllRows('project_master'),
+                        fetchAllRows('land_costs'),
+                        fetchAllRows('development_costs'),
+                        fetchAllRows('supplies'),
+                        fetchAllRows('recoveries')
+                    ]);
+
+                    const categoryMap = {};
+                    (master || []).forEach(m => { categoryMap[m.project_name] = m.category || '기타'; });
+
+                    const mgList = (master || []).map(m => ({
+                        origName: m.project_name,
+                        name: m.project_name,
+                        category: m.category || '기타'
+                    }));
+                    setManageList(mgList);
+
+                    const dict = {};
+                    const add = (dataArray, key) => {
+                        (dataArray || []).forEach(row => {
+                            const p = row.project_name;
+                            if (!dict[p]) dict[p] = { land: 0, dev: 0, sup: 0, rec: 0, category: categoryMap[p] || '기타' };
+                            dict[p][key] += row.amount;
+                        })
+                    };
+                    add(land, 'land');
+                    add(dev, 'dev');
+                    add(sup, 'sup');
+                    add(rec, 'rec');
+
+                    const projNames = Object.keys(dict).sort();
+                    setProjectList(projNames);
+
+                    if (projNames.length > 0 && !projectName) {
+                        setProjectName(projNames[0]);
+                    }
+
+                    const catDict = {};
+                    projNames.forEach(p => {
+                        const c = dict[p].category;
+                        if (!catDict[c]) catDict[c] = { land: 0, dev: 0, sup: 0, rec: 0 };
+                        catDict[c].land += dict[p].land;
+                        catDict[c].dev += dict[p].dev;
+                        catDict[c].sup += dict[p].sup;
+                        catDict[c].rec += dict[p].rec;
+                    });
+                    const categories = Object.keys(catDict).sort();
+
+                    const summary = {
+                        projects: projNames.map(p => ({
+                            name: p,
+                            category: dict[p].category,
+                            land: dict[p].land,
+                            dev: dict[p].dev,
+                            sup: dict[p].sup,
+                            rec: dict[p].rec
+                        })),
+                        categoryGrp: categories.map(c => ({
+                            category: c,
+                            land: catDict[c].land,
+                            dev: catDict[c].dev,
+                            sup: catDict[c].sup,
+                            rec: catDict[c].rec
+                        })),
+                        totalLand: projNames.reduce((s, p) => s + dict[p].land, 0),
+                        totalDev: projNames.reduce((s, p) => s + dict[p].dev, 0),
+                        totalSup: projNames.reduce((s, p) => s + dict[p].sup, 0),
+                        totalRec: projNames.reduce((s, p) => s + dict[p].rec, 0),
+                    };
+                    setDashStats(summary);
+                    setStatus(null);
+                } catch (e) {
+                    setStatus({ type: 'error', message: '데이터 무결성 에러: ' + e.message });
+                }
+            };
+
+            useEffect(() => {
+                loadDashboard();
+            }, []);
+
+            useEffect(() => {
+                if (appMode === 'dashboard' && dashStats) {
+                    const scale = getScale();
+                    const p1 = dashStats.projects;
+                    if (dashChartRef1.current) {
+                        if (dashChartInstRef1.current) dashChartInstRef1.current.destroy();
+                        const ctx1 = dashChartRef1.current.getContext('2d');
+                        dashChartInstRef1.current = new Chart(ctx1, {
+                            type: 'bar',
+                            data: {
+                                labels: p1.map(p => p.name),
+                                datasets: [
+                                    { label: `투자 규모 (용지+조성, ${amountUnit})`, data: p1.map(p => (p.land + p.dev) / scale), backgroundColor: '#004a9c', borderRadius: 4 },
+                                    { label: `회수 규모 (${amountUnit})`, data: p1.map(p => p.rec / scale), backgroundColor: '#16a34a', borderRadius: 4 },
+                                ]
+                            },
+                            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom' } } }
+                        });
+                    }
+
+                    const p2 = dashStats.categoryGrp;
+                    if (dashChartRef2.current) {
+                        if (dashChartInstRef2.current) dashChartInstRef2.current.destroy();
+                        const ctx2 = dashChartRef2.current.getContext('2d');
+                        dashChartInstRef2.current = new Chart(ctx2, {
+                            type: 'doughnut',
+                            data: {
+                                labels: p2.map(p => p.category),
+                                datasets: [
+                                    { label: `총 회수액 (${amountUnit})`, data: p2.map(p => p.rec / scale), backgroundColor: COLORS, borderWidth: 2, hoverOffset: 4 },
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                layout: { padding: { top: 10, bottom: 15, left: 10, right: 10 } }, // 하단 잘림 방지 
+                                plugins: { legend: { position: 'right', labels: { boxWidth: 12 } } }
+                            }
+                        });
+                    }
+                }
+            }, [appMode, dashStats, amountUnit]);
+
+
+            /* --------- 사업관리(Management) 제어 API --------- */
+            // ✅ DB 레벨에 ON UPDATE CASCADE가 걸려있으므로 project_master만 update하면
+            //    하위 4개 테이블의 project_name도 자동으로 따라 바뀜
+            const updateMasterRow = async (origName, newName, newCat) => {
+                if (!newName.trim()) return setStatus({ type: 'error', message: '사업명을 공백으로 둘 수 없습니다.' });
+
+                // 이름 변경 확인
+                if (origName !== newName.trim()) {
+                    if (!window.confirm(`사업명을 변경합니다.\n\n[기존] ${origName}\n[변경] ${newName.trim()}\n\nDB 외래키 CASCADE 설정에 의해 하위 4개 테이블의 모든 관련 데이터도 함께 이름이 자동 갱신됩니다. 계속하시겠습니까?`)) return;
+                }
+
+                setStatus({ type: 'loading', message: `'${origName}' 변경사항을 전체 시스템에 CASCADE 갱신 중...` });
+                try {
+                    const { error } = await sbClient.from('project_master')
+                        .update({ project_name: newName.trim(), category: newCat })
+                        .eq('project_name', origName);
+
+                    if (error) throw error;
+                    setStatus({ type: 'success', message: `'${newName}' (으)로 명칭/분야 변경 및 하위 테이블 CASCADE 갱신 완료!` });
+                    setTimeout(() => { loadDashboard() }, 500);
+                } catch (err) {
+                    setStatus({ type: 'error', message: `수정 실패: ${err.message}` });
+                }
+            }
+
+            // ✅ DB 레벨에 ON DELETE CASCADE가 걸려있으므로 project_master만 delete하면
+            //    하위 4개 테이블의 관련 데이터도 자동으로 삭제됨
+            const deleteMasterRow = async (origName) => {
+                if (!window.confirm(`[경고] '${origName}' 사업을 마스터에서 삭제하시겠습니까?\n\nDB 외래키 CASCADE 설정에 의해 하위 4개 테이블(용지비/조성비/공급/회수)의 관련 실적 데이터가 모두 함께 영구 삭제됩니다.\n\n이 작업은 되돌릴 수 없습니다.`)) return;
+
+                setStatus({ type: 'loading', message: `'${origName}' 마스터 및 모든 관련 로우 CASCADE 삭제 중...` });
+                try {
+                    const { error } = await sbClient.from('project_master').delete().eq('project_name', origName);
+                    if (error) throw error;
+                    setStatus({ type: 'success', message: `'${origName}' 및 연관된 모든 데이터의 CASCADE 삭제가 완료되었습니다.` });
+                    setTimeout(() => { loadDashboard() }, 500);
+                } catch (err) {
+                    setStatus({ type: 'error', message: `삭제 실패: ${err.message}` });
+                }
+            }
+            /* --------------------------------------------------- */
+
+
+            const handleDragOver = (e) => { e.preventDefault(); setIsDragging(true); }
+            const handleDragLeave = () => { setIsDragging(false); }
+            const handleDrop = (e) => {
+                e.preventDefault(); setIsDragging(false);
+                if (e.dataTransfer.files[0]) setSelectedFile(e.dataTransfer.files[0]);
+            }
+
+            const processExcelAndUpload = async () => {
+                if (!uploadProjName) return setStatus({ type: 'error', message: '업로드할 새 대상 사업명을 직접 입력해주세요.' });
+                if (!selectedFile) return setStatus({ type: 'error', message: '엑셀 파일을 선택해주세요.' });
+
+                setStatus({ type: 'loading', message: '스마트 파싱 및 다중 DB 업데이트 시작...' });
+                setLogs([]);
+
+                const extractYear = (val) => {
+                    if (val == null || val === '') return null;
+                    if (typeof val === 'number') {
+                        if (val > 1900 && val < 2100) return Math.floor(val);
+                        if (val > 30000 && val < 90000) return new Date((val - 25569) * 86400 * 1000).getFullYear();
+                    }
+                    const m = String(val).match(/(19\d{2}|20\d{2})/);
+                    return m ? Number(m[1]) : null;
+                };
+
+                const parseAmt = (val) => {
+                    if (val == null || val === '' || val === '-') return 0;
+                    if (typeof val === 'number') return val;
+                    const n = Number(String(val).replace(/,/g, ''));
+                    return isNaN(n) ? 0 : n;
+                };
+
+                try {
+                    const reader = new FileReader();
+                    reader.onload = async (e) => {
+                        try {
+                            const data = new Uint8Array(e.target.result);
+                            const workbook = XLSX.read(data, { type: 'array' });
+                            let totalInserted = 0;
+
+                            const addLog = (msg) => setLogs(prev => [...prev, msg]);
+
+                            addLog(`▶ [마스터생성] '${uploadProjName}' 마스터 등록 (있는 경우 패스)...`);
+
+                            const { data: existMast } = await sbClient.from('project_master').select('*').eq('project_name', uploadProjName);
+                            if (!existMast || existMast.length === 0) {
+                                const { error: mastErr } = await sbClient.from('project_master').insert({ project_name: uploadProjName, category: null });
+                                if (mastErr && mastErr.code !== '42P01') throw mastErr;
+                            }
+
+                            addLog(`▶ [초기화] 기존 데이터 백지화 중...`);
+                            for (const tbl of TABLES) {
+                                const { error: delErr } = await sbClient.from(tbl.id).delete().eq('project_name', uploadProjName);
+                                if (delErr && delErr.code !== '42P01') throw delErr;
+                            }
+
+                            for (const sheetName of workbook.SheetNames) {
+                                addLog(`[${sheetName}] 분류 분석 중...`);
+                                const worksheet = workbook.Sheets[sheetName];
+                                const rawData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+                                if (rawData.length < 3) continue;
+
+                                const headers = rawData[1];
+                                const yearColumns = [];
+                                for (let j = 0; j < headers.length; j++) {
+                                    const y = extractYear(headers[j]);
+                                    if (y) yearColumns.push({ index: j, year: y });
+                                }
+                                if (yearColumns.length === 0) continue;
+
+                                const inserts = { land_costs: [], development_costs: [], supplies: [], recoveries: [] };
+                                const isTradeSheet = sheetName.includes('공급') || sheetName.includes('회수');
+
+                                const useTypeIdx = headers.indexOf('용도');
+                                const plotIdx = headers.indexOf('필지');
+                                const supYearIdx = headers.indexOf('공급연도');
+                                const supAmtIdx = headers.indexOf('공급금액');
+
+                                for (let i = 2; i < rawData.length; i++) {
+                                    const row = rawData[i];
+                                    if (!row || row.length === 0) continue;
+
+                                    if (isTradeSheet) {
+                                        const useType = useTypeIdx !== -1 ? String(row[useTypeIdx] || '').trim() : '';
+                                        const plot = plotIdx !== -1 ? String(row[plotIdx] || '').trim() : '';
+                                        let detailItem = useType + (plot ? ' - ' + plot : '');
+                                        if (!detailItem) detailItem = String(row[0] || '').trim();
+                                        if (!detailItem) continue;
+
+                                        if (supYearIdx !== -1 && supAmtIdx !== -1) {
+                                            const supplyYear = extractYear(row[supYearIdx]);
+                                            const supplyAmt = parseAmt(row[supAmtIdx]);
+                                            if (supplyYear && supplyYear > 0 && supplyAmt !== 0) {
+                                                inserts.supplies.push({ project_name: uploadProjName, detail_item: detailItem, target_year: supplyYear, amount: supplyAmt });
+                                            }
+                                        }
+                                        for (const col of yearColumns) {
+                                            let amount = parseAmt(row[col.index]);
+                                            if (amount === 0) continue;
+                                            inserts.recoveries.push({ project_name: uploadProjName, detail_item: detailItem, target_year: col.year, amount: amount });
+                                        }
+                                    } else {
+                                        const detailItem = String(row[0] || '').trim();
+                                        if (!detailItem || detailItem === 'undefined') continue;
+
+                                        for (const col of yearColumns) {
+                                            let amount = parseAmt(row[col.index]);
+                                            if (amount === 0) continue;
+                                            const costData = { project_name: uploadProjName, detail_item: detailItem, target_year: col.year, amount: amount };
+                                            if (sheetName.includes('용지')) inserts.land_costs.push(costData);
+                                            else if (sheetName.includes('조성')) inserts.development_costs.push(costData);
+                                        }
+                                    }
+                                }
+
+                                for (const [tableName, tableData] of Object.entries(inserts)) {
+                                    if (tableData.length > 0) {
+                                        addLog(`  -> ${tableName} Insert : ${tableData.length} records...`);
+                                        for (let chunk = 0; chunk < tableData.length; chunk += 1000) {
+                                            const sliceData = tableData.slice(chunk, chunk + 1000);
+                                            const { error } = await sbClient.from(tableName).insert(sliceData);
+                                            if (error) throw new Error(`[${tableName}] 에러: ${error.message}`);
+                                        }
+                                        totalInserted += tableData.length;
+                                    }
+                                }
+                            }
+                            if (totalInserted === 0) throw new Error('변환할 유효 데이터가 없습니다.');
+
+                            setStatus({ type: 'success', message: `수신 성공: 총 ${totalInserted}건이 정상 등록되었습니다.` });
+                            setSelectedFile(null);
+
+                            setTimeout(() => { loadDashboard(); }, 1000);
+
+                        } catch (err) { setStatus({ type: 'error', message: `Exception: ${err.message}` }); }
+                    };
+                    reader.readAsArrayBuffer(selectedFile);
+                } catch (err) { setStatus({ type: 'error', message: `File Error: ${err.message}` }); }
+            };
+
+            const executeDataView = async () => {
+                if (!projectName) return setStatus({ type: 'error', message: '리스트에서 사업명을 선택하세요.' });
+                setStatus({ type: 'loading', message: 'DB 연산조회 중...' });
+                setViewData([]);
+
+                try {
+                    const data = await fetchAllRows(viewTable, projectName);
+                    if (!data || data.length === 0) return setStatus({ type: 'error', message: '해당 조건으로 등록된 실적이 없습니다.' });
+
+                    const yearSet = new Set();
+                    const itemMap = new Map();
+
+                    data.forEach(d => {
+                        yearSet.add(d.target_year);
+                        if (!itemMap.has(d.detail_item)) itemMap.set(d.detail_item, {});
+                        itemMap.get(d.detail_item)[d.target_year] = (itemMap.get(d.detail_item)[d.target_year] || 0) + d.amount;
+                    });
+
+                    const sortedYears = Array.from(yearSet).sort((a, b) => a - b);
+                    const pivotArray = [];
+
+                    for (const [itemName, amounts] of itemMap.entries()) {
+                        let total = 0;
+                        const yData = {};
+                        sortedYears.forEach(y => {
+                            const amt = amounts[y] || 0;
+                            yData[y] = amt;
+                            total += amt;
+                        });
+                        pivotArray.push({ detailItem: itemName, yearData: yData, total });
+                    }
+                    setViewYears(sortedYears);
+                    setViewData(pivotArray);
+                    setStatus(null);
+                } catch (err) { setStatus({ type: 'error', message: `DB 오류: ${err.message}` }); }
+            };
+
+            const executeReport = async () => {
+                if (!projectName) return setStatus({ type: 'error', message: '리스트에서 사업명을 선택하세요.' });
+                setStatus({ type: 'loading', message: '재무 연산 중...' });
+                setReportData([]);
+                setReportStats(null);
+
+                try {
+                    const [dataLand, dataDev, dataSup, dataRec] = await Promise.all([
+                        fetchAllRows('land_costs', projectName),
+                        fetchAllRows('development_costs', projectName),
+                        fetchAllRows('supplies', projectName),
+                        fetchAllRows('recoveries', projectName)
+                    ]);
+
+                    const allYears = new Set();
+                    const grouped = {};
+
+                    const addAmount = (year, type, amt) => {
+                        if (!grouped[year]) grouped[year] = { investment: 0, supply: 0, recovery: 0 };
+                        grouped[year][type] += amt;
+                        allYears.add(year);
+                    };
+
+                    (dataLand || []).forEach(d => addAmount(d.target_year, 'investment', d.amount));
+                    (dataDev || []).forEach(d => addAmount(d.target_year, 'investment', d.amount));
+                    (dataSup || []).forEach(d => addAmount(d.target_year, 'supply', d.amount));
+                    (dataRec || []).forEach(d => addAmount(d.target_year, 'recovery', d.amount));
+
+                    const sortedYears = Array.from(allYears).sort((a, b) => a - b);
+                    const rData = [];
+                    let cumulative = 0;
+
+                    let totalInv = 0, totalSup = 0, totalRec = 0;
+
+                    for (const y of sortedYears) {
+                        const row = grouped[y];
+                        const net = row.recovery - row.investment;
+                        cumulative += net;
+                        rData.push({ year: y, investment: row.investment, recovery: row.recovery, supply: row.supply, netFlow: net, cumulative: cumulative });
+                        totalInv += row.investment;
+                        totalSup += row.supply;
+                        totalRec += row.recovery;
+                    }
+
+                    let npv = 0;
+                    let irr = 0;
+                    if (rData.length > 0) {
+                        const firstYear = rData[0].year;
+                        const rate = 0.045;
+                        rData.forEach((r) => {
+                            const t = r.year - firstYear;
+                            npv += r.netFlow / Math.pow(1 + rate, t);
+                        });
+
+                        const lastYear = rData[rData.length - 1].year;
+                        const cfArray = [];
+                        for (let y = firstYear; y <= lastYear; y++) {
+                            const found = rData.find(d => d.year === y);
+                            cfArray.push(found ? found.netFlow : 0);
+                        }
+
+                        const calculateIRR = (cashFlows, guess = 0.1) => {
+                            const maxIter = 1000;
+                            const epsilon = 1e-6;
+                            let rate = guess;
+                            for (let i = 0; i < maxIter; i++) {
+                                let npv = 0;
+                                let deriv = 0;
+                                for (let t = 0; t < cashFlows.length; t++) {
+                                    npv += cashFlows[t] / Math.pow(1 + rate, t);
+                                    deriv -= t * cashFlows[t] / Math.pow(1 + rate, t + 1);
+                                }
+                                if (Math.abs(npv) < epsilon) break;
+                                if (Math.abs(deriv) < epsilon) break;
+                                const newRate = rate - npv / deriv;
+                                if (Math.abs(newRate - rate) < epsilon) return newRate;
+                                rate = newRate;
+                            }
+                            return 0; // fallback
+                        };
+
+                        const irrRaw = calculateIRR(cfArray);
+                        if (irrRaw != null) irr = irrRaw;
+                    }
+
+                    setStatus(rData.length > 0 ? null : { type: 'error', message: '분석 가능한 투자/회수 실적이 없습니다.' });
+                    setReportData(rData);
+                    setReportStats({ totalInv, totalSup, totalRec, npv, irr });
+                } catch (err) { setStatus({ type: 'error', message: `분석 실패: ${err.message}` }); }
+            };
+
+            const triggerQuery = () => {
+                if (appMode === 'view') executeDataView();
+                else if (appMode === 'report') executeReport();
+            };
+
+            const sanitizeExcelText = (value, fallback = '미지정') => {
+                const clean = String(value || fallback)
+                    .replace(/[\\/:*?"<>|[\]]/g, '_')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+                return clean || fallback;
+            };
+
+            const sanitizeSheetName = (value) => sanitizeExcelText(value).slice(0, 31);
+
+            const getExportMenuName = () => ({
+                dashboard: '전체사업대시보드',
+                management: '마스터프로젝트제어',
+                view: '데이터조회',
+                report: '현금흐름리포트'
+            }[appMode] || '내보내기');
+
+            const getExportFileName = () => {
+                const targetName = (appMode === 'view' || appMode === 'report') ? projectName : '전체사업';
+                return `${sanitizeExcelText(targetName)}_${sanitizeExcelText(getExportMenuName())}.xlsx`;
+            };
+
+            const styleWorksheet = (ws, rows) => {
+                if (!rows || rows.length === 0) return ws;
+
+                const range = XLSX.utils.decode_range(ws['!ref']);
+                const headerFill = { fgColor: { rgb: '1F2937' } };
+                const totalFill = { fgColor: { rgb: 'EEF2FF' } };
+                const border = {
+                    top: { style: 'thin', color: { rgb: 'D9E2EC' } },
+                    bottom: { style: 'thin', color: { rgb: 'D9E2EC' } },
+                    left: { style: 'thin', color: { rgb: 'D9E2EC' } },
+                    right: { style: 'thin', color: { rgb: 'D9E2EC' } }
+                };
+                const widths = [];
+
+                for (let c = range.s.c; c <= range.e.c; c++) {
+                    const headerAddress = XLSX.utils.encode_cell({ r: 0, c });
+                    const headerCell = ws[headerAddress];
+                    const headerText = headerCell?.v ? String(headerCell.v) : '';
+                    let maxWidth = headerText.length;
+
+                    if (headerCell) {
+                        headerCell.s = {
+                            font: { bold: true, color: { rgb: 'FFFFFF' } },
+                            fill: headerFill,
+                            alignment: { horizontal: 'center', vertical: 'center' },
+                            border
+                        };
+                    }
+
+                    for (let r = range.s.r + 1; r <= range.e.r; r++) {
+                        const address = XLSX.utils.encode_cell({ r, c });
+                        const cell = ws[address];
+                        if (!cell) continue;
+
+                        const isNumber = typeof cell.v === 'number';
+                        const isTotalColumn = /총계|총투입|총회수|수지|누적|NCF/.test(headerText);
+                        maxWidth = Math.max(maxWidth, String(cell.v ?? '').length);
+                        cell.s = {
+                            font: { color: { rgb: isNumber && cell.v < 0 ? 'DC2626' : '111827' } },
+                            fill: isTotalColumn ? totalFill : { fgColor: { rgb: 'FFFFFF' } },
+                            alignment: {
+                                horizontal: isNumber ? 'right' : 'left',
+                                vertical: 'center',
+                                wrapText: true
+                            },
+                            border,
+                            numFmt: isNumber ? '#,##0;[Red]-#,##0;0' : undefined
+                        };
+                    }
+
+                    widths.push({ wch: Math.min(Math.max(maxWidth + 2, c === 0 ? 18 : 12), 28) });
+                }
+
+                ws['!cols'] = widths;
+                ws['!rows'] = [{ hpt: 24 }];
+                ws['!autofilter'] = { ref: ws['!ref'] };
+                return ws;
+            };
+
+            const appendStyledSheet = (wb, rows, sheetName) => {
+                const ws = XLSX.utils.json_to_sheet(rows);
+                styleWorksheet(ws, rows);
+                XLSX.utils.book_append_sheet(wb, ws, sanitizeSheetName(sheetName));
+            };
+
+            const exportToExcel = () => {
+                if (appMode === 'upload') {
+                    setStatus({ type: 'error', message: '내보낼 데이터가 있는 탭으로 이동하세요.' });
+                    return;
+                }
+
+                let wb = XLSX.utils.book_new();
+                const scale = getScale();
+                const unitStr = amountUnit;
+
+                if (appMode === 'dashboard') {
+                    if (!dashStats) return;
+                    let pRows = dashStats.projects.map(p => ({
+                        '사업명': p.name,
+                        '카테고리': p.category,
+                        [`용지비(${unitStr})`]: p.land / scale,
+                        [`조성비(${unitStr})`]: p.dev / scale,
+                        [`총투입(${unitStr})`]: (p.land + p.dev) / scale,
+                        [`총회수(${unitStr})`]: p.rec / scale,
+                        [`수지차액(${unitStr})`]: (p.rec - p.land - p.dev) / scale
+                    }));
+                    appendStyledSheet(wb, pRows, "대시보드_사업별");
+
+                    let cRows = dashStats.categoryGrp.map(c => ({
+                        '사업분야': c.category,
+                        [`총투입(${unitStr})`]: (c.land + c.dev) / scale,
+                        [`총회수(${unitStr})`]: c.rec / scale
+                    }));
+                    appendStyledSheet(wb, cRows, "대시보드_소계");
+                }
+                else if (appMode === 'management') {
+                    if (!manageList.length) return;
+                    let mRows = manageList.map(m => ({
+                        'DB식별명': m.origName,
+                        '현재사업명': m.name,
+                        '사업분야': m.category
+                    }));
+                    appendStyledSheet(wb, mRows, "마스터현황");
+                }
+                else if (appMode === 'view') {
+                    if (!viewData || viewData.length === 0) return;
+                    let vRows = viewData.map(row => {
+                        let r = { '세부 항목명': row.detailItem };
+                        viewYears.forEach(y => r[`${y}년(${unitStr})`] = (row.yearData[y] || 0) / scale);
+                        r[`총계(${unitStr})`] = row.total / scale;
+                        return r;
+                    });
+                    appendStyledSheet(wb, vRows, `${projectName}_${TABLES.find(t => t.id === viewTable)?.label}`);
+                }
+                else if (appMode === 'report') {
+                    if (!reportData || reportData.length === 0) return;
+                    let rRows = reportData.map(r => ({
+                        '귀속연도': `${r.year}년`,
+                        [`투입액(${unitStr})`]: r.investment / scale,
+                        [`회수액(${unitStr})`]: r.recovery / scale,
+                        [`순흐름_NCF(${unitStr})`]: r.netFlow / scale,
+                        [`누적자금수지(${unitStr})`]: r.cumulative / scale
+                    }));
+                    appendStyledSheet(wb, rRows, `${projectName}_현금흐름`);
+                }
+
+                if (!wb.SheetNames.length) {
+                    setStatus({ type: 'error', message: '현재 상태에서 내보낼 데이터가 없습니다.' });
+                    return;
+                }
+                XLSX.writeFile(wb, getExportFileName());
+                setStatus({ type: 'success', message: `엑셀 다운로드가 완료되었습니다. 출력된 수치는 사용자 맞춤형 출력 단위인 [${unitStr}] 기준입니다.` });
+            };
+
+            useEffect(() => {
+                if (appMode === 'report' && reportData.length > 0 && chartCanvasRef.current) {
+                    if (chartInstanceRef.current) chartInstanceRef.current.destroy();
+
+                    const ctx = chartCanvasRef.current.getContext('2d');
+
+                    const labels = reportData.map(d => d.year + '년');
+                    const dataInv = reportData.map(d => d.investment);
+                    const dataRec = reportData.map(d => d.recovery);
+                    const dataSup = reportData.map(d => d.supply);
+
+                    const scale = getScale();
+
+                    chartInstanceRef.current = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels,
+                            datasets: [
+                                {
+                                    label: '투자 규모 (Outflow)',
+                                    data: dataInv.map(v => Math.abs(v) / scale),
+                                    backgroundColor: 'rgba(0, 74, 156, 0.12)',
+                                    borderColor: '#004a9c',
+                                    borderWidth: 2,
+                                    fill: true,
+                                    tension: 0.35,
+                                    pointRadius: 2,
+                                    pointHoverRadius: 5,
+                                    pointBackgroundColor: '#004a9c'
+                                },
+                                {
+                                    label: '회수 규모 (Inflow)',
+                                    data: dataRec.map(v => v / scale),
+                                    backgroundColor: 'rgba(22, 163, 74, 0.18)',
+                                    borderColor: '#16a34a',
+                                    borderWidth: 2,
+                                    fill: true,
+                                    tension: 0.35,
+                                    pointRadius: 2,
+                                    pointHoverRadius: 5,
+                                    pointBackgroundColor: '#16a34a'
+                                },
+                                {
+                                    label: '공급 규모 (Supply)',
+                                    data: dataSup.map(v => v / scale),
+                                    backgroundColor: 'transparent',
+                                    borderColor: '#ea580c',
+                                    borderWidth: 2,
+                                    borderDash: [5, 5],
+                                    fill: false,
+                                    tension: 0.35,
+                                    pointRadius: 2,
+                                    pointHoverRadius: 5,
+                                    pointBackgroundColor: '#ea580c'
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true, maintainAspectRatio: false,
+                            interaction: { mode: 'index', intersect: false },
+                            plugins: {
+                                legend: { position: 'top', labels: { font: { size: 11, weight: 'bold' }, usePointStyle: true, boxWidth: 8 } },
+                                tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${Math.round(ctx.raw).toLocaleString()}${amountUnit}` } }
+                            },
+                            scales: {
+                                x: { grid: { color: '#eaecf0' } },
+                                y: { grid: { color: '#eaecf0' }, ticks: { callback: v => v + amountUnit }, beginAtZero: true }
+                            }
+                        }
+                    });
+                }
+            }, [appMode, reportData, amountUnit]);
+
+            // 현재 로그인한 사용자의 이메일 (세션에서 추출)
+            const userEmail = session?.user?.email || '운영자';
+            const userInitial = userEmail.charAt(0).toUpperCase();
+
+            const NAV = [
+                { group: '요약 & 관리', items: [
+                    { id: 'dashboard', label: '전체 사업 대시보드', icon: 'M3 12l2-2 4 4 8-8 2 2-10 10-6-6z' },
+                    { id: 'management', label: '마스터 프로젝트 제어', icon: 'M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 22 12 18.27 5.82 22 7 14.14 2 9.27l6.91-1.01L12 2z' },
+                    { id: 'upload', label: '데이터 파싱 / 이관', icon: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M17 8l-5-5-5 5 M12 3v12' },
+                ]},
+                { group: '단일 프로젝트 분석', items: [
+                    { id: 'view', label: '데이터 조회', icon: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14z M21 21l-4.3-4.3' },
+                    { id: 'report', label: '현금흐름 리포트', icon: 'M3 3v18h18 M7 14l4-4 4 4 5-5' },
+                ]}
+            ];
+
+            const PAGE_LABEL = {
+                dashboard: { eyebrow: 'Overview', title: '전체 사업 대시보드' },
+                management: { eyebrow: 'Master Data', title: '마스터 프로젝트 제어' },
+                upload: { eyebrow: 'Pipeline', title: '데이터 파싱 / 이관' },
+                view: { eyebrow: 'Project Data', title: '데이터 조회' },
+                report: { eyebrow: 'Project Analysis', title: '현금흐름 리포트' },
+            }[appMode];
+
+            return (
+                <div className="shell">
+                    {/* 사이드바 */}
+                    <aside className="sidebar">
+                        <div className="sb-brand">
+                            <div className="sb-mark"><img src="gh-header-logo.png" alt="GH 경기주택도시공사 CI" /></div>
+                            <div>
+                                <div className="sb-brand-name">재무 의사결정지원 시스템</div>
+                                <div className="sb-brand-sub">Financial Decision Support</div>
+                            </div>
+                        </div>
+                        <nav className="sb-nav">
+                            {NAV.map((g, gi) => (
+                                <div key={gi}>
+                                    <div className="sb-grp">{g.group}</div>
+                                    {g.items.map(it => (
+                                        <div key={it.id} className={`sb-item ${appMode === it.id ? 'active' : ''}`} onClick={() => { setAppMode(it.id); setStatus(null); }}>
+                                            <svg className="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d={it.icon}></path></svg>
+                                            <span>{it.label}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            ))}
+                        </nav>
+                        <div className="sb-foot">
+                            <div className="sb-avatar">{userInitial}</div>
+                            <div className="sb-user-meta">
+                                <div className="sb-user-name">{userEmail}</div>
+                                <div className="sb-user-status">DB 정상</div>
+                            </div>
+                            <button className="logout-btn" onClick={onLogout} title="로그아웃">로그아웃</button>
+                        </div>
+                    </aside>
+
+                    {/* 메인 영역 */}
+                    <div className="main">
+                        {/* 톱바 */}
+                        <div className="topbar">
+                            <div className="tb-title">
+                                <div className="tb-eyebrow">{PAGE_LABEL.eyebrow}</div>
+                                <div className="tb-pagename">{PAGE_LABEL.title}</div>
+                            </div>
+                            <div className="tb-meta">
+                                <div className="tb-stat"><span className="tb-stat-dot"></span><b>{projectList.length}</b>개 사업 연동</div>
+                                <div className="tb-stat" style={{fontVariantNumeric:'tabular-nums'}}><b>{nowTime}</b></div>
+                            </div>
+                        </div>
+
+                        {/* 툴바 */}
+                        <div className="toolbar">
+
+                            {appMode === 'upload' ? (
+                                <div className="tb-sec">
+                                    <span className="tb-lbl">새 업로드 사업명</span>
+                                    <input type="text" className="popt-inp" value={uploadProjName} onChange={e => setUploadProjName(e.target.value)} placeholder="예: 평택고덕국제신도시" />
+                                </div>
+                            ) : (appMode === 'view' || appMode === 'report') ? (
+                                <div className="tb-sec">
+                                    <span className="tb-lbl">대상 사업</span>
+                                    <select className="popt-inp" value={projectName} onChange={e => setProjectName(e.target.value)}>
+                                        {projectList.map(p => <option key={p} value={p}>{p}</option>)}
+                                        {projectList.length === 0 && <option value="">(등록된 사업 없음)</option>}
+                                    </select>
+                                </div>
+                            ) : (appMode === 'dashboard') ? (
+                                <div className="tb-sec"><span className="tb-lbl">총 <b>{projectList.length}</b>개 사업이 실시간 연동되어 있습니다</span></div>
+                            ) : (
+                                <div className="tb-sec"><span className="tb-lbl" style={{ color: 'var(--orange)' }}>관리자 모드 · CASCADE 활성</span></div>
+                            )}
+
+
+                            {(appMode === 'view' || appMode === 'report') && (
+                                <div className="tb-sec">
+                                    <button className="tbtn acc" onClick={triggerQuery} disabled={status?.type === 'loading' || !projectName}>조회 실행</button>
+                                    <button className="tbtn" onClick={() => { setViewData([]); setReportData([]); setReportStats(null); setStatus(null); }}>초기화</button>
+                                </div>
+                            )}
+
+                            {appMode === 'upload' && (
+                                <div className="tb-sec">
+                                    <button className="tbtn acc" onClick={processExcelAndUpload} disabled={status?.type === 'loading' || !uploadProjName}>다중 DB 처리 전송</button>
+                                </div>
+                            )}
+
+                            <div style={{ flex: 1 }}></div>
+                            <div className="tb-sec">
+                                <button className="tbtn" onClick={exportToExcel}>엑셀 내보내기</button>
+                            </div>
+                        </div>
+                            {appMode === 'view' && (
+                                <div className="tabbar">
+                                    {TABLES.map(t => (
+                                        <div key={t.id} className={`tab ${viewTable === t.id ? 'active' : ''}`} onClick={() => { setViewTable(t.id); setViewData([]); }}>
+                                            {t.label} 뷰
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            <div className="view-hd">
+                                <div className="vt">
+                                    {appMode === 'dashboard' ? 'GLOBAL DASHBOARD' : appMode === 'management' ? 'MASTER DATA MANAGEMENT' : appMode === 'upload' ? 'UPLOAD ENGINE' : appMode === 'view' ? 'PIVOT CONSTRUCTOR' : 'FINANCIAL REPORT'}
+                                </div>
+                                <div className="vmeta">
+                                    <span>출력 단위</span>
+                                    <select className="popt-inp" value={amountUnit} onChange={(e) => setAmountUnit(e.target.value)}>
+                                        <option value="천원">천원</option>
+                                        <option value="백만원">백만원</option>
+                                        <option value="억원">억원 (기본)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="vbody">
+
+                                {status && (
+                                    <div className={`alert-box alert-${status.type}`}>
+                                        <b>{status.type === 'error' ? '오류' : status.type === 'success' ? '완료' : '진행'}</b>
+                                        <span>{status.message}</span>
+                                    </div>
+                                )}
+
+                                {appMode === 'dashboard' && dashStats && (
+                                    <>
+                                        <div className="stat-row">
+                                            <div className="scard b">
+                                                <div className="sl">모든 사업 총 용지비 합계</div>
+                                                <div className="sv" style={{ color: 'var(--acc)' }}>{formatAmount(dashStats.totalLand)}</div>
+                                            </div>
+                                            <div className="scard t">
+                                                <div className="sl">모든 사업 총 조성비 합계</div>
+                                                <div className="sv" style={{ color: '#00838f' }}>{formatAmount(dashStats.totalDev)}</div>
+                                            </div>
+                                            <div className="scard g">
+                                                <div className="sl">전체 누적 공급계약수주</div>
+                                                <div className="sv">{formatAmount(dashStats.totalSup)}</div>
+                                            </div>
+                                            <div className="scard o">
+                                                <div className="sl">전체 누적 회수 달성액</div>
+                                                <div className="sv" style={{ color: 'var(--green)' }}>{formatAmount(dashStats.totalRec)}</div>
+                                            </div>
+                                        </div>
+
+                                        <div className="two-col">
+                                            <div className="panel" style={{ height: '260px', display: 'flex', flexDirection: 'column' }}>
+                                                <div className="phd" style={{ flexShrink: 0 }}><div className="pt">프로젝트별 핵심 집행/회수 비교 차트</div></div>
+                                                <div className="chart-contain" style={{ padding: '8px' }}><canvas ref={dashChartRef1}></canvas></div>
+                                            </div>
+
+                                            <div className="panel" style={{ height: '260px', display: 'flex', flexDirection: 'column' }}>
+                                                <div className="phd" style={{ flexShrink: 0 }}><div className="pt">사업분야(카테고리)별 통합 도넛 차트</div></div>
+                                                <div className="chart-contain" style={{ padding: '8px' }}><canvas ref={dashChartRef2}></canvas></div>
+                                            </div>
+                                        </div>
+
+                                        <div className="two-col" style={{ gridTemplateColumns: '3fr 2fr' }}>
+                                            <div className="panel" style={{ height: '260px', display: 'flex', flexDirection: 'column' }}>
+                                                <div className="phd" style={{ flexShrink: 0 }}><div className="pt">프로젝트 마스터 요약</div></div>
+                                                <div className="pb0" style={{ flex: 1, overflow: 'auto' }}>
+                                                    <div className="grid-wrap">
+                                                        <table className="dgrid">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>프로젝트 사업명</th>
+                                                                    <th>사업분야</th>
+                                                                    <th>용지비</th>
+                                                                    <th>조성비</th>
+                                                                    <th>수지차 (회수 - 투입)</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {dashStats.projects.map((p, i) => {
+                                                                    const net = p.rec - p.land - p.dev;
+                                                                    return (
+                                                                        <tr key={i}>
+                                                                            <td style={{ fontWeight: 600 }}>{p.name}</td>
+                                                                            <td className="center"><span className={`chip ${p.category}`}>{p.category}</span></td>
+                                                                            <td className="neg">{formatAmount(p.land)}</td>
+                                                                            <td className="neg">{formatAmount(p.dev)}</td>
+                                                                            <td className={net >= 0 ? 'pos' : 'neg'} style={{ background: net >= 0 ? 'var(--green-lt)' : 'var(--red-lt)' }}>{formatAmount(net)}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="panel" style={{ height: '260px', display: 'flex', flexDirection: 'column' }}>
+                                                <div className="phd" style={{ flexShrink: 0 }}><div className="pt">사업분야별 소계 집계</div></div>
+                                                <div className="pb0" style={{ flex: 1, overflow: 'auto' }}>
+                                                    <div className="grid-wrap">
+                                                        <table className="dgrid">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>분류(사업분야)</th>
+                                                                    <th>투입액(용지+조성)</th>
+                                                                    <th>총 회수액</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                {dashStats.categoryGrp.map((p, i) => {
+                                                                    return (
+                                                                        <tr key={i}>
+                                                                            <td style={{ fontWeight: 600 }} className="center">{p.category}</td>
+                                                                            <td className="neg">{formatAmount(p.land + p.dev)}</td>
+                                                                            <td className="pos">{formatAmount(p.rec)}</td>
+                                                                        </tr>
+                                                                    )
+                                                                })}
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {appMode === 'management' && (
+                                    <div className="panel" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                                        <div className="phd"><div className="pt">마스터 프로젝트 제어 센터 (DB 실시간 연동 · CASCADE 활성)</div></div>
+                                        <div className="pb0" style={{ flex: 1, overflow: 'auto' }}>
+                                            <div className="grid-wrap" style={{ borderTop: 'none' }}>
+                                                <table className="dgrid" style={{ minWidth: '800px' }}>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>DB 식별키 (현 사업명)</th>
+                                                            <th>사업명 변경</th>
+                                                            <th>사업분야 (카테고리) 설정</th>
+                                                            <th>제어 패널</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {manageList.length === 0 ? (
+                                                            <tr><td colSpan="4" className="center">등록된 마스터 데이터가 없습니다.</td></tr>
+                                                        ) : manageList.map((m, i) => (
+                                                            <tr key={m.origName}>
+                                                                <td style={{ fontWeight: 600, color: 'var(--text3)' }}>{m.origName}</td>
+                                                                <td className="center">
+                                                                    <input type="text" className="popt-inp" style={{ width: '220px' }} value={m.name} onChange={e => {
+                                                                        const nw = [...manageList];
+                                                                        nw[i].name = e.target.value;
+                                                                        setManageList(nw);
+                                                                    }} />
+                                                                </td>
+                                                                <td className="center">
+                                                                    <select className="popt-inp" value={CAT_OPTIONS.includes(m.category) ? m.category : '기타'} onChange={e => {
+                                                                        const nw = [...manageList];
+                                                                        nw[i].category = e.target.value;
+                                                                        setManageList(nw);
+                                                                    }}>
+                                                                        {CAT_OPTIONS.map(opt => <option key={opt} value={opt}>{opt}</option>)}
+                                                                    </select>
+                                                                </td>
+                                                                <td className="center" style={{ display: 'flex', gap: '5px', justifyContent: 'center' }}>
+                                                                    <button className="tbtn acc" onClick={() => updateMasterRow(m.origName, m.name, m.category)}>업데이트</button>
+                                                                    <button className="tbtn danger" onClick={() => deleteMasterRow(m.origName)}>영구 삭제</button>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+
+
+                                {appMode === 'upload' && (
+                                    <>
+                                        <div className="panel">
+                                            <div className="phd"><div className="pt">다중 엑셀 시트 동시 파싱</div></div>
+                                            <div className="pb" style={{ padding: '20px 10px' }}>
+                                                <div className={`dropzone ${isDragging ? 'dragover' : ''}`} onDragOver={handleDragOver} onDragLeave={handleDragLeave} onDrop={handleDrop} onClick={() => fileInputRef.current.click()}>
+                                                    <div className="dz-icon">
+                                                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                                                    </div>
+                                                    <div className="dz-title">{selectedFile ? selectedFile.name : '엑셀 파일을 끌어다 놓거나 클릭해 선택'}</div>
+                                                    <div className="dz-sub">.xlsx · 다중 시트 자동 파싱 지원</div>
+                                                </div>
+                                                <input type="file" style={{ display: 'none' }} ref={fileInputRef} accept=".xlsx" onChange={(e) => { if (e.target.files[0]) setSelectedFile(e.target.files[0]) }} />
+
+                                                {logs.length > 0 && (
+                                                    <div className="log-console">
+                                                        {logs.map((L, i) => <div key={i}>{L}</div>)}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
+
+                                {appMode === 'view' && viewData.length > 0 && (
+                                    <div className="panel"><div className="phd"><div className="pt">DB 조회결과 (엑셀 원본 스타일 복구)</div></div>
+                                        <div className="pb0">
+                                            <div className="grid-wrap" style={{ maxHeight: '500px' }}>
+                                                <table className="dgrid">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>세부 항목명</th>
+                                                            {viewYears.map(y => <th key={y}>{y}</th>)}
+                                                            <th>총계</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {viewData.map((row, i) => (
+                                                            <tr key={i}>
+                                                                <td>{row.detailItem}</td>
+                                                                {viewYears.map(y => <td key={y} className={row.yearData[y] < 0 ? 'neg' : ''}>{formatAmount(row.yearData[y])}</td>)}
+                                                                <td className={`tot ${row.total < 0 ? 'neg' : ''}`}>{formatAmount(row.total)}</td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div></div>
+                                )}
+
+                                {appMode === 'report' && reportData.length > 0 && (
+                                    <>
+                                        {reportStats && (
+                                            <div className="stat-row" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+                                                <div className="scard b">
+                                                    <div className="sl">NPV (할인율 4.5%)</div>
+                                                    <div><span className="sv">{formatAmount(reportStats.npv)}</span><span className="su">{amountUnit}</span></div>
+                                                    <div className="ss">최초 투자연도 기준</div>
+                                                </div>
+                                                <div className="scard t">
+                                                    <div className="sl">IRR (내부수익률)</div>
+                                                    <div><span className="sv">{(reportStats.irr * 100).toFixed(2)}</span><span className="su">%</span></div>
+                                                    <div className="ss">현금흐름 근사 추정치</div>
+                                                </div>
+                                                <div className="scard g">
+                                                    <div className="sl">총 투자 (용지+조성)</div>
+                                                    <div><span className="sv">{formatAmount(reportStats.totalInv)}</span><span className="su">{amountUnit}</span></div>
+                                                    <div className="ss">집행 예상/실적 총계</div>
+                                                </div>
+                                                <div className="scard o">
+                                                    <div className="sl">총 공급</div>
+                                                    <div><span className="sv">{formatAmount(reportStats.totalSup)}</span><span className="su">{amountUnit}</span></div>
+                                                    <div className="ss">분양/공급 계획 총계</div>
+                                                </div>
+                                                <div className="scard" style={{ borderTopColor: '#6a1b9a' }}>
+                                                    <div className="sl">총 회수</div>
+                                                    <div><span className="sv">{formatAmount(reportStats.totalRec)}</span><span className="su">{amountUnit}</span></div>
+                                                    <div className="ss">실 회수 실적 총계</div>
+                                                </div>
+                                            </div>
+                                        )}
+                                        <div className="panel" style={{ height: '300px', display: 'flex', flexDirection: 'column' }}>
+                                            <div className="phd" style={{ flexShrink: 0 }}><div className="pt">투자/회수 추이 차트</div></div>
+                                            <div className="chart-contain" style={{ padding: '10px' }}><canvas ref={chartCanvasRef}></canvas></div>
+                                        </div>
+
+                                        <div className="panel"><div className="phd"><div className="pt">집행/회수 테이블 요약</div></div>
+                                            <div className="pb0">
+                                                <div className="grid-wrap" style={{ maxHeight: '350px' }}>
+                                                    <table className="dgrid">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>귀속 연도</th>
+                                                                <th>투입액 (용지/조성)</th>
+                                                                <th>회수액</th>
+                                                                <th>당해년 NCF (순흐름)</th>
+                                                                <th>누적 자금수지</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {reportData.map((r, i) => (
+                                                                <tr key={i}>
+                                                                    <td style={{ textAlign: 'center' }}>{r.year}년</td>
+                                                                    <td className="neg">{formatAmount(r.investment)}</td>
+                                                                    <td className="pos">{formatAmount(r.recovery)}</td>
+                                                                    <td className={r.netFlow >= 0 ? 'pos' : 'neg'} style={{ background: 'var(--panel-2)' }}>{formatAmount(r.netFlow)}</td>
+                                                                    <td className={r.cumulative >= 0 ? 'pos' : 'neg'} style={{ background: 'var(--acc-lt)', fontWeight: 700 }}>{formatAmount(r.cumulative)}</td>
+                                                                </tr>
+                                                            ))}
+                                                            <tr className="tot">
+                                                                <td style={{ textAlign: 'center' }}>총계 실적</td>
+                                                                <td className="neg">{formatAmount(reportData.reduce((s, x) => s + x.investment, 0))}</td>
+                                                                <td className="pos">{formatAmount(reportData.reduce((s, x) => s + x.recovery, 0))}</td>
+                                                                <td className={reportData.reduce((s, x) => s + x.netFlow, 0) >= 0 ? 'pos' : 'neg'}>{formatAmount(reportData.reduce((s, x) => s + x.netFlow, 0))}</td>
+                                                                <td>-</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div></div>
+                                    </>
+                                )}
+
+                            </div>
+
+                            <div className="stbar">
+                                <div className="sti">탭 <b style={{ color: 'var(--acc)' }}>{appMode.toUpperCase()}</b></div>
+                                <div className="stsep"></div>
+                                <div className="sti">대상 DB <b>project_master + 4 tables</b></div>
+                                <div className="stsep"></div>
+                                <div className="sti"><b style={{ color: 'var(--green)' }}>● Auth Active</b></div>
+                                <div style={{ flex: 1 }}></div>
+                                <div className="sti">GH Parser · v3.5</div>
+                            </div>
+                        </div>
+                    </div>
+            );
+        }
+
+
+        // =====================================================================
+        // ✅ 루트 컴포넌트: 세션 상태에 따라 로그인화면 vs 메인앱 스위칭
+        // =====================================================================
+        function App() {
+            const [session, setSession] = useState(null);
+            const [checking, setChecking] = useState(true);
+
+            // 앱 시작 시 기존 세션 확인 (새로고침 시 자동 로그인 복원)
+            useEffect(() => {
+                sbClient.auth.getSession().then(({ data: { session: existingSession } }) => {
+                    setSession(existingSession);
+                    setChecking(false);
+                });
+
+                // 세션 변화 감지 (로그아웃, 토큰 만료 등)
+                const { data: { subscription } } = sbClient.auth.onAuthStateChange((event, newSession) => {
+                    setSession(newSession);
+                });
+
+                return () => subscription.unsubscribe();
+            }, []);
+
+            const handleLogout = async () => {
+                if (!window.confirm('로그아웃 하시겠습니까?')) return;
+                await sbClient.auth.signOut();
+                setSession(null);
+            };
+
+            // 세션 확인 중 (깜빡임 방지)
+            if (checking) {
+                return (
+                    <div className="login-bg">
+                        <div style={{ color: '#cbd5e1', fontSize: '13px', fontFamily: 'var(--sans)', letterSpacing: '0.02em' }}>세션 확인 중...</div>
+                    </div>
+                );
+            }
+
+            // 로그인 안된 상태 → 로그인 화면
+            if (!session) {
+                return <LoginScreen onLoginSuccess={setSession} />;
+            }
+
+            // 로그인 된 상태 → 메인 앱
+            return <MainApp session={session} onLogout={handleLogout} />;
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
