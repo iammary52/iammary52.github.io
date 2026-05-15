@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Real-Time Watchlist</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-main: #111827;
+            --text-sub: #6b7280;
+            --up-color: #10b981;
+            --up-bg: rgba(16, 185, 129, 0.1);
+            --down-color: #ef4444;
+            --down-bg: rgba(239, 68, 68, 0.1);
+            --up-color-3mo: #3b82f6;
+            --down-color-3mo: #f97316;
+            --border-color: #e5e7eb;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #111827;
+                --card-bg: #1f2937;
+                --text-main: #f9fafb;
+                --text-sub: #9ca3af;
+                --border-color: #374151;
+                --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+
+
+        .dashboard {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .symbol-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .symbol {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .company-name {
+            font-size: 13px;
+            color: var(--text-sub);
+        }
+
+        .price-info {
+            text-align: right;
+        }
+
+        .current-price {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .ext-price {
+            font-size: 12px;
+            color: var(--text-sub);
+            margin-top: 4px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .up { color: var(--up-color); }
+        .down { color: var(--down-color); }
+        .up-3mo { color: var(--up-color-3mo); }
+        .down-3mo { color: var(--down-color-3mo); }
+        .bg-up { background-color: var(--up-bg); color: var(--up-color); }
+        .bg-down { background-color: var(--down-bg); color: var(--down-color); }
+
+        .charts-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        @media (max-width: 480px) {
+            .charts-container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .chart-box {
+                height: 120px;
+            }
+        }
+
+        .chart-box {
+            height: 100px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .chart-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-sub);
+        }
+
+        .chart-change {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .chart-wrapper {
+            flex: 1;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Skeleton Loading Styles */
+        .skeleton {
+            background: linear-gradient(90deg, var(--border-color) 25%, var(--card-bg) 50%, var(--border-color) 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+            border-radius: 4px;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .skeleton-text { height: 20px; margin-bottom: 8px; width: 60%; }
+        .skeleton-price { height: 28px; width: 80px; margin-left: auto; margin-bottom: 8px; }
+        .skeleton-badge { height: 24px; width: 60px; margin-left: auto; border-radius: 6px; }
+        .skeleton-chart { height: 60px; width: 100%; border-radius: 8px; margin-top: 8px; }
+
+    </style>
+</head>
+<body>
+
+
+
+    <div class="dashboard" id="dashboard">
+        <!-- Skeleton loaders will be generated here -->
+    </div>
+
+    <script>
+        const tickers = ["IREN", "RKLB", "ABCL", "NVDA", "GOOGL"];
+        const dashboard = document.getElementById('dashboard');
+
+        // Initialize skeleton loaders
+        function initSkeletons() {
+            dashboard.innerHTML = '';
+            tickers.forEach(ticker => {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.id = `card-${ticker}`;
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="symbol-info">
+                            <div class="skeleton skeleton-text" style="width: 80px;"></div>
+                        </div>
+                        <div class="price-info">
+                            <div class="skeleton skeleton-price"></div>
+                            <div class="skeleton skeleton-badge"></div>
+                        </div>
+                    </div>
+                    <div class="charts-container">
+                        <div class="chart-box">
+                            <div class="chart-header">
+                                <div class="skeleton skeleton-text" style="width: 60px; height: 14px; margin:0;"></div>
+                                <div class="skeleton skeleton-text" style="width: 50px; height: 14px; margin:0;"></div>
+                            </div>
+                            <div class="skeleton skeleton-chart"></div>
+                        </div>
+                        <div class="chart-box">
+                            <div class="chart-header">
+                                <div class="skeleton skeleton-text" style="width: 60px; height: 14px; margin:0;"></div>
+                                <div class="skeleton skeleton-text" style="width: 50px; height: 14px; margin:0;"></div>
+                            </div>
+                            <div class="skeleton skeleton-chart"></div>
+                        </div>
+                    </div>
+                `;
+                dashboard.appendChild(card);
+            });
+        }
+
+        async function fetchWithFallback(url) {
+            const proxy1 = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+            const proxy2 = `https://corsproxy.io/?${encodeURIComponent(url)}`;
+            
+            try {
+                const res = await fetch(proxy1);
+                const json = await res.json();
+                if (json.contents) {
+                    return JSON.parse(json.contents);
+                }
+            } catch (e) {
+                console.warn('Primary proxy failed, trying fallback...');
+            }
+            
+            try {
+                const res = await fetch(proxy2);
+                return await res.json();
+            } catch (e) {
+                throw new Error('All proxies failed');
+            }
+        }
+
+        async function fetchStockData(ticker) {
+            const url3mo = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=1d&range=3mo`;
+            const url1d = `https://query1.finance.yahoo.com/v8/finance/chart/${ticker}?interval=5m&range=1d`;
+            
+            try {
+                const [json3mo, json1d] = await Promise.all([
+                    fetchWithFallback(url3mo), 
+                    fetchWithFallback(url1d)
+                ]);
+                
+                const data3mo = json3mo.chart.result[0];
+                const data1d = json1d.chart.result[0];
+                
+                const meta3mo = data3mo.meta;
+                const meta1d = data1d.meta;
+                
+                const currentPrice = meta1d.regularMarketPrice;
+                
+                // 1 Day Change
+                const prevClose1d = meta1d.chartPreviousClose;
+                const change1d = currentPrice - prevClose1d;
+                const pct1d = (change1d / prevClose1d) * 100;
+                
+                // 3 Month Change
+                const prevClose3mo = meta3mo.chartPreviousClose;
+                const change3mo = currentPrice - prevClose3mo;
+                const pct3mo = (change3mo / prevClose3mo) * 100;
+                
+                const rawTimestamps3mo = data3mo.timestamp || [];
+                const rawPrices3mo = data3mo.indicators.quote[0].close || [];
+                const prices3mo = [];
+                const timestamps3mo = [];
+                for(let i=0; i<rawPrices3mo.length; i++) {
+                    if(rawPrices3mo[i] !== null) {
+                        prices3mo.push(rawPrices3mo[i]);
+                        timestamps3mo.push(rawTimestamps3mo[i]);
+                    }
+                }
+                
+                const rawTimestamps1d = data1d.timestamp || [];
+                const rawPrices1d = data1d.indicators.quote[0].close || [];
+                const prices1d = [];
+                const timestamps1d = [];
+                for(let i=0; i<rawPrices1d.length; i++) {
+                    if(rawPrices1d[i] !== null) {
+                        prices1d.push(rawPrices1d[i]);
+                        timestamps1d.push(rawTimestamps1d[i]);
+                    }
+                }
+                
+                const extPrice = meta1d.postMarketPrice || meta1d.preMarketPrice || null;
+                let extPct = 0;
+                if (extPrice) {
+                    extPct = ((extPrice - currentPrice) / currentPrice) * 100;
+                }
+
+                return {
+                    symbol: ticker,
+                    price: currentPrice,
+                    change1d, pct1d,
+                    change3mo, pct3mo,
+                    extPrice, extPct,
+                    history3mo: prices3mo,
+                    timestamps3mo: timestamps3mo,
+                    history1d: prices1d,
+                    timestamps1d: timestamps1d
+                };
+            } catch (error) {
+                console.error(`Error fetching ${ticker}:`, error);
+                return null;
+            }
+        }
+
+        function renderCard(stock) {
+            const card = document.getElementById(`card-${stock.symbol}`);
+            if (!card) return;
+
+            const formatChange = (val, pct) => {
+                const sign = val >= 0 ? '+' : '';
+                return `${sign}${val.toFixed(2)} (${sign}${pct.toFixed(2)}%)`;
+            };
+
+            const isUp1d = stock.change1d >= 0;
+            const badgeClass1d = isUp1d ? 'bg-up' : 'bg-down';
+            const textClass1d = isUp1d ? 'up' : 'down';
+            const color1d = isUp1d ? '#10b981' : '#ef4444';
+
+            const isUp3mo = stock.change3mo >= 0;
+            const textClass3mo = isUp3mo ? 'up-3mo' : 'down-3mo';
+            const color3mo = isUp3mo ? '#3b82f6' : '#f97316';
+
+            let extHtml = '';
+            if (stock.extPrice && Math.abs(stock.extPrice - stock.price) > 0.01) {
+                const extSign = stock.extPct >= 0 ? '+' : '';
+                const extClass = stock.extPct >= 0 ? 'up' : 'down';
+                extHtml = `<div class="ext-price">시간외: <span class="${extClass}">$${stock.extPrice.toFixed(2)} (${extSign}${stock.extPct.toFixed(2)}%)</span></div>`;
+            }
+
+            // Create canvas IDs uniquely
+            const id3mo = `chart-3mo-${stock.symbol}`;
+            const id1d = `chart-1d-${stock.symbol}`;
+
+            card.innerHTML = `
+                <div class="card-header">
+                    <div class="symbol-info">
+                        <span class="symbol">${stock.symbol}</span>
+                    </div>
+                    <div class="price-info">
+                        <div class="current-price">$${stock.price.toFixed(2)}</div>
+                        <div class="badge ${badgeClass1d}">
+                            ${formatChange(stock.change1d, stock.pct1d)}
+                        </div>
+                        ${extHtml}
+                    </div>
+                </div>
+                <div class="charts-container">
+                    <div class="chart-box">
+                        <div class="chart-header">
+                            <span class="chart-title">3개월 변동</span>
+                            <span class="chart-change ${textClass3mo}">${formatChange(stock.change3mo, stock.pct3mo)}</span>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="${id3mo}"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-box">
+                        <div class="chart-header">
+                            <span class="chart-title">1일 변동</span>
+                            <span class="chart-change ${textClass1d}">${formatChange(stock.change1d, stock.pct1d)}</span>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="${id1d}"></canvas>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Draw Charts
+            const drawChart = (ctxId, data, labels, color) => {
+                const ctx = document.getElementById(ctxId).getContext('2d');
+                
+                // Create Gradient
+                const gradient = ctx.createLinearGradient(0, 0, 0, 80);
+                // convert hex to rgba
+                let r=0,g=0,b=0;
+                if(color === '#10b981') { r=16; g=185; b=129; } // 1d up
+                else if(color === '#ef4444') { r=239; g=68; b=68; } // 1d down
+                else if(color === '#3b82f6') { r=59; g=130; b=246; } // 3mo up
+                else if(color === '#f97316') { r=249; g=115; b=22; } // 3mo down
+
+                gradient.addColorStop(0, `rgba(${r}, ${g}, ${b}, 0.2)`);
+                gradient.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            data: data,
+                            borderColor: color,
+                            backgroundColor: gradient,
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            pointHoverRadius: 4,
+                            tension: 0.3,
+                            fill: true,
+                            spanGaps: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        layout: { padding: { top: 10, bottom: 5, left: 0, right: 0 } },
+                        plugins: { legend: { display: false }, tooltip: { enabled: true, mode: 'index', intersect: false } },
+                        scales: { x: { display: false }, y: { display: false } },
+                        interaction: { mode: 'nearest', axis: 'x', intersect: false }
+                    }
+                });
+            };
+
+            drawChart(id3mo, stock.history3mo, stock.timestamps3mo, color3mo);
+            drawChart(id1d, stock.history1d, stock.timestamps1d, color1d);
+        }
+
+        async function loadDashboard() {
+            initSkeletons();
+            
+            // Fetch concurrently with a slight stagger to avoid rate limiting
+            const promises = tickers.map(async (ticker, i) => {
+                await new Promise(r => setTimeout(r, i * 300)); 
+                const data = await fetchStockData(ticker);
+                if(data) {
+                    renderCard(data);
+                } else {
+                    const card = document.getElementById(`card-${ticker}`);
+                    if (card) {
+                        card.innerHTML = `<div style="padding: 40px 20px; text-align: center; color: var(--down-color); font-weight: 600;">데이터를 불러올 수 없습니다. (${ticker})</div>`;
+                    }
+                }
+            });
+            
+            await Promise.all(promises);
+        }
+
+        loadDashboard();
+    </script>
+</body>
+</html>
