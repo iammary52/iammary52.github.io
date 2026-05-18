@@ -7,7 +7,6 @@
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #07090d;
       --panel: rgba(9, 13, 20, 0.77);
       --line: rgba(168, 190, 224, 0.24);
       --hot: rgba(199, 221, 255, 0.64);
@@ -39,78 +38,20 @@
       box-shadow: 0 22px 70px rgba(0, 0, 0, 0.54), inset 0 0 36px rgba(167, 190, 224, 0.06);
       backdrop-filter: blur(12px);
     }
-    .hud {
-      position: absolute;
-      top: 22px;
-      left: 22px;
-      width: min(348px, calc(100vw - 44px));
-      border-radius: 12px;
-      padding: 16px;
-    }
+    .hud { position: absolute; top: 22px; left: 22px; width: min(348px, calc(100vw - 44px)); border-radius: 12px; padding: 16px; }
     .brand { display: flex; justify-content: space-between; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
     .eyebrow { font-size: 10px; letter-spacing: 0.24em; color: var(--faint); text-transform: uppercase; margin-bottom: 4px; }
-    h1 {
-      font-family: "Orbitron", "Rajdhani", "Eurostile", sans-serif;
-      font-size: 18px;
-      line-height: 1.05;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-    .live-chip {
-      flex: 0 0 auto;
-      display: grid;
-      place-items: center;
-      min-width: 52px;
-      height: 26px;
-      border: 1px solid rgba(136, 214, 176, 0.46);
-      border-radius: 999px;
-      color: var(--green);
-      font-size: 10px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      background: rgba(93, 169, 129, 0.1);
-    }
+    h1 { font-family: "Orbitron", "Rajdhani", "Eurostile", sans-serif; font-size: 18px; line-height: 1.05; letter-spacing: 0.18em; text-transform: uppercase; }
+    .live-chip { flex: 0 0 auto; display: grid; place-items: center; min-width: 52px; height: 26px; border: 1px solid rgba(136, 214, 176, 0.46); border-radius: 999px; color: var(--green); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(93, 169, 129, 0.1); }
     .menu { display: grid; gap: 7px; margin-bottom: 14px; }
-    .menu button, .dock button {
-      border: 1px solid rgba(148, 171, 209, 0.23);
-      border-radius: 8px;
-      background: rgba(14, 20, 31, 0.78);
-      color: var(--muted);
-      cursor: pointer;
-      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, color 160ms ease;
-    }
-    .menu button {
-      display: grid;
-      grid-template-columns: 28px 1fr auto;
-      gap: 10px;
-      align-items: center;
-      min-height: 48px;
-      padding: 8px 10px;
-      text-align: left;
-    }
+    .menu button, .dock button { border: 1px solid rgba(148, 171, 209, 0.23); border-radius: 8px; background: rgba(14, 20, 31, 0.78); color: var(--muted); cursor: pointer; transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, color 160ms ease; }
+    .menu button { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; min-height: 48px; padding: 8px 10px; text-align: left; }
     .menu button:hover, .dock button:hover { color: var(--text); border-color: rgba(197, 218, 251, 0.56); background: rgba(24, 33, 49, 0.86); transform: translateY(-1px); }
-    .menu button.is-active, .dock button.is-active {
-      color: #f2f7ff;
-      border-color: var(--hot);
-      background: linear-gradient(96deg, rgba(84, 109, 144, 0.48), rgba(19, 27, 41, 0.92));
-      box-shadow: inset 0 0 18px rgba(184, 207, 241, 0.14);
-    }
-    .menu button.is-color {
-      border-color: rgba(255, 203, 113, 0.44);
-      background: linear-gradient(135deg, rgba(255, 92, 138, 0.23), rgba(120, 98, 255, 0.18) 48%, rgba(48, 218, 188, 0.2)), rgba(14, 20, 31, 0.82);
-    }
-    .menu button.is-color .menu__icon {
-      color: #fff4c7;
-      border-color: rgba(255, 229, 155, 0.58);
-      background: radial-gradient(circle at 28% 20%, rgba(255,255,255,0.8), rgba(255, 98, 146, 0.54) 34%, rgba(74, 209, 224, 0.34));
-      box-shadow: 0 0 20px rgba(255, 104, 166, 0.24);
-    }
+    .menu button.is-active, .dock button.is-active { color: #f2f7ff; border-color: var(--hot); background: linear-gradient(96deg, rgba(84, 109, 144, 0.48), rgba(19, 27, 41, 0.92)); box-shadow: inset 0 0 18px rgba(184, 207, 241, 0.14); }
+    .menu button.is-color { border-color: rgba(255, 203, 113, 0.44); background: linear-gradient(135deg, rgba(255, 92, 138, 0.23), rgba(120, 98, 255, 0.18) 48%, rgba(48, 218, 188, 0.2)), rgba(14, 20, 31, 0.82); }
+    .menu button.is-color .menu__icon { color: #fff4c7; border-color: rgba(255, 229, 155, 0.58); background: radial-gradient(circle at 28% 20%, rgba(255,255,255,0.8), rgba(255, 98, 146, 0.54) 34%, rgba(74, 209, 224, 0.34)); box-shadow: 0 0 20px rgba(255, 104, 166, 0.24); }
     .menu button.is-color .menu__stat { color: #ffe08c; }
-    .menu button.is-color.is-active {
-      border-color: rgba(255, 225, 147, 0.86);
-      background: linear-gradient(110deg, rgba(255, 86, 136, 0.48), rgba(111, 102, 255, 0.42) 50%, rgba(55, 221, 190, 0.42)), rgba(16, 22, 33, 0.88);
-      box-shadow: inset 0 0 24px rgba(255, 224, 140, 0.16), 0 0 34px rgba(255, 97, 153, 0.14);
-    }
+    .menu button.is-color.is-active { border-color: rgba(255, 225, 147, 0.86); background: linear-gradient(110deg, rgba(255, 86, 136, 0.48), rgba(111, 102, 255, 0.42) 50%, rgba(55, 221, 190, 0.42)), rgba(16, 22, 33, 0.88); box-shadow: inset 0 0 24px rgba(255, 224, 140, 0.16), 0 0 34px rgba(255, 97, 153, 0.14); }
     .menu__icon { width: 28px; height: 28px; display: grid; place-items: center; border: 1px solid rgba(181, 204, 239, 0.22); border-radius: 7px; color: var(--blue); font-size: 11px; }
     .menu__label { display: block; font-family: "Orbitron", "Rajdhani", sans-serif; font-size: 12px; letter-spacing: 0.13em; text-transform: uppercase; margin-bottom: 3px; }
     .menu__desc { display: block; font-size: 11px; color: var(--faint); letter-spacing: 0.02em; }
@@ -119,96 +60,44 @@
     .meter__line { display: flex; justify-content: space-between; gap: 12px; font-size: 11px; color: var(--muted); }
     .meter__bar { height: 5px; border-radius: 999px; overflow: hidden; background: rgba(115, 135, 170, 0.2); }
     .meter__bar span { display: block; width: 72%; height: 100%; background: linear-gradient(90deg, var(--green), var(--blue), var(--amber)); }
-    .sidecar {
-      position: absolute;
-      top: 22px;
-      right: 22px;
-      width: min(310px, calc(100vw - 44px));
-      border-radius: 12px;
-      padding: 15px;
-      transform: translateX(0);
-      transition: opacity 180ms ease, transform 180ms ease;
-    }
+    .sidecar { position: absolute; top: 22px; right: 22px; width: min(310px, calc(100vw - 44px)); border-radius: 12px; padding: 15px; transform: translateX(0); transition: opacity 180ms ease, transform 180ms ease; }
     .sidecar.is-hidden { opacity: 0; transform: translateX(16px); pointer-events: none; }
     .panel-title { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; color: var(--muted); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; }
     .control-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 12px; }
     .control-row button, .dock button { min-height: 36px; padding: 0 10px; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
     .readouts, .dock-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
     .readouts { grid-template-columns: 1fr 1fr; }
-    .readout, .card {
-      min-height: 78px;
-      border: 1px solid rgba(151, 174, 213, 0.16);
-      border-radius: 8px;
-      padding: 10px;
-      background: rgba(11, 16, 25, 0.58);
-    }
+    .readout, .card { min-height: 78px; border: 1px solid rgba(151, 174, 213, 0.16); border-radius: 8px; padding: 10px; background: rgba(11, 16, 25, 0.58); }
     .readout span, .card span { display: block; color: var(--faint); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
     .readout strong, .card strong { display: block; font-size: 20px; letter-spacing: 0.02em; }
     .card strong { font-size: 15px; margin-bottom: 8px; }
     .card p { color: var(--muted); font-size: 12px; line-height: 1.45; }
-    .dock {
-      position: absolute;
-      left: 50%;
-      bottom: 26px;
-      width: min(860px, calc(100vw - 44px));
-      transform: translateX(-50%);
-      border-radius: 12px;
-      padding: 14px;
-      transition: opacity 180ms ease, transform 180ms ease;
-    }
+    .card meter { width: 100%; height: 5px; margin-top: 10px; accent-color: var(--blue); }
+    .dock { position: absolute; left: 50%; bottom: 26px; width: min(860px, calc(100vw - 44px)); transform: translateX(-50%); border-radius: 12px; padding: 14px; transition: opacity 180ms ease, transform 180ms ease; }
     .dock.is-hidden { opacity: 0; transform: translateX(-50%) translateY(18px); pointer-events: none; }
     .dock-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
     .dock input { height: 38px; flex: 1 1 260px; border: 1px solid rgba(157, 181, 219, 0.24); border-radius: 8px; padding: 0 12px; background: rgba(10, 15, 23, 0.72); color: var(--text); outline: none; }
     .dock input:focus { border-color: rgba(199, 221, 255, 0.66); box-shadow: 0 0 0 3px rgba(183, 213, 255, 0.1); }
     .dock.is-bloom { border-color: rgba(255, 212, 133, 0.4); background: linear-gradient(128deg, rgba(255, 78, 142, 0.16), rgba(87, 115, 255, 0.11) 48%, rgba(44, 218, 186, 0.15)), var(--panel); }
-    .status-open { color: var(--green); }
-    .status-watch { color: var(--amber); }
-    .status-critical { color: var(--red); }
+    .status-open { color: var(--green); } .status-watch { color: var(--amber); } .status-critical { color: var(--red); }
     .footer { position: absolute; left: 22px; right: 22px; bottom: 18px; display: flex; justify-content: space-between; gap: 18px; color: rgba(170, 188, 216, 0.54); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; pointer-events: none; }
-    @media (max-width: 880px) {
-      body { overflow: auto; }
-      canvas { position: fixed; inset: 0; }
-      .shell { position: relative; min-height: 100vh; display: grid; gap: 14px; padding: 14px; }
-      .hud, .sidecar, .dock, .footer { position: relative; inset: auto; width: 100%; transform: none; left: auto; right: auto; top: auto; bottom: auto; }
-      .dock.is-hidden, .sidecar.is-hidden { display: none; }
-      .dock-grid { grid-template-columns: 1fr; }
-      .footer { padding: 0 2px 14px; }
-    }
+    @media (max-width: 880px) { body { overflow: auto; } canvas { position: fixed; inset: 0; } .shell { position: relative; min-height: 100vh; display: grid; gap: 14px; padding: 14px; } .hud, .sidecar, .dock, .footer { position: relative; inset: auto; width: 100%; transform: none; left: auto; right: auto; top: auto; bottom: auto; } .dock.is-hidden, .sidecar.is-hidden { display: none; } .dock-grid { grid-template-columns: 1fr; } .footer { padding: 0 2px 14px; } }
   </style>
 </head>
 <body>
   <canvas id="c"></canvas>
   <main class="shell" aria-label="Gotham terminal interface">
     <aside class="hud panel">
-      <div class="brand">
-        <div><div class="eyebrow">district interface</div><h1>Wayne Terminal</h1></div>
-        <div class="live-chip">Live</div>
-      </div>
+      <div class="brand"><div><div class="eyebrow">district interface</div><h1>Wayne Terminal</h1></div><div class="live-chip">Live</div></div>
       <nav class="menu" id="menu" aria-label="Terminal modules"></nav>
-      <div class="meter">
-        <div class="meter__line"><span>Signal integrity</span><strong id="signalValue">72%</strong></div>
-        <div class="meter__bar"><span id="signalBar"></span></div>
-      </div>
+      <div class="meter"><div class="meter__line"><span>Signal integrity</span><strong id="signalValue">72%</strong></div><div class="meter__bar"><span id="signalBar"></span></div></div>
     </aside>
     <section class="sidecar panel" id="clockPanel" aria-label="Clock controls">
       <div class="panel-title"><span>chrono controls</span><span>local</span></div>
-      <div class="control-row">
-        <button type="button" id="modeToggle">24 Hour</button>
-        <button type="button" id="secondsToggle" class="is-active">Seconds</button>
-        <button type="button" id="scanToggle" class="is-active">Scan</button>
-      </div>
-      <div class="readouts">
-        <div class="readout"><span>Sunrise</span><strong>06:18</strong></div>
-        <div class="readout"><span>Patrol</span><strong id="patrolCount">08</strong></div>
-        <div class="readout"><span>Latency</span><strong id="latency">12ms</strong></div>
-        <div class="readout"><span>Phase</span><strong id="phase">Night</strong></div>
-      </div>
+      <div class="control-row"><button type="button" id="modeToggle">24 Hour</button><button type="button" id="secondsToggle" class="is-active">Seconds</button><button type="button" id="scanToggle" class="is-active">Scan</button></div>
+      <div class="readouts"><div class="readout"><span>Sunrise</span><strong>06:18</strong></div><div class="readout"><span>Patrol</span><strong id="patrolCount">08</strong></div><div class="readout"><span>Latency</span><strong id="latency">12ms</strong></div><div class="readout"><span>Phase</span><strong id="phase">Night</strong></div></div>
     </section>
-    <section class="dock panel is-hidden" id="dock" aria-label="Module controls">
-      <div class="panel-title"><span id="dockTitle">module</span><span id="dockStatus">online</span></div>
-      <div class="dock-actions" id="dockActions"></div>
-      <div class="dock-grid" id="dockGrid"></div>
-    </section>
+    <section class="dock panel is-hidden" id="dock" aria-label="Module controls"><div class="panel-title"><span id="dockTitle">module</span><span id="dockStatus">online</span></div><div class="dock-actions" id="dockActions"></div><div class="dock-grid" id="dockGrid"></div></section>
     <div class="footer"><span id="footerLeft">Gotham Grid Clock</span><span id="footerRight">Click modules to switch views</span></div>
   </main>
 <script>
@@ -231,149 +120,84 @@ const scanToggle = document.getElementById('scanToggle');
 const latency = document.getElementById('latency');
 const patrolCount = document.getElementById('patrolCount');
 const phase = document.getElementById('phase');
-
 const MENU_ITEMS = [
   { id: 'clock', icon: 'CLK', label: 'Clock Grid', description: 'Live city chrono matrix', stat: 'live' },
-  { id: 'cases', icon: 'CAS', label: 'Caseboard', description: 'Filter active investigations', stat: '6 files' },
+  { id: 'cases', icon: 'CAS', label: 'Caseboard', description: 'Triangulate linked investigations', stat: '6 nodes' },
   { id: 'transit', icon: 'TRN', label: 'Transit', description: 'Monitor elevated routes', stat: '3 lines' },
-  { id: 'arsenal', icon: 'ARS', label: 'Arsenal', description: 'Calibrate field equipment', stat: '12 kits' },
+  { id: 'arsenal', icon: 'ARS', label: 'Arsenal', description: 'Inspect tactical hardware', stat: '12 kits' },
   { id: 'bloom', icon: 'BLM', label: 'Signal Bloom', description: 'Color anomaly visualizer', stat: 'rare', colorful: true },
-  { id: 'archive', icon: 'ARC', label: 'Archive', description: 'Review sealed intelligence', stat: '28 logs' }
+  { id: 'archive', icon: 'ARC', label: 'Archive', description: 'Scan encrypted evidence vaults', stat: '28 logs' }
 ];
-
 const CASES = [
-  { title: 'Narrows Relay', text: 'Signal bounces through three rooftop repeaters.', status: 'open', district: 'Narrows', heat: 84 },
-  { title: 'Founders Gala', text: 'Guest list anomaly detected near service entrance.', status: 'watch', district: 'Old Gotham', heat: 42 },
-  { title: 'Blackgate Ferry', text: 'Harbor route paused after duplicate beacon ping.', status: 'critical', district: 'Harbor', heat: 91 },
-  { title: 'Monarch Theater', text: 'Archived camera frame recovered and enhanced.', status: 'open', district: 'Theater Row', heat: 63 },
-  { title: 'East End Grid', text: 'Power draw spikes across four adjacent blocks.', status: 'watch', district: 'East End', heat: 55 },
-  { title: 'Arkham Spur', text: 'Transit sensor reports a ghost carriage loop.', status: 'critical', district: 'North Line', heat: 88 }
+  { title: 'Narrows Relay', text: 'Rooftop repeaters produce a three-point bearing lock.', status: 'open', district: 'Narrows', heat: 84 },
+  { title: 'Founders Gala', text: 'Guest movement clusters around a service corridor.', status: 'watch', district: 'Old Gotham', heat: 42 },
+  { title: 'Blackgate Ferry', text: 'Harbor beacon returns a duplicate transponder signature.', status: 'critical', district: 'Harbor', heat: 91 },
+  { title: 'Monarch Theater', text: 'Recovered frame set aligns with a known exit vector.', status: 'open', district: 'Theater Row', heat: 63 },
+  { title: 'East End Grid', text: 'Four-block power draw makes a clean rectangular anomaly.', status: 'watch', district: 'East End', heat: 55 },
+  { title: 'Arkham Spur', text: 'North line sensor loop repeats every eleven seconds.', status: 'critical', district: 'North Line', heat: 88 }
 ];
 const ROUTES = [
-  { name: 'Blue Line', eta: '02 min', detail: 'Founders to Harbor via Kane Station' },
-  { name: 'Gold Loop', eta: '07 min', detail: 'Old Gotham perimeter service' },
-  { name: 'Green Spur', eta: '11 min', detail: 'East End express bypass active' }
+  { title: 'Blue Line', state: '02 min', text: 'Founders to Harbor via Kane Station', progress: 92 },
+  { title: 'Gold Loop', state: '07 min', text: 'Old Gotham perimeter service', progress: 71 },
+  { title: 'Green Spur', state: '11 min', text: 'East End express bypass active', progress: 64 }
 ];
 const ARSENAL = [
-  { title: 'Grapnel Motor', state: 'Ready', value: 92, text: 'Tension, spool, and return velocity are inside tolerance.' },
-  { title: 'Cowl Link', state: 'Encrypted', value: 78, text: 'Short-range relay handshake is rotating cleanly.' },
-  { title: 'Field Scanner', state: 'Charging', value: 64, text: 'Spectral lens reaches full charge in 18 minutes.' }
+  { title: 'Grapnel Motor', state: 'Torque 92%', text: 'Cutaway motor stack shows stable pull and recoil timing.', progress: 92 },
+  { title: 'Cowl Link', state: 'Crypto 78%', text: 'Rotating handshake ring is locked to the local relay.', progress: 78 },
+  { title: 'Field Scanner', state: 'Charge 64%', text: 'Lens array is rebuilding the spectral sweep profile.', progress: 64 }
 ];
 const ARCHIVE = [
-  { title: 'Cold Files', state: '11', text: 'Dormant leads sorted by district and date.' },
-  { title: 'Recovered Audio', state: '09', text: 'Noise-reduced transmissions awaiting review.' },
-  { title: 'Sealed Notes', state: '08', text: 'Restricted entries remain locked to read-only mode.' }
+  { title: 'Cold Files', state: '11 Blocks', text: 'Evidence slabs are indexed on the left vault rail.', progress: 74 },
+  { title: 'Recovered Audio', state: '09 Waves', text: 'Signal waveform is scrubbed for clean phrase extraction.', progress: 58 },
+  { title: 'Sealed Notes', state: '08 Locks', text: 'Encrypted packets are isolated behind checksum gates.', progress: 86 }
 ];
 const BLOOM = [
-  { title: 'Prism Sweep', state: 'Active', text: 'A bright anomaly is mapped without changing the rest of the terminal tone.' },
-  { title: 'Spectrum', state: 'Violet / Cyan', text: 'Color is limited to this one module so the interface stays disciplined.' },
-  { title: 'Pulse', state: 'Dynamic', text: 'The canvas blooms as a soft atmospheric layer behind the panels.' }
+  { title: 'Prism Sweep', state: 'Active', text: 'A bright anomaly is mapped without changing the rest of the terminal tone.', progress: 88 },
+  { title: 'Spectrum', state: 'Violet / Cyan', text: 'Color is limited to this one module so the interface stays disciplined.', progress: 76 },
+  { title: 'Pulse', state: 'Dynamic', text: 'The canvas blooms as a soft atmospheric layer behind the panels.', progress: 94 }
 ];
-
-let activeView = 'clock';
-let activeFilter = 'all';
-let archiveQuery = '';
-let bloomMode = 0;
-let W = 0, H = 0, gridShift = 0, vignette;
-let slots = [], lastSec = -1, pulse = 0;
+let activeView = 'clock', activeFilter = 'all', archiveQuery = '', bloomMode = 0;
+let W = 0, H = 0, gridShift = 0, vignette, slots = [], lastSec = -1, pulse = 0;
 let use24Hour = true, showSeconds = true, scanEnabled = true;
-const DEPTH = 8;
-const FONT_STACK = "'Arial Black','Inter',sans-serif";
+const DEPTH = 8, FONT_STACK = "'Arial Black','Inter',sans-serif";
 const WDAYS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
 const MONTHS = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
 let dateStr = '';
-
 function rand(n = 1) { return Math.random() * n; }
 class Voxel {
-  constructor(tone) { this.tone = tone; this.x = W * 0.5 + (Math.random() - 0.5) * W * 0.2; this.y = H * 0.5 + (Math.random() - 0.5) * H * 0.2; this.z = rand(DEPTH); this.tx = this.x; this.ty = this.y; this.tz = this.z; this.vx = 0; this.vy = 0; this.vz = 0; }
-  burst() { this.vx += (Math.random() - 0.5) * 14; this.vy += (Math.random() - 0.5) * 14; this.vz += (Math.random() - 0.5) * 4; }
+  constructor(tone) { this.tone = tone; this.x = W * .5 + (Math.random() - .5) * W * .2; this.y = H * .5 + (Math.random() - .5) * H * .2; this.z = rand(DEPTH); this.tx = this.x; this.ty = this.y; this.tz = this.z; this.vx = 0; this.vy = 0; this.vz = 0; }
+  burst() { this.vx += (Math.random() - .5) * 14; this.vy += (Math.random() - .5) * 14; this.vz += (Math.random() - .5) * 4; }
   setTarget(x, y, z) { this.tx = x; this.ty = y; this.tz = z; }
-  update() { this.vx = this.vx * 0.73 + (this.tx - this.x) * 0.22; this.vy = this.vy * 0.73 + (this.ty - this.y) * 0.22; this.vz = this.vz * 0.72 + (this.tz - this.z) * 0.18; this.x += this.vx; this.y += this.vy; this.z += this.vz; }
-  draw(cell, pulseAmount) {
-    const z = this.z, px = this.x + z * 0.85, py = this.y - z * 0.9, size = cell * 0.72;
-    const light = 58 + z * 2.2 + pulseAmount * 4.4, sat = 16 + this.tone * 9;
-    ctx.globalAlpha = 0.56; ctx.fillStyle = `hsl(212, ${sat}%, ${Math.min(82, light + 12)}%)`; poly([[px, py - size * .5], [px + size * .44, py - size * .26], [px, py], [px - size * .44, py - size * .26]]);
-    ctx.globalAlpha = 0.82; ctx.fillStyle = `hsl(214, ${sat}%, ${Math.min(74, light)}%)`; poly([[px - size * .44, py - size * .26], [px, py], [px, py + size * .52], [px - size * .44, py + size * .26]]);
-    ctx.globalAlpha = 0.77; ctx.fillStyle = `hsl(221, ${sat}%, ${Math.max(24, light - 18)}%)`; poly([[px + size * .44, py - size * .26], [px, py], [px, py + size * .52], [px + size * .44, py + size * .26]]);
-  }
+  update() { this.vx = this.vx * .73 + (this.tx - this.x) * .22; this.vy = this.vy * .73 + (this.ty - this.y) * .22; this.vz = this.vz * .72 + (this.tz - this.z) * .18; this.x += this.vx; this.y += this.vy; this.z += this.vz; }
+  draw(cell, pulseAmount) { const z = this.z, px = this.x + z * .85, py = this.y - z * .9, size = cell * .72; const light = 58 + z * 2.2 + pulseAmount * 4.4, sat = 16 + this.tone * 9; ctx.globalAlpha = .56; ctx.fillStyle = `hsl(212, ${sat}%, ${Math.min(82, light + 12)}%)`; poly([[px, py - size * .5], [px + size * .44, py - size * .26], [px, py], [px - size * .44, py - size * .26]]); ctx.globalAlpha = .82; ctx.fillStyle = `hsl(214, ${sat}%, ${Math.min(74, light)}%)`; poly([[px - size * .44, py - size * .26], [px, py], [px, py + size * .52], [px - size * .44, py + size * .26]]); ctx.globalAlpha = .77; ctx.fillStyle = `hsl(221, ${sat}%, ${Math.max(24, light - 18)}%)`; poly([[px + size * .44, py - size * .26], [px, py], [px, py + size * .52], [px + size * .44, py + size * .26]]); }
 }
 class Slot {
   constructor(cx, cy, size, capacity, isColon = false) { this.cx = cx; this.cy = cy; this.fontSize = size; this.capacity = capacity; this.isColon = isColon; this.current = null; this.voxels = Array.from({ length: capacity }, (_, i) => new Voxel((i % 4) / 4)); this.cell = Math.max(6, Math.floor(size / 11)); }
-  sampleChar(ch) {
-    const fs = this.fontSize, cw = Math.ceil(fs * (this.isColon ? 0.48 : 0.84)) + 36, chh = Math.ceil(fs * 1.36) + 36;
-    const off = document.createElement('canvas'); off.width = cw; off.height = chh;
-    const octx = off.getContext('2d'); octx.fillStyle = '#fff'; octx.font = `900 ${fs}px ${FONT_STACK}`; octx.textAlign = 'center'; octx.textBaseline = 'middle'; octx.fillText(ch, cw / 2, chh / 2);
-    const data = octx.getImageData(0, 0, cw, chh).data, pts = [], step = this.cell;
-    for (let y = 0; y < chh; y += step) for (let x = 0; x < cw; x += step) if (data[(y * cw + x) * 4 + 3] > 120) pts.push({ x: this.cx + x - cw / 2, y: this.cy + y - chh / 2, z: Math.floor(((y / chh) * DEPTH + rand(1.2))) });
-    return pts;
-  }
+  sampleChar(ch) { const fs = this.fontSize, cw = Math.ceil(fs * (this.isColon ? .48 : .84)) + 36, chh = Math.ceil(fs * 1.36) + 36; const off = document.createElement('canvas'); off.width = cw; off.height = chh; const octx = off.getContext('2d'); octx.fillStyle = '#fff'; octx.font = `900 ${fs}px ${FONT_STACK}`; octx.textAlign = 'center'; octx.textBaseline = 'middle'; octx.fillText(ch, cw / 2, chh / 2); const data = octx.getImageData(0, 0, cw, chh).data, pts = [], step = this.cell; for (let y = 0; y < chh; y += step) for (let x = 0; x < cw; x += step) if (data[(y * cw + x) * 4 + 3] > 120) pts.push({ x: this.cx + x - cw / 2, y: this.cy + y - chh / 2, z: Math.floor(((y / chh) * DEPTH + rand(1.2))) }); return pts; }
   setChar(ch) { if (ch === this.current) return; this.current = ch; const points = this.sampleChar(ch); if (!points.length) return; for (const voxel of this.voxels) voxel.burst(); for (let i = 0; i < this.voxels.length; i++) { const p = points[i % points.length]; this.voxels[i].setTarget(p.x, p.y, p.z); } }
   update() { for (const voxel of this.voxels) voxel.update(); }
   draw(pulseAmount) { for (const voxel of this.voxels.slice().sort((a, b) => a.z - b.z)) voxel.draw(this.cell, pulseAmount); }
 }
 function poly(points) { ctx.beginPath(); ctx.moveTo(points[0][0], points[0][1]); for (const p of points.slice(1)) ctx.lineTo(p[0], p[1]); ctx.closePath(); ctx.fill(); }
-function renderMenu() {
-  menu.innerHTML = '';
-  for (const item of MENU_ITEMS) {
-    const btn = document.createElement('button'); btn.type = 'button'; btn.classList.toggle('is-color', !!item.colorful);
-    btn.innerHTML = `<span class="menu__icon">${item.icon}</span><span><span class="menu__label">${item.label}</span><span class="menu__desc">${item.description}</span></span><span class="menu__stat">${item.stat}</span>`;
-    if (item.id === activeView) btn.classList.add('is-active'); btn.addEventListener('click', () => setView(item.id)); menu.appendChild(btn);
-  }
-}
-function setView(viewId) {
-  activeView = viewId; renderMenu();
-  clockPanel.classList.toggle('is-hidden', activeView !== 'clock');
-  dock.classList.toggle('is-hidden', activeView === 'clock'); dock.classList.toggle('is-bloom', activeView === 'bloom');
-  if (activeView !== 'clock') renderDock();
-  const current = MENU_ITEMS.find(item => item.id === activeView);
-  footerLeft.textContent = current.label;
-  footerRight.textContent = activeView === 'clock' ? 'Use controls to change clock behavior' : current.description;
-}
-function renderDock() {
-  const title = MENU_ITEMS.find(item => item.id === activeView).label;
-  dockTitle.textContent = title;
-  dockStatus.textContent = activeView === 'cases' ? `${activeFilter} filter` : activeView === 'bloom' ? ['spectrum', 'orbit', 'flare'][bloomMode] : 'online';
-  dockActions.innerHTML = '';
-  if (activeView === 'cases') addButtons(['all', 'open', 'watch', 'critical'], activeFilter, value => { activeFilter = value; renderDock(); });
-  if (activeView === 'transit') addButtons(['blue', 'gold', 'green'], 'blue', () => {});
-  if (activeView === 'arsenal') addButtons(['calibrate', 'diagnose', 'charge'], 'calibrate', () => pulse = 1);
-  if (activeView === 'bloom') addButtons(['spectrum', 'orbit', 'flare'], ['spectrum', 'orbit', 'flare'][bloomMode], value => { bloomMode = ['spectrum', 'orbit', 'flare'].indexOf(value); renderDock(); });
-  if (activeView === 'archive') {
-    const input = document.createElement('input'); input.placeholder = 'Search archive'; input.value = archiveQuery; input.addEventListener('input', e => { archiveQuery = e.target.value; renderDock(); }); dockActions.appendChild(input);
-  }
-  dockGrid.innerHTML = cardsFor(activeView).map(item => `<article class="card"><span class="status-${item.status || ''}">${item.state || item.status || 'online'}</span><strong>${item.title}</strong><p>${item.text}</p></article>`).join('');
-}
+function renderMenu() { menu.innerHTML = ''; for (const item of MENU_ITEMS) { const btn = document.createElement('button'); btn.type = 'button'; btn.classList.toggle('is-color', !!item.colorful); btn.innerHTML = `<span class="menu__icon">${item.icon}</span><span><span class="menu__label">${item.label}</span><span class="menu__desc">${item.description}</span></span><span class="menu__stat">${item.stat}</span>`; if (item.id === activeView) btn.classList.add('is-active'); btn.addEventListener('click', () => setView(item.id)); menu.appendChild(btn); } }
+function setView(viewId) { activeView = viewId; renderMenu(); clockPanel.classList.toggle('is-hidden', activeView !== 'clock'); dock.classList.toggle('is-hidden', activeView === 'clock'); dock.classList.toggle('is-bloom', activeView === 'bloom'); if (activeView !== 'clock') renderDock(); const current = MENU_ITEMS.find(item => item.id === activeView); footerLeft.textContent = current.label; footerRight.textContent = activeView === 'clock' ? 'Use controls to change clock behavior' : current.description; }
+function renderDock() { const title = MENU_ITEMS.find(item => item.id === activeView).label; dockTitle.textContent = title; dockStatus.textContent = activeView === 'cases' ? `${activeFilter} filter` : activeView === 'bloom' ? ['spectrum', 'orbit', 'flare'][bloomMode] : 'online'; dockActions.innerHTML = ''; if (activeView === 'cases') addButtons(['all', 'open', 'watch', 'critical'], activeFilter, value => { activeFilter = value; renderDock(); }); if (activeView === 'transit') addButtons(['blue', 'gold', 'green'], 'blue', () => {}); if (activeView === 'arsenal') addButtons(['calibrate', 'diagnose', 'charge'], 'calibrate', () => pulse = 1); if (activeView === 'bloom') addButtons(['spectrum', 'orbit', 'flare'], ['spectrum', 'orbit', 'flare'][bloomMode], value => { bloomMode = ['spectrum', 'orbit', 'flare'].indexOf(value); renderDock(); }); if (activeView === 'archive') { const input = document.createElement('input'); input.placeholder = 'Search archive'; input.value = archiveQuery; input.addEventListener('input', e => { archiveQuery = e.target.value; renderDock(); }); dockActions.appendChild(input); } dockGrid.innerHTML = cardsFor(activeView).map(item => `<article class="card"><span class="status-${item.status || ''}">${item.state || item.status || 'online'}</span><strong>${item.title}</strong><p>${item.text}</p>${item.progress ? `<meter min="0" max="100" value="${item.progress}"></meter>` : ''}</article>`).join(''); }
 function addButtons(items, active, onClick) { for (const item of items) { const btn = document.createElement('button'); btn.type = 'button'; btn.textContent = item; btn.classList.toggle('is-active', item === active); btn.addEventListener('click', () => onClick(item)); dockActions.appendChild(btn); } }
-function cardsFor(view) {
-  if (view === 'cases') return CASES.filter(item => activeFilter === 'all' || item.status === activeFilter).map(item => ({ ...item, state: item.district }));
-  if (view === 'transit') return ROUTES.map(route => ({ title: route.name, state: route.eta, text: route.detail }));
-  if (view === 'arsenal') return ARSENAL;
-  if (view === 'bloom') return BLOOM;
-  if (view === 'archive') return ARCHIVE.filter(item => !archiveQuery || `${item.title} ${item.text}`.toLowerCase().includes(archiveQuery.toLowerCase()));
-  return [];
-}
+function cardsFor(view) { if (view === 'cases') return CASES.filter(item => activeFilter === 'all' || item.status === activeFilter).map(item => ({ ...item, state: item.district, progress: item.heat })); if (view === 'transit') return ROUTES; if (view === 'arsenal') return ARSENAL; if (view === 'bloom') return BLOOM; if (view === 'archive') return ARCHIVE.filter(item => !archiveQuery || `${item.title} ${item.text}`.toLowerCase().includes(archiveQuery.toLowerCase())); return []; }
 function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; buildClock(); buildVignette(); }
-function drawGrid() {
-  const major = Math.max(38, Math.floor(Math.min(W, H) / 18)), minor = Math.floor(major / 2);
-  ctx.globalAlpha = 0.24; ctx.strokeStyle = 'rgba(125, 148, 188, 0.18)'; ctx.lineWidth = 1;
-  for (let x = (gridShift % major) - major; x < W + major; x += major) line(x, 0, x, H);
-  for (let y = (gridShift * 0.58 % major) - major; y < H + major; y += major) line(0, y, W, y);
-  ctx.globalAlpha = 0.09; ctx.strokeStyle = 'rgba(165, 186, 220, 0.16)';
-  for (let x = (gridShift % minor) - minor; x < W + minor; x += minor) line(x, 0, x, H);
-  for (let y = (gridShift * 0.48 % minor) - minor; y < H + minor; y += minor) line(0, y, W, y);
-}
+function drawGrid() { const major = Math.max(38, Math.floor(Math.min(W, H) / 18)), minor = Math.floor(major / 2); ctx.globalAlpha = .24; ctx.strokeStyle = 'rgba(125, 148, 188, 0.18)'; ctx.lineWidth = 1; for (let x = (gridShift % major) - major; x < W + major; x += major) line(x, 0, x, H); for (let y = (gridShift * .58 % major) - major; y < H + major; y += major) line(0, y, W, y); ctx.globalAlpha = .09; ctx.strokeStyle = 'rgba(165, 186, 220, 0.16)'; for (let x = (gridShift % minor) - minor; x < W + minor; x += minor) line(x, 0, x, H); for (let y = (gridShift * .48 % minor) - minor; y < H + minor; y += minor) line(0, y, W, y); }
 function line(x1, y1, x2, y2) { ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); }
-function buildVignette() { vignette = ctx.createRadialGradient(W / 2, H / 2, H * 0.13, W / 2, H / 2, H * 0.82); vignette.addColorStop(0, 'rgba(8,11,19,0.02)'); vignette.addColorStop(1, 'rgba(4,5,9,0.9)'); }
+function buildVignette() { vignette = ctx.createRadialGradient(W / 2, H / 2, H * .13, W / 2, H / 2, H * .82); vignette.addColorStop(0, 'rgba(8,11,19,0.02)'); vignette.addColorStop(1, 'rgba(4,5,9,0.9)'); }
 function drawVignette() { ctx.globalAlpha = 1; ctx.fillStyle = vignette; ctx.fillRect(0, 0, W, H); }
-function drawScanline() { if (!scanEnabled) return; const y = (performance.now() * 0.035) % (H + 80) - 40; const g = ctx.createLinearGradient(0, y - 22, 0, y + 22); g.addColorStop(0, 'rgba(183,213,255,0)'); g.addColorStop(0.5, activeView === 'bloom' ? 'rgba(255,141,196,0.16)' : 'rgba(183,213,255,0.12)'); g.addColorStop(1, 'rgba(183,213,255,0)'); ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(0, y - 22, W, 44); }
-function centerTitle(title, subtitle, cy = H * 0.42) { ctx.textAlign = 'center'; ctx.globalAlpha = 0.82; ctx.fillStyle = 'rgba(221,233,252,0.92)'; ctx.font = `700 ${Math.max(28, Math.min(W, H) * 0.06)}px "Orbitron", "Eurostile", sans-serif`; ctx.fillText(title, W / 2, cy - 10); ctx.globalAlpha = 0.54; ctx.font = `500 ${Math.max(12, Math.min(W, H) * 0.018)}px Inter, sans-serif`; ctx.fillText(subtitle, W / 2, cy + 34); }
+function drawScanline() { if (!scanEnabled) return; const y = (performance.now() * .035) % (H + 80) - 40; const g = ctx.createLinearGradient(0, y - 22, 0, y + 22); g.addColorStop(0, 'rgba(183,213,255,0)'); g.addColorStop(.5, activeView === 'bloom' ? 'rgba(255,141,196,0.16)' : 'rgba(183,213,255,0.12)'); g.addColorStop(1, 'rgba(183,213,255,0)'); ctx.globalAlpha = 1; ctx.fillStyle = g; ctx.fillRect(0, y - 22, W, 44); }
+function centerTitle(title, subtitle, cy = H * .42) { ctx.textAlign = 'center'; ctx.globalAlpha = .82; ctx.fillStyle = 'rgba(221,233,252,0.92)'; ctx.font = `700 ${Math.max(28, Math.min(W, H) * .06)}px "Orbitron", "Eurostile", sans-serif`; ctx.fillText(title, W / 2, cy - 10); ctx.globalAlpha = .54; ctx.font = `500 ${Math.max(12, Math.min(W, H) * .018)}px Inter, sans-serif`; ctx.fillText(subtitle, W / 2, cy + 34); }
 function drawClockView() { tickClock(); for (const slot of slots) { slot.update(); slot.draw(pulse); } drawClockLabels(); }
-function drawClockLabels() { if (!slots.length) return; const fs = slots[0].fontSize; ctx.textAlign = 'center'; ctx.globalAlpha = 0.82; ctx.fillStyle = 'rgba(206,219,241,0.9)'; ctx.font = `600 ${Math.max(12, fs * 0.1)}px Inter, sans-serif`; ctx.fillText(dateStr, W / 2, H / 2 + fs * 0.77); ctx.globalAlpha = 0.34; ctx.fillStyle = 'rgba(158,176,208,0.9)'; ctx.font = `500 ${Math.max(10, fs * 0.072)}px "Orbitron", sans-serif`; ctx.fillText('GOTHAM GRID TERMINAL', W / 2, H / 2 - fs * 0.87); }
-function drawCaseView() { const cx = W / 2, cy = H * .42; drawRings(cx, cy, 5); CASES.forEach((item, i) => { const a = i / CASES.length * Math.PI * 2 + performance.now() * .0002; const x = cx + Math.cos(a) * (145 + item.heat * .7); const y = cy + Math.sin(a) * 82; ctx.globalAlpha = .58; ctx.fillStyle = item.status === 'critical' ? '#dc8d8a' : item.status === 'watch' ? '#d7b66d' : '#88d6b0'; ctx.beginPath(); ctx.arc(x, y, 5 + item.heat / 30, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = .2; ctx.strokeStyle = ctx.fillStyle; line(cx, cy, x, y); }); centerTitle('CASEBOARD', 'Linked investigations orbit by heat and status.', cy); }
+function drawClockLabels() { if (!slots.length) return; const fs = slots[0].fontSize; ctx.textAlign = 'center'; ctx.globalAlpha = .82; ctx.fillStyle = 'rgba(206,219,241,0.9)'; ctx.font = `600 ${Math.max(12, fs * .1)}px Inter, sans-serif`; ctx.fillText(dateStr, W / 2, H / 2 + fs * .77); ctx.globalAlpha = .34; ctx.fillStyle = 'rgba(158,176,208,0.9)'; ctx.font = `500 ${Math.max(10, fs * .072)}px "Orbitron", sans-serif`; ctx.fillText('GOTHAM GRID TERMINAL', W / 2, H / 2 - fs * .87); }
+function drawCaseView() { const cx = W / 2, cy = H * .42, t = performance.now() * .001; drawRings(cx, cy, 5); const anchors = [[cx - 290, cy + 126], [cx, cy - 168], [cx + 290, cy + 126]]; ctx.lineWidth = 1.4; anchors.forEach((a, i) => { ctx.globalAlpha = .75; ctx.strokeStyle = 'rgba(183,213,255,.58)'; ctx.strokeRect(a[0] - 22, a[1] - 22, 44, 44); ctx.globalAlpha = .25; ctx.beginPath(); ctx.arc(a[0], a[1], 74 + Math.sin(t * 2 + i) * 10, 0, Math.PI * 2); ctx.stroke(); }); CASES.forEach((item, i) => { const a = i / CASES.length * Math.PI * 2 + t * .22; const x = cx + Math.cos(a) * (112 + item.heat * .72); const y = cy + Math.sin(a) * 78; const color = item.status === 'critical' ? '#dc8d8a' : item.status === 'watch' ? '#d7b66d' : '#88d6b0'; anchors.forEach(anchor => { ctx.globalAlpha = .1 + item.heat / 900; ctx.strokeStyle = color; line(anchor[0], anchor[1], x, y); }); ctx.globalAlpha = .42; ctx.strokeStyle = color; ctx.beginPath(); ctx.ellipse(x, y, 22 + item.heat / 5, 10 + item.heat / 14, a, 0, Math.PI * 2); ctx.stroke(); ctx.globalAlpha = .82; ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, 4 + item.heat / 28, 0, Math.PI * 2); ctx.fill(); }); centerTitle('CASEBOARD', 'Triangulated case nodes resolve into live bearing locks.', cy); }
 function drawTransitView() { const cx = W / 2, cy = H * .42; ctx.globalAlpha = .38; ctx.strokeStyle = 'rgba(183,213,255,.6)'; ctx.lineWidth = 3; for (let i = 0; i < 3; i++) { const y = cy - 82 + i * 82; line(cx - 280, y, cx + 280, y + (i - 1) * 34); const trainX = cx - 260 + ((performance.now() * (.035 + i * .012)) % 520); ctx.globalAlpha = .9; ctx.fillStyle = [ '#b7d5ff', '#d7b66d', '#88d6b0' ][i]; ctx.beginPath(); ctx.arc(trainX, y + (i - 1) * 18, 8, 0, Math.PI * 2); ctx.fill(); ctx.globalAlpha = .38; } centerTitle('TRANSIT MONITOR', 'Moving route pulses show live line activity.', cy); }
-function drawArsenalView() { const cx = W / 2, cy = H * .42; ctx.strokeStyle = 'rgba(183,213,255,.5)'; ctx.lineWidth = 2; ARSENAL.forEach((item, i) => { const x = cx - 180 + i * 180; const h = 70 + item.value; ctx.globalAlpha = .18; ctx.strokeRect(x - 36, cy + 80 - h, 72, h); ctx.globalAlpha = .72; ctx.fillStyle = item.value > 85 ? '#88d6b0' : item.value > 70 ? '#b7d5ff' : '#d7b66d'; ctx.fillRect(x - 34, cy + 78 - h, 68, h - 4); ctx.globalAlpha = .5; line(x, cy - 120, x, cy + 92); }); centerTitle('ARSENAL', 'Equipment readiness renders as live calibration columns.', cy); }
+function drawArsenalView() { const cx = W / 2, cy = H * .42, t = performance.now() * .001; ctx.lineWidth = 2; for (let i = 0; i < 3; i++) { const x = cx - 210 + i * 210, item = ARSENAL[i]; ctx.globalAlpha = .16; ctx.strokeStyle = 'rgba(183,213,255,.6)'; ctx.strokeRect(x - 54, cy - 108, 108, 216); ctx.globalAlpha = .26; ctx.beginPath(); ctx.arc(x, cy - 16, 62, t + i, t + i + Math.PI * 1.55); ctx.stroke(); ctx.globalAlpha = .7; ctx.fillStyle = item.progress > 85 ? '#88d6b0' : item.progress > 70 ? '#b7d5ff' : '#d7b66d'; ctx.fillRect(x - 36, cy + 82 - item.progress * 1.58, 72, item.progress * 1.58); ctx.globalAlpha = .36; ctx.strokeStyle = ctx.fillStyle; for (let k = 0; k < 5; k++) line(x - 76, cy - 82 + k * 38, x + 76, cy - 62 + k * 34); ctx.globalAlpha = .82; ctx.strokeStyle = 'rgba(232,240,252,.72)'; ctx.beginPath(); ctx.moveTo(x - 40, cy + 118); ctx.lineTo(x + 40, cy + 118); ctx.lineTo(x + 22, cy + 146); ctx.lineTo(x - 22, cy + 146); ctx.closePath(); ctx.stroke(); } centerTitle('ARSENAL', 'Exploded hardware schematics calibrate against live telemetry.', cy); }
 function drawBloomView() { const cx = W / 2, cy = H * .42; for (let i = 0; i < 76; i++) { const a = i * .54 + performance.now() * (.0005 + bloomMode * .00025); const r = 55 + (i % 13) * 16 + Math.sin(performance.now() * .001 + i) * 12; ctx.globalAlpha = .2; ctx.fillStyle = `hsl(${(i * 23 + performance.now() * .04) % 360}, 88%, 68%)`; ctx.beginPath(); ctx.arc(cx + Math.cos(a) * r, cy + Math.sin(a) * r * .55, 3 + (i % 5), 0, Math.PI * 2); ctx.fill(); } centerTitle('SIGNAL BLOOM', 'The only colorful module isolates spectrum anomalies.', cy); }
-function drawArchiveView() { const cx = W / 2, cy = H * .42; ctx.strokeStyle = 'rgba(183,213,255,.45)'; ctx.lineWidth = 2; line(cx - 300, cy, cx + 300, cy); ARCHIVE.forEach((item, i) => { const x = cx - 220 + i * 220; ctx.globalAlpha = .8; ctx.fillStyle = '#b7d5ff'; ctx.fillRect(x - 4, cy - 54, 8, 108); ctx.globalAlpha = .22; ctx.strokeRect(x - 44, cy - 76, 88, 152); }); centerTitle('ARCHIVE', 'Timeline vault groups sealed logs by evidence type.', cy); }
+function drawArchiveView() { const cx = W / 2, cy = H * .42, t = performance.now() * .001; ctx.lineWidth = 1.5; for (let i = 0; i < 9; i++) { const x = cx - 300 + i * 75; ctx.globalAlpha = .18 + (i % 3) * .07; ctx.strokeStyle = 'rgba(183,213,255,.62)'; ctx.strokeRect(x, cy - 122 + (i % 2) * 18, 48, 168); for (let j = 0; j < 5; j++) { ctx.globalAlpha = .08 + j * .025; ctx.fillStyle = '#b7d5ff'; ctx.fillRect(x + 8, cy - 104 + j * 28 + (i % 2) * 18, 32, 4); } } ctx.globalAlpha = .64; ctx.strokeStyle = '#88d6b0'; ctx.beginPath(); for (let x = cx - 310; x <= cx + 310; x += 8) { const y = cy + 96 + Math.sin((x + performance.now() * .08) * .035) * 20 + Math.sin(x * .09) * 8; if (x === cx - 310) ctx.moveTo(x, y); else ctx.lineTo(x, y); } ctx.stroke(); const scanX = cx - 310 + ((performance.now() * .07) % 620); ctx.globalAlpha = .22; ctx.fillStyle = 'rgba(183,213,255,.55)'; ctx.fillRect(scanX, cy - 148, 18, 282); centerTitle('ARCHIVE', 'Encrypted vault blocks are scanned into waveform evidence.', cy); }
 function drawRings(cx, cy, count) { ctx.globalAlpha = .16; ctx.strokeStyle = 'rgba(183,213,255,.9)'; ctx.lineWidth = 1; for (let i = 0; i < count; i++) { ctx.beginPath(); ctx.arc(cx, cy, 70 + i * 34 + Math.sin(performance.now() * .001 + i) * 5, 0, Math.PI * 2); ctx.stroke(); } }
 function buildClock() { const baseSlots = showSeconds ? 8 : 5; const fs = showSeconds ? Math.min(H * .29, W / 8.2) : Math.min(H * .31, W / 5.3); const charW = fs * .7, colonW = fs * .36, gap = fs * .07; const total = showSeconds ? charW * 6 + colonW * 2 + gap * 7 : charW * 4 + colonW + gap * 4; let x = (W - total) / 2; const cy = H / 2; slots = Array.from({ length: baseSlots }, (_, i) => { const colon = showSeconds ? (i === 2 || i === 5) : i === 2; const w = colon ? colonW : charW; const s = new Slot(x + w / 2, cy, fs, colon ? 56 : 210, colon); x += w + gap; return s; }); lastSec = -1; }
 function tickClock() { const now = new Date(), sec = now.getSeconds(); if (sec === lastSec) return; pulse = 1; lastSec = sec; const pad = n => String(n).padStart(2, '0'); let hour = now.getHours(); const suffix = use24Hour ? '' : (hour >= 12 ? ' PM' : ' AM'); if (!use24Hour) hour = hour % 12 || 12; const hh = pad(hour), mm = pad(now.getMinutes()), ss = pad(sec); const chars = showSeconds ? [hh[0], hh[1], ':', mm[0], mm[1], ':', ss[0], ss[1]] : [hh[0], hh[1], ':', mm[0], mm[1]]; for (let i = 0; i < slots.length; i++) slots[i].setChar(chars[i]); dateStr = `${WDAYS[now.getDay()]} / ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}${suffix}`; phase.textContent = now.getHours() > 6 && now.getHours() < 18 ? 'Day' : 'Night'; }
