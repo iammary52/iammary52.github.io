@@ -54,7 +54,7 @@
       position: absolute;
       top: 22px;
       left: 22px;
-      width: min(330px, calc(100vw - 44px));
+      width: min(348px, calc(100vw - 44px));
       border-radius: 12px;
       padding: 16px;
     }
@@ -100,7 +100,7 @@
 
     .menu {
       display: grid;
-      gap: 8px;
+      gap: 7px;
       margin-bottom: 14px;
     }
 
@@ -120,8 +120,8 @@
       grid-template-columns: 28px 1fr auto;
       gap: 10px;
       align-items: center;
-      min-height: 54px;
-      padding: 9px 10px;
+      min-height: 48px;
+      padding: 8px 10px;
       text-align: left;
     }
 
@@ -142,6 +142,30 @@
       box-shadow: inset 0 0 18px rgba(184, 207, 241, 0.14);
     }
 
+    .menu button.is-color {
+      border-color: rgba(255, 203, 113, 0.44);
+      background:
+        linear-gradient(135deg, rgba(255, 92, 138, 0.23), rgba(120, 98, 255, 0.18) 48%, rgba(48, 218, 188, 0.2)),
+        rgba(14, 20, 31, 0.82);
+    }
+
+    .menu button.is-color .menu__icon {
+      color: #fff4c7;
+      border-color: rgba(255, 229, 155, 0.58);
+      background: radial-gradient(circle at 28% 20%, rgba(255,255,255,0.8), rgba(255, 98, 146, 0.54) 34%, rgba(74, 209, 224, 0.34));
+      box-shadow: 0 0 20px rgba(255, 104, 166, 0.24);
+    }
+
+    .menu button.is-color .menu__stat { color: #ffe08c; }
+
+    .menu button.is-color.is-active {
+      border-color: rgba(255, 225, 147, 0.86);
+      background:
+        linear-gradient(110deg, rgba(255, 86, 136, 0.48), rgba(111, 102, 255, 0.42) 50%, rgba(55, 221, 190, 0.42)),
+        rgba(16, 22, 33, 0.88);
+      box-shadow: inset 0 0 24px rgba(255, 224, 140, 0.16), 0 0 34px rgba(255, 97, 153, 0.14);
+    }
+
     .menu__icon {
       width: 28px;
       height: 28px;
@@ -150,7 +174,7 @@
       border: 1px solid rgba(181, 204, 239, 0.22);
       border-radius: 7px;
       color: var(--accent);
-      font-size: 12px;
+      font-size: 11px;
       letter-spacing: 0.02em;
     }
 
@@ -170,10 +194,7 @@
       letter-spacing: 0.02em;
     }
 
-    .menu__stat {
-      font-size: 11px;
-      color: var(--accent);
-    }
+    .menu__stat { font-size: 11px; color: var(--accent); }
 
     .meter {
       border-top: 1px solid rgba(160, 181, 214, 0.14);
@@ -215,11 +236,15 @@
       transition: opacity 180ms ease, transform 180ms ease;
     }
 
-    .sidecar.is-hidden {
+    .sidecar.is-hidden,
+    .case-dock.is-hidden,
+    .transit-dock.is-hidden,
+    .module-dock.is-hidden {
       opacity: 0;
-      transform: translateX(16px);
       pointer-events: none;
     }
+
+    .sidecar.is-hidden { transform: translateX(16px); }
 
     .panel-title {
       display: flex;
@@ -261,15 +286,18 @@
       gap: 8px;
     }
 
-    .readout {
-      min-height: 70px;
+    .readout,
+    .module-card {
       border: 1px solid rgba(151, 174, 213, 0.16);
       border-radius: 8px;
       padding: 10px;
       background: rgba(11, 16, 25, 0.58);
     }
 
-    .readout span {
+    .readout { min-height: 70px; }
+
+    .readout span,
+    .module-card span {
       display: block;
       color: var(--faint);
       font-size: 10px;
@@ -278,14 +306,11 @@
       margin-bottom: 8px;
     }
 
-    .readout strong {
-      display: block;
-      font-size: 20px;
-      letter-spacing: 0.02em;
-    }
+    .readout strong { display: block; font-size: 20px; letter-spacing: 0.02em; }
 
     .case-dock,
-    .transit-dock {
+    .transit-dock,
+    .module-dock {
       position: absolute;
       left: 50%;
       bottom: 26px;
@@ -297,11 +322,8 @@
     }
 
     .case-dock.is-hidden,
-    .transit-dock.is-hidden {
-      opacity: 0;
-      transform: translateX(-50%) translateY(18px);
-      pointer-events: none;
-    }
+    .transit-dock.is-hidden,
+    .module-dock.is-hidden { transform: translateX(-50%) translateY(18px); }
 
     .case-toolbar {
       display: grid;
@@ -327,10 +349,7 @@
       box-shadow: 0 0 0 3px rgba(183, 213, 255, 0.1);
     }
 
-    .case-filter {
-      display: flex;
-      gap: 8px;
-    }
+    .case-filter { display: flex; gap: 8px; }
 
     .case-filter button {
       height: 38px;
@@ -340,7 +359,8 @@
       text-transform: uppercase;
     }
 
-    .cases {
+    .cases,
+    .module-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 10px;
@@ -354,20 +374,8 @@
       background: rgba(10, 15, 23, 0.66);
     }
 
-    .case-card strong {
-      display: block;
-      margin-bottom: 8px;
-      font-size: 13px;
-      letter-spacing: 0.04em;
-    }
-
-    .case-card p {
-      min-height: 34px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.45;
-      margin-bottom: 10px;
-    }
+    .case-card strong { display: block; margin-bottom: 8px; font-size: 13px; letter-spacing: 0.04em; }
+    .case-card p { min-height: 34px; color: var(--muted); font-size: 12px; line-height: 1.45; margin-bottom: 10px; }
 
     .case-meta {
       display: flex;
@@ -390,11 +398,7 @@
       align-items: stretch;
     }
 
-    .route-list {
-      display: grid;
-      gap: 9px;
-      align-content: start;
-    }
+    .route-list { display: grid; gap: 9px; align-content: start; }
 
     .route {
       border: 1px solid rgba(151, 174, 213, 0.17);
@@ -403,18 +407,8 @@
       background: rgba(10, 15, 23, 0.66);
     }
 
-    .route strong {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      margin-bottom: 7px;
-      font-size: 13px;
-    }
-
-    .route span {
-      color: var(--muted);
-      font-size: 12px;
-    }
+    .route strong { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 7px; font-size: 13px; }
+    .route span { color: var(--muted); font-size: 12px; }
 
     .route-map {
       position: relative;
@@ -429,14 +423,7 @@
       background-size: 34px 34px;
     }
 
-    .rail {
-      position: absolute;
-      left: 12%;
-      right: 12%;
-      height: 2px;
-      background: rgba(183, 213, 255, 0.48);
-    }
-
+    .rail { position: absolute; left: 12%; right: 12%; height: 2px; background: rgba(183, 213, 255, 0.48); }
     .rail:nth-child(1) { top: 30%; transform: rotate(-8deg); }
     .rail:nth-child(2) { top: 54%; transform: rotate(7deg); }
     .rail:nth-child(3) { top: 73%; transform: rotate(-2deg); }
@@ -456,10 +443,27 @@
     .train.two { top: 50%; animation-delay: -3s; background: var(--amber); }
     .train.three { top: 69%; animation-delay: -4.5s; background: var(--green); }
 
-    @keyframes travel {
-      from { left: 10%; }
-      to { left: 86%; }
+    .module-card strong {
+      display: block;
+      font-size: 15px;
+      letter-spacing: 0.03em;
+      margin-bottom: 8px;
     }
+
+    .module-card p {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .module-dock.is-bloom {
+      border-color: rgba(255, 212, 133, 0.4);
+      background:
+        linear-gradient(128deg, rgba(255, 78, 142, 0.16), rgba(87, 115, 255, 0.11) 48%, rgba(44, 218, 186, 0.15)),
+        var(--panel-bg);
+    }
+
+    @keyframes travel { from { left: 10%; } to { left: 86%; } }
 
     .footer {
       position: absolute;
@@ -479,14 +483,8 @@
     @media (max-width: 880px) {
       body { overflow: auto; }
       canvas { position: fixed; inset: 0; }
-      .shell {
-        position: relative;
-        min-height: 100vh;
-        display: grid;
-        gap: 14px;
-        padding: 14px;
-      }
-      .hud, .sidecar, .case-dock, .transit-dock, .footer {
+      .shell { position: relative; min-height: 100vh; display: grid; gap: 14px; padding: 14px; }
+      .hud, .sidecar, .case-dock, .transit-dock, .module-dock, .footer {
         position: relative;
         inset: auto;
         width: 100%;
@@ -496,12 +494,8 @@
         top: auto;
         bottom: auto;
       }
-      .case-dock.is-hidden,
-      .transit-dock.is-hidden,
-      .sidecar.is-hidden {
-        display: none;
-      }
-      .cases { grid-template-columns: 1fr; }
+      .case-dock.is-hidden, .transit-dock.is-hidden, .sidecar.is-hidden, .module-dock.is-hidden { display: none; }
+      .cases, .module-grid { grid-template-columns: 1fr; }
       .transit-dock { grid-template-columns: 1fr; }
       .case-toolbar { grid-template-columns: 1fr; }
       .case-filter { flex-wrap: wrap; }
@@ -563,6 +557,11 @@
       </div>
     </section>
 
+    <section class="module-dock panel is-hidden" id="moduleDock" aria-label="Module detail">
+      <div class="panel-title"><span id="moduleTitle">module</span><span id="moduleStatus">online</span></div>
+      <div class="module-grid" id="moduleGrid"></div>
+    </section>
+
     <div class="footer">
       <span id="footerLeft">Gotham Grid Clock</span>
       <span id="footerRight">Click modules to switch views</span>
@@ -576,6 +575,10 @@ const menu = document.getElementById('menu');
 const clockPanel = document.getElementById('clockPanel');
 const caseDock = document.getElementById('caseDock');
 const transitDock = document.getElementById('transitDock');
+const moduleDock = document.getElementById('moduleDock');
+const moduleTitle = document.getElementById('moduleTitle');
+const moduleStatus = document.getElementById('moduleStatus');
+const moduleGrid = document.getElementById('moduleGrid');
 const signalValue = document.getElementById('signalValue');
 const signalBar = document.getElementById('signalBar');
 const footerLeft = document.getElementById('footerLeft');
@@ -594,8 +597,44 @@ const phase = document.getElementById('phase');
 const MENU_ITEMS = [
   { id: 'clock', icon: 'CLK', label: 'Clock Grid', description: 'Live city chrono matrix', stat: 'live' },
   { id: 'cases', icon: 'CAS', label: 'Caseboard', description: 'Filter active investigations', stat: '6 files' },
-  { id: 'transit', icon: 'TRN', label: 'Transit', description: 'Monitor elevated routes', stat: '3 lines' }
+  { id: 'transit', icon: 'TRN', label: 'Transit', description: 'Monitor elevated routes', stat: '3 lines' },
+  { id: 'arsenal', icon: 'ARS', label: 'Arsenal', description: 'Calibrate field equipment', stat: '12 kits' },
+  { id: 'bloom', icon: 'BLM', label: 'Signal Bloom', description: 'Color anomaly visualizer', stat: 'rare', colorful: true },
+  { id: 'archive', icon: 'ARC', label: 'Archive', description: 'Review sealed intelligence', stat: '28 logs' }
 ];
+
+const MODULE_DATA = {
+  arsenal: {
+    status: '12 kits',
+    title: 'Arsenal Calibration',
+    footer: 'Equipment matrix is stable',
+    cards: [
+      ['Grapnel', 'Ready', 'Motor tension and line spool are within range.'],
+      ['Cowl Link', 'Encrypted', 'Short-range relay handshake is rotating cleanly.'],
+      ['Field Scanner', 'Charging', 'Spectral lens pack reaches full charge in 18 minutes.']
+    ]
+  },
+  bloom: {
+    status: 'rare signal',
+    title: 'Signal Bloom',
+    footer: 'One colorful module is intentionally isolated',
+    cards: [
+      ['Prism Sweep', 'Active', 'A bright anomaly is mapped without changing the rest of the terminal tone.'],
+      ['Spectrum', 'Violet / Cyan', 'Color is limited to this module so the interface still feels disciplined.'],
+      ['Pulse', 'Dynamic', 'Canvas bloom reacts as a soft atmospheric layer behind the panels.']
+    ]
+  },
+  archive: {
+    status: '28 logs',
+    title: 'Archive Vault',
+    footer: 'Archived intelligence is indexed',
+    cards: [
+      ['Cold Files', '11', 'Dormant leads sorted by district and date.'],
+      ['Recovered Audio', '09', 'Noise-reduced transmissions awaiting review.'],
+      ['Sealed Notes', '08', 'Restricted entries remain locked to read-only mode.']
+    ]
+  }
+};
 
 const CASES = [
   { title: 'Narrows Relay', text: 'Signal bounces through three rooftop repeaters.', status: 'open', district: 'Narrows', heat: 84 },
@@ -651,11 +690,7 @@ class Voxel {
     this.vz += (Math.random() - 0.5) * 4;
   }
 
-  setTarget(x, y, z) {
-    this.tx = x;
-    this.ty = y;
-    this.tz = z;
-  }
+  setTarget(x, y, z) { this.tx = x; this.ty = y; this.tz = z; }
 
   update() {
     this.vx = this.vx * 0.73 + (this.tx - this.x) * 0.22;
@@ -673,7 +708,6 @@ class Voxel {
     const size = cell * 0.72;
     const light = 58 + z * 2.2 + pulseAmount * 4.4;
     const sat = 16 + this.tone * 9;
-
     ctx.globalAlpha = 0.56;
     ctx.fillStyle = `hsl(212, ${sat}%, ${Math.min(82, light + 12)}%)`;
     ctx.beginPath();
@@ -683,7 +717,6 @@ class Voxel {
     ctx.lineTo(px - size * 0.44, py - size * 0.26);
     ctx.closePath();
     ctx.fill();
-
     ctx.globalAlpha = 0.82;
     ctx.fillStyle = `hsl(214, ${sat}%, ${Math.min(74, light)}%)`;
     ctx.beginPath();
@@ -693,7 +726,6 @@ class Voxel {
     ctx.lineTo(px - size * 0.44, py + size * 0.26);
     ctx.closePath();
     ctx.fill();
-
     ctx.globalAlpha = 0.77;
     ctx.fillStyle = `hsl(221, ${sat}%, ${Math.max(24, light - 18)}%)`;
     ctx.beginPath();
@@ -731,21 +763,13 @@ class Slot {
     octx.textAlign = 'center';
     octx.textBaseline = 'middle';
     octx.fillText(ch, cw / 2, chh / 2);
-
     const data = octx.getImageData(0, 0, cw, chh).data;
     const pts = [];
     const step = this.cell;
-
     for (let y = 0; y < chh; y += step) {
       for (let x = 0; x < cw; x += step) {
         const a = data[(y * cw + x) * 4 + 3];
-        if (a > 120) {
-          pts.push({
-            x: this.cx + x - cw / 2,
-            y: this.cy + y - chh / 2,
-            z: Math.floor(((y / chh) * DEPTH + rand(1.2)))
-          });
-        }
+        if (a > 120) pts.push({ x: this.cx + x - cw / 2, y: this.cy + y - chh / 2, z: Math.floor(((y / chh) * DEPTH + rand(1.2))) });
       }
     }
     return pts;
@@ -764,11 +788,7 @@ class Slot {
   }
 
   update() { for (const voxel of this.voxels) voxel.update(); }
-
-  draw(pulseAmount) {
-    const sorted = this.voxels.slice().sort((a, b) => a.z - b.z);
-    for (const voxel of sorted) voxel.draw(this.cell, pulseAmount);
-  }
+  draw(pulseAmount) { for (const voxel of this.voxels.slice().sort((a, b) => a.z - b.z)) voxel.draw(this.cell, pulseAmount); }
 }
 
 function renderMenu() {
@@ -776,6 +796,7 @@ function renderMenu() {
   for (const item of MENU_ITEMS) {
     const btn = document.createElement('button');
     btn.type = 'button';
+    btn.classList.toggle('is-color', !!item.colorful);
     btn.innerHTML = `
       <span class="menu__icon">${item.icon}</span>
       <span><span class="menu__label">${item.label}</span><span class="menu__desc">${item.description}</span></span>
@@ -790,15 +811,29 @@ function renderMenu() {
 function setView(viewId) {
   activeView = viewId;
   renderMenu();
+  const isModule = ['arsenal', 'bloom', 'archive'].includes(activeView);
   clockPanel.classList.toggle('is-hidden', activeView !== 'clock');
   caseDock.classList.toggle('is-hidden', activeView !== 'cases');
   transitDock.classList.toggle('is-hidden', activeView !== 'transit');
-  footerLeft.textContent = MENU_ITEMS.find(item => item.id === activeView).label;
-  footerRight.textContent = activeView === 'clock'
-    ? 'Use controls to change clock behavior'
-    : activeView === 'cases'
-      ? 'Search and filter active files'
-      : 'Live routes rendered on terminal map';
+  moduleDock.classList.toggle('is-hidden', !isModule);
+  moduleDock.classList.toggle('is-bloom', activeView === 'bloom');
+  if (isModule) renderModule(activeView);
+  const current = MENU_ITEMS.find(item => item.id === activeView);
+  footerLeft.textContent = current.label;
+  footerRight.textContent = isModule ? MODULE_DATA[activeView].footer : activeView === 'clock' ? 'Use controls to change clock behavior' : activeView === 'cases' ? 'Search and filter active files' : 'Live routes rendered on terminal map';
+}
+
+function renderModule(id) {
+  const data = MODULE_DATA[id];
+  moduleTitle.textContent = data.title;
+  moduleStatus.textContent = data.status;
+  moduleGrid.innerHTML = data.cards.map(card => `
+    <article class="module-card">
+      <span>${card[1]}</span>
+      <strong>${card[0]}</strong>
+      <p>${card[2]}</p>
+    </article>
+  `).join('');
 }
 
 function resize() {
@@ -811,25 +846,15 @@ function resize() {
 function drawGrid() {
   const major = Math.max(38, Math.floor(Math.min(W, H) / 18));
   const minor = Math.floor(major / 2);
-
   ctx.globalAlpha = 0.24;
   ctx.strokeStyle = 'rgba(125, 148, 188, 0.18)';
   ctx.lineWidth = 1;
-  for (let x = (gridShift % major) - major; x < W + major; x += major) {
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-  }
-  for (let y = (gridShift * 0.58 % major) - major; y < H + major; y += major) {
-    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-  }
-
+  for (let x = (gridShift % major) - major; x < W + major; x += major) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = (gridShift * 0.58 % major) - major; y < H + major; y += major) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
   ctx.globalAlpha = 0.09;
   ctx.strokeStyle = 'rgba(165, 186, 220, 0.16)';
-  for (let x = (gridShift % minor) - minor; x < W + minor; x += minor) {
-    ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
-  }
-  for (let y = (gridShift * 0.48 % minor) - minor; y < H + minor; y += minor) {
-    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
-  }
+  for (let x = (gridShift % minor) - minor; x < W + minor; x += minor) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+  for (let y = (gridShift * 0.48 % minor) - minor; y < H + minor; y += minor) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
 }
 
 function buildVignette() {
@@ -838,18 +863,14 @@ function buildVignette() {
   vignette.addColorStop(1, 'rgba(4,5,9,0.9)');
 }
 
-function drawVignette() {
-  ctx.globalAlpha = 1;
-  ctx.fillStyle = vignette;
-  ctx.fillRect(0, 0, W, H);
-}
+function drawVignette() { ctx.globalAlpha = 1; ctx.fillStyle = vignette; ctx.fillRect(0, 0, W, H); }
 
 function drawScanline() {
   if (!scanEnabled) return;
   const y = (performance.now() * 0.035) % (H + 80) - 40;
   const g = ctx.createLinearGradient(0, y - 22, 0, y + 22);
   g.addColorStop(0, 'rgba(183,213,255,0)');
-  g.addColorStop(0.5, 'rgba(183,213,255,0.12)');
+  g.addColorStop(0.5, activeView === 'bloom' ? 'rgba(255,141,196,0.16)' : 'rgba(183,213,255,0.12)');
   g.addColorStop(1, 'rgba(183,213,255,0)');
   ctx.globalAlpha = 1;
   ctx.fillStyle = g;
@@ -860,12 +881,10 @@ function drawLabels() {
   if (!slots.length) return;
   const fs = slots[0].fontSize;
   ctx.textAlign = 'center';
-
   ctx.globalAlpha = 0.82;
   ctx.fillStyle = 'rgba(206,219,241,0.9)';
   ctx.font = `600 ${Math.max(12, fs * 0.1)}px Inter, 'Segoe UI', sans-serif`;
   ctx.fillText(dateStr, W / 2, H / 2 + fs * 0.77);
-
   ctx.globalAlpha = 0.34;
   ctx.fillStyle = 'rgba(158,176,208,0.9)';
   ctx.font = `500 ${Math.max(10, fs * 0.072)}px "Orbitron", "Eurostile", sans-serif`;
@@ -873,24 +892,7 @@ function drawLabels() {
 }
 
 function drawCaseView() {
-  ctx.textAlign = 'center';
-  ctx.globalAlpha = 0.16;
-  ctx.strokeStyle = 'rgba(183,213,255,0.9)';
-  ctx.lineWidth = 1;
-  const cx = W / 2;
-  const cy = H * 0.43;
-  for (let i = 0; i < 5; i++) {
-    ctx.beginPath();
-    ctx.arc(cx, cy, 70 + i * 34 + Math.sin(performance.now() * 0.001 + i) * 5, 0, Math.PI * 2);
-    ctx.stroke();
-  }
-  ctx.globalAlpha = 0.78;
-  ctx.fillStyle = 'rgba(221,233,252,0.92)';
-  ctx.font = `700 ${Math.max(28, Math.min(W, H) * 0.06)}px "Orbitron", "Eurostile", sans-serif`;
-  ctx.fillText('CASEBOARD ACTIVE', cx, cy - 10);
-  ctx.globalAlpha = 0.54;
-  ctx.font = `500 ${Math.max(12, Math.min(W, H) * 0.018)}px Inter, sans-serif`;
-  ctx.fillText('Filter the dock below to isolate current district signals.', cx, cy + 34);
+  drawRings('CASEBOARD ACTIVE', 'Filter the dock below to isolate current district signals.', 'rgba(183,213,255,0.9)');
 }
 
 function drawTransitView() {
@@ -907,13 +909,53 @@ function drawTransitView() {
     ctx.lineTo(x + 82, cy + 120);
     ctx.stroke();
   }
+  drawCenterTitle('TRANSIT MONITOR', 'Route pulses and arrival windows are updating live.', cy);
+}
+
+function drawModuleView() {
+  const item = MENU_ITEMS.find(menuItem => menuItem.id === activeView);
+  if (activeView === 'bloom') {
+    const cx = W / 2;
+    const cy = H * 0.42;
+    for (let i = 0; i < 42; i++) {
+      const angle = i * 0.82 + performance.now() * 0.0007;
+      const radius = 70 + (i % 7) * 27 + Math.sin(performance.now() * 0.001 + i) * 10;
+      ctx.globalAlpha = 0.22;
+      ctx.fillStyle = `hsl(${(i * 31 + performance.now() * 0.03) % 360}, 88%, 68%)`;
+      ctx.beginPath();
+      ctx.arc(cx + Math.cos(angle) * radius, cy + Math.sin(angle) * radius * 0.5, 3 + (i % 4), 0, Math.PI * 2);
+      ctx.fill();
+    }
+    drawCenterTitle('SIGNAL BLOOM', 'A single color anomaly is allowed through the interface.', cy);
+    return;
+  }
+  drawRings(item.label.toUpperCase(), item.description, 'rgba(183,213,255,0.78)');
+}
+
+function drawRings(title, subtitle, color) {
+  const cx = W / 2;
+  const cy = H * 0.43;
+  ctx.textAlign = 'center';
+  ctx.globalAlpha = 0.16;
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1;
+  for (let i = 0; i < 5; i++) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, 70 + i * 34 + Math.sin(performance.now() * 0.001 + i) * 5, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+  drawCenterTitle(title, subtitle, cy);
+}
+
+function drawCenterTitle(title, subtitle, cy) {
+  ctx.textAlign = 'center';
   ctx.globalAlpha = 0.82;
   ctx.fillStyle = 'rgba(221,233,252,0.92)';
   ctx.font = `700 ${Math.max(28, Math.min(W, H) * 0.06)}px "Orbitron", "Eurostile", sans-serif`;
-  ctx.fillText('TRANSIT MONITOR', cx, cy - 10);
+  ctx.fillText(title, W / 2, cy - 10);
   ctx.globalAlpha = 0.54;
   ctx.font = `500 ${Math.max(12, Math.min(W, H) * 0.018)}px Inter, sans-serif`;
-  ctx.fillText('Route pulses and arrival windows are updating live.', cx, cy + 34);
+  ctx.fillText(subtitle, W / 2, cy + 34);
 }
 
 function buildClock() {
@@ -922,9 +964,7 @@ function buildClock() {
   const charW = fs * 0.7;
   const colonW = fs * 0.36;
   const gap = fs * 0.07;
-  const total = showSeconds
-    ? charW * 6 + colonW * 2 + gap * 7
-    : charW * 4 + colonW + gap * 4;
+  const total = showSeconds ? charW * 6 + colonW * 2 + gap * 7 : charW * 4 + colonW + gap * 4;
   let x = (W - total) / 2;
   const cy = H / 2;
   const layout = [];
@@ -945,10 +985,8 @@ function tickClock() {
   const now = new Date();
   const sec = now.getSeconds();
   if (sec === lastSec) return;
-
   pulse = 1;
   lastSec = sec;
-
   const pad = n => String(n).padStart(2, '0');
   let hour = now.getHours();
   const suffix = use24Hour ? '' : (hour >= 12 ? ' PM' : ' AM');
@@ -956,11 +994,9 @@ function tickClock() {
   const hh = pad(hour);
   const mm = pad(now.getMinutes());
   const ss = pad(sec);
-  const chars = showSeconds
-    ? [hh[0], hh[1], ':', mm[0], mm[1], ':', ss[0], ss[1]]
-    : [hh[0], hh[1], ':', mm[0], mm[1]];
+  const chars = showSeconds ? [hh[0], hh[1], ':', mm[0], mm[1], ':', ss[0], ss[1]] : [hh[0], hh[1], ':', mm[0], mm[1]];
   for (let i = 0; i < slots.length; i++) slots[i].setChar(chars[i]);
-  dateStr = `${WDAYS[now.getDay()]} · ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}${suffix}`;
+  dateStr = `${WDAYS[now.getDay()]} / ${now.getDate()} ${MONTHS[now.getMonth()]} ${now.getFullYear()}${suffix}`;
   phase.textContent = now.getHours() > 6 && now.getHours() < 18 ? 'Day' : 'Night';
 }
 
@@ -1030,16 +1066,15 @@ function updateReadouts() {
 function loop() {
   gridShift += 0.13;
   pulse = Math.max(0, pulse - 0.03);
-
   ctx.globalAlpha = 1;
   ctx.fillStyle = '#070b12';
   ctx.fillRect(0, 0, W, H);
-
   drawGrid();
   ctx.save();
   if (activeView === 'clock') drawClockView();
   if (activeView === 'cases') drawCaseView();
   if (activeView === 'transit') drawTransitView();
+  if (['arsenal', 'bloom', 'archive'].includes(activeView)) drawModuleView();
   ctx.restore();
   drawScanline();
   drawVignette();
