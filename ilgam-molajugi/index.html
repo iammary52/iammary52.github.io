@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>일감몰아주기 증여의제 | 요건판단부터 계산까지</title>
+  <meta name="description" content="국세청 안내를 바탕으로 일감몰아주기 증여의제 과세요건, 거래비율, 주식보유비율, 증여의제이익 계산을 한 화면에서 확인하는 실무용 설명 페이지" />
+  <style>
+    :root{--bg:#f6f8fb;--card:#fff;--ink:#15202b;--muted:#607080;--line:#dce3ea;--blue:#1d4ed8;--green:#15803d;--red:#b91c1c;--amber:#b45309;--soft:#eef4ff;--radius:20px}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",Arial,sans-serif;background:linear-gradient(180deg,#edf4ff 0,#f8fafc 260px);color:var(--ink);line-height:1.65}a{color:var(--blue)}.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 80px}.hero{padding:34px 0 18px}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:6px 12px;border-radius:999px;background:#dbeafe;color:#1e40af;font-weight:700;font-size:13px}.hero h1{font-size:clamp(30px,5vw,54px);line-height:1.08;margin:18px 0 14px;letter-spacing:-.04em}.hero p{font-size:18px;color:#415163;max-width:860px;margin:0}.grid{display:grid;gap:18px}.cols{grid-template-columns:repeat(3,minmax(0,1fr))}.two{grid-template-columns:1.05fr .95fr}.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 14px 30px rgba(15,23,42,.06)}.card h2,.card h3{margin-top:0;line-height:1.25;letter-spacing:-.025em}.card h2{font-size:26px}.card h3{font-size:20px}.pill{display:inline-block;border-radius:999px;background:#f1f5f9;color:#334155;padding:5px 10px;font-size:13px;font-weight:700}.step{display:flex;gap:14px;align-items:flex-start}.num{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#2563eb;color:#fff;font-weight:800}.mini{font-size:13px;color:var(--muted)}.ok{color:var(--green);font-weight:800}.bad{color:var(--red);font-weight:800}.warn{color:var(--amber);font-weight:800}.formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0f172a;color:#e2e8f0;border-radius:16px;padding:16px;overflow:auto}.flow{display:grid;gap:14px}.flow .item{border-left:5px solid #3b82f6;background:#f8fbff;padding:16px;border-radius:14px}.table{width:100%;border-collapse:collapse;font-size:14px}.table th,.table td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.table th{background:#f8fafc}.calc label{display:block;font-weight:700;margin:12px 0 6px}.calc input,.calc select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:15px;background:#fff}.calc .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.result{background:#0f172a;color:#fff;border-radius:20px;padding:20px}.result .big{font-size:30px;font-weight:900;letter-spacing:-.03em}.badge{display:inline-flex;align-items:center;border-radius:999px;padding:6px 11px;font-size:13px;font-weight:800;background:#e2e8f0;color:#0f172a}.badge.red{background:#fee2e2;color:#991b1b}.badge.green{background:#dcfce7;color:#166534}.badge.amber{background:#fef3c7;color:#92400e}.note{background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:16px;color:#7c2d12}.footer{margin-top:28px;color:#64748b;font-size:13px}.btn{border:0;border-radius:14px;padding:13px 16px;background:#2563eb;color:#fff;font-weight:800;cursor:pointer;width:100%;font-size:15px;margin-top:16px}.smallbtn{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:12px;padding:9px 12px;font-weight:700;cursor:pointer}@media(max-width:900px){.cols,.two{grid-template-columns:1fr}.calc .row{grid-template-columns:1fr}.wrap{padding:20px 14px 60px}.card{padding:18px}.hero h1{font-size:34px}}
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <span class="eyebrow">상증법 §45의3 · 국세청 안내 기반</span>
+      <h1>일감몰아주기 과세<br/>요건판단부터 계산까지</h1>
+      <p>특수관계법인이 가족·지배주주가 지분을 가진 법인에 매출을 몰아주어 생긴 간접 이익에 대해 증여세를 과세하는 제도입니다. 아래 순서대로 보면 <b>과세대상 여부</b>와 <b>증여의제이익</b>을 한 번에 판단할 수 있습니다.</p>
+    </section>
+
+    <section class="grid cols">
+      <div class="card"><span class="pill">핵심 1</span><h3>수혜법인</h3><p>사업연도 매출 중 지배주주와 특수관계에 있는 법인에 대한 매출 비율이 정상거래비율을 초과하는 내국법인입니다.</p></div>
+      <div class="card"><span class="pill">핵심 2</span><h3>지배주주</h3><p>수혜법인의 최대주주등 중 주식보유비율이 가장 높은 개인입니다. 법인이 최대 보유자인 경우에는 직·간접 보유비율 합계가 가장 높은 개인을 찾습니다.</p></div>
+      <div class="card"><span class="pill">핵심 3</span><h3>수증자</h3><p>사업연도 종료일 기준 지배주주와 그 친족 중 수혜법인에 대한 직·간접 주식보유비율이 한계보유비율을 초과하는 개인입니다.</p></div>
+    </section>
+
+    <section class="grid two" style="margin-top:18px">
+      <div class="card">
+        <h2>1분 판단 흐름</h2>
+        <div class="flow">
+          <div class="item step"><div class="num">1</div><div><b>지배주주 확정</b><br><span class="mini">최대주주등 그룹을 확정하고, 그중 직·간접 주식보유비율이 가장 높은 개인주주를 선정합니다.</span></div></div>
+          <div class="item step"><div class="num">2</div><div><b>특수관계법인 거래비율 판단</b><br><span class="mini">일반 30%, 중견 40%, 중소 50% 초과 여부를 확인합니다. 일반기업은 특수관계법인 매출액 1,000억원 초과 & 거래비율 20% 초과도 체크합니다.</span></div></div>
+          <div class="item step"><div class="num">3</div><div><b>수증자 주식보유비율 판단</b><br><span class="mini">일반기업은 3% 초과, 중견·중소기업은 10% 초과인지 확인합니다.</span></div></div>
+          <div class="item step"><div class="num">4</div><div><b>증여의제이익 계산</b><br><span class="mini">세후영업이익 × 조정 거래비율 × 조정 주식보유비율에서 신고기한 내 배당소득 공제액을 차감합니다.</span></div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h2>법인 유형별 기준</h2>
+        <table class="table">
+          <thead><tr><th>구분</th><th>요건 판단 거래비율</th><th>주식보유 기준</th><th>계산식 차감률</th></tr></thead>
+          <tbody>
+            <tr><td>일반기업</td><td>30% 초과<br><span class="mini">또는 특수관계 매출 1,000억원 초과 & 20% 초과</span></td><td>3% 초과</td><td>거래비율 - 5%<br>주식비율 - 0%</td></tr>
+            <tr><td>중견기업</td><td>40% 초과</td><td>10% 초과</td><td>거래비율 - 20%<br>주식비율 - 5%</td></tr>
+            <tr><td>중소기업</td><td>50% 초과</td><td>10% 초과</td><td>거래비율 - 50%<br>주식비율 - 10%</td></tr>
+          </tbody>
+        </table>
+        <p class="mini">※ 실제 신고에서는 직접·간접 보유분 구분, 배당소득 공제, 사업부문별 과세 등 추가 검토가 필요할 수 있습니다.</p>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:18px">
+      <h2>계산식</h2>
+      <p>국세청 흐름도상 일감몰아주기 증여의제이익은 아래 구조로 계산합니다.</p>
+      <div class="formula">증여의제이익 = [세후영업이익 × 조정 특수관계법인거래비율 × 조정 주식보유비율] - 신고기한 내 배당소득 공제액</div>
+      <table class="table" style="margin-top:14px">
+        <thead><tr><th>구분</th><th>증여의제이익 기본 계산식</th></tr></thead>
+        <tbody>
+          <tr><td>일반기업</td><td>세후영업이익 × (특수관계법인거래비율 - 5%) × 주식보유비율</td></tr>
+          <tr><td>중견기업</td><td>세후영업이익 × (특수관계법인거래비율 - 20%) × (주식보유비율 - 5%)</td></tr>
+          <tr><td>중소기업</td><td>세후영업이익 × (특수관계법인거래비율 - 50%) × (주식보유비율 - 10%)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="grid two" style="margin-top:18px">
+      <div class="card calc">
+        <h2>간편 계산기</h2>
+        <p class="mini">금액은 원 단위로 입력해도 되고, 억원 단위로 맞춰 입력해도 됩니다. 단, 모든 금액 입력 단위는 동일해야 합니다.</p>
+        <div class="row">
+          <div><label>법인 유형</label><select id="type"><option value="general">일반기업</option><option value="middle">중견기업</option><option value="small">중소기업</option></select></div>
+          <div><label>세후영업이익</label><input id="profit" type="number" value="1000000000"></div>
+        </div>
+        <div class="row">
+          <div><label>수혜법인 총매출액</label><input id="totalSales" type="number" value="10000000000"></div>
+          <div><label>특수관계법인 매출액</label><input id="relatedSales" type="number" value="4000000000"></div>
+        </div>
+        <div class="row">
+          <div><label>과세요건 판단용 과세제외매출액</label><input id="excluded" type="number" value="0"></div>
+          <div><label>계산용 추가 과세제외매출액</label><input id="extraExcluded" type="number" value="0"></div>
+        </div>
+        <div class="row">
+          <div><label>수증자 직·간접 주식보유비율(%)</label><input id="share" type="number" step="0.01" value="15"></div>
+          <div><label>신고기한 내 배당소득 공제액</label><input id="dividend" type="number" value="0"></div>
+        </div>
+        <button class="btn" onclick="calc()">계산하기</button>
+      </div>
+      <div class="result" id="result">
+        <span class="badge amber">입력값 기준 예시</span>
+        <h2>결과</h2>
+        <p>계산 버튼을 누르면 과세요건 충족 여부와 예상 증여의제이익이 표시됩니다.</p>
+      </div>
+    </section>
+
+    <section class="card" style="margin-top:18px">
+      <h2>과세제외매출액 체크</h2>
+      <p>특수관계법인거래비율 계산 시 과세제외매출액은 원칙적으로 분모인 총매출액과 분자인 특수관계법인 매출액 모두에서 차감합니다.</p>
+      <table class="table">
+        <thead><tr><th>주요 과세제외 항목</th><th>설명</th></tr></thead>
+        <tbody>
+          <tr><td>중소기업 간 거래</td><td>중소기업인 수혜법인이 중소기업인 특수관계법인과 거래한 매출액</td></tr>
+          <tr><td>자회사 등 지분관계 거래</td><td>수혜법인이 일정 지분을 보유한 특수관계법인과의 거래, 지주회사와 자·손자회사 간 거래 등</td></tr>
+          <tr><td>수출 관련 거래</td><td>제품·상품 수출 목적의 특수관계법인 거래 등</td></tr>
+          <tr><td>법률상 의무거래 등</td><td>다른 법률에 따라 의무적으로 거래한 매출, 특정 프로스포츠 광고매출, 국가사업 관련 거래 등</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section class="note" style="margin-top:18px">
+      <b>실무상 주의</b><br>
+      이 페이지는 국세청 공개 안내를 바탕으로 만든 자가진단용 도구입니다. 실제 신고 여부는 상증법·시행령, 특수관계 판단, 직접·간접 보유비율, 과세제외매출액 입증자료, 배당소득 공제 계산, 신고연도 개정사항을 함께 확인해야 합니다.
+    </section>
+
+    <footer class="footer">
+      기준 자료: 국세청 「일감몰아주기 과세개요」 및 「세액계산흐름도」. 마지막 작성일: 2026-05-20.
+    </footer>
+  </main>
+
+  <script>
+    const fmt = n => isFinite(n) ? Math.round(n).toLocaleString('ko-KR') : '0';
+    const pct = n => isFinite(n) ? (n*100).toFixed(2) + '%' : '0.00%';
+    function calc(){
+      const type = document.getElementById('type').value;
+      const profit = +document.getElementById('profit').value || 0;
+      const totalSales = +document.getElementById('totalSales').value || 0;
+      const relatedSales = +document.getElementById('relatedSales').value || 0;
+      const excluded = +document.getElementById('excluded').value || 0;
+      const extraExcluded = +document.getElementById('extraExcluded').value || 0;
+      const sharePct = (+document.getElementById('share').value || 0) / 100;
+      const dividend = +document.getElementById('dividend').value || 0;
+      const names = {general:'일반기업', middle:'중견기업', small:'중소기업'};
+      const normalThreshold = {general:.30, middle:.40, small:.50}[type];
+      const ownershipThreshold = {general:.03, middle:.10, small:.10}[type];
+      const ratioDeduct = {general:.05, middle:.20, small:.50}[type];
+      const shareDeduct = {general:0, middle:.05, small:.10}[type];
+      const denom1 = totalSales - excluded;
+      const numer1 = relatedSales - excluded;
+      const ratioForTest = denom1 > 0 ? numer1 / denom1 : 0;
+      const specialGeneralRule = type === 'general' && relatedSales > 100000000000 && ratioForTest > .20;
+      const salesTest = ratioForTest > normalThreshold || specialGeneralRule;
+      const shareTest = sharePct > ownershipThreshold;
+      const denom2 = totalSales - excluded - extraExcluded;
+      const numer2 = relatedSales - excluded - extraExcluded;
+      const ratioForCalc = Math.max(0, denom2 > 0 ? numer2 / denom2 : 0);
+      const adjRatio = Math.max(0, ratioForCalc - ratioDeduct);
+      const adjShare = Math.max(0, sharePct - shareDeduct);
+      const gross = profit * adjRatio * adjShare;
+      const deemed = Math.max(0, gross - dividend);
+      const taxable = profit > 0 && salesTest && shareTest && deemed > 0;
+      const badgeClass = taxable ? 'red' : 'green';
+      const badgeText = taxable ? '과세 가능성 있음' : '요건 미충족 또는 과세금액 0';
+      document.getElementById('result').innerHTML = `
+        <span class="badge ${badgeClass}">${badgeText}</span>
+        <h2>${names[type]} 계산 결과</h2>
+        <p class="big">${fmt(deemed)}</p>
+        <p class="mini">입력 단위와 동일한 단위의 증여의제이익입니다.</p>
+        <table class="table" style="color:#e2e8f0;border-color:#334155">
+          <tr><th style="color:#fff;background:#1e293b">항목</th><th style="color:#fff;background:#1e293b">결과</th></tr>
+          <tr><td>세후영업이익 &gt; 0</td><td>${profit>0?'<span class="ok">충족</span>':'<span class="bad">미충족</span>'}</td></tr>
+          <tr><td>요건판단 거래비율</td><td>${pct(ratioForTest)} / 기준 ${pct(normalThreshold)} ${specialGeneralRule?' + 일반기업 1,000억원·20% 규칙 충족':''}</td></tr>
+          <tr><td>거래비율 요건</td><td>${salesTest?'<span class="ok">충족</span>':'<span class="bad">미충족</span>'}</td></tr>
+          <tr><td>주식보유비율</td><td>${pct(sharePct)} / 기준 초과 ${pct(ownershipThreshold)}</td></tr>
+          <tr><td>주식보유 요건</td><td>${shareTest?'<span class="ok">충족</span>':'<span class="bad">미충족</span>'}</td></tr>
+          <tr><td>계산용 거래비율</td><td>${pct(ratioForCalc)}</td></tr>
+          <tr><td>조정 거래비율</td><td>${pct(adjRatio)}</td></tr>
+          <tr><td>조정 주식보유비율</td><td>${pct(adjShare)}</td></tr>
+          <tr><td>배당공제 전 금액</td><td>${fmt(gross)}</td></tr>
+        </table>
+        <p class="mini">※ 1,000억원 판정은 원 단위 입력을 전제로 자동 체크합니다. 억원 단위 등 다른 단위로 입력한 경우 해당 특례 판정은 별도로 확인하세요.</p>`;
+    }
+    calc();
+  </script>
+</body>
+</html>
