@@ -3,170 +3,163 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>일감몰아주기 증여의제 | 요건판단부터 계산까지</title>
-  <meta name="description" content="국세청 안내를 바탕으로 일감몰아주기 증여의제 과세요건, 거래비율, 주식보유비율, 증여의제이익 계산을 한 화면에서 확인하는 실무용 설명 페이지" />
+  <title>일감몰아주기 과세 실무 가이드 | 요건판단·케이스·계산기</title>
+  <meta name="description" content="일감몰아주기 증여의제 과세를 요건판단, 케이스별 적용, 과세제외매출, 주주구조 입력, 증여의제이익 계산까지 한 화면에서 검토하는 실무형 HTML 페이지" />
   <style>
-    :root{--bg:#f6f8fb;--card:#fff;--ink:#15202b;--muted:#607080;--line:#dce3ea;--blue:#1d4ed8;--green:#15803d;--red:#b91c1c;--amber:#b45309;--soft:#eef4ff;--radius:20px}*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",Arial,sans-serif;background:linear-gradient(180deg,#edf4ff 0,#f8fafc 260px);color:var(--ink);line-height:1.65}a{color:var(--blue)}.wrap{max-width:1180px;margin:0 auto;padding:28px 18px 80px}.hero{padding:34px 0 18px}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:6px 12px;border-radius:999px;background:#dbeafe;color:#1e40af;font-weight:700;font-size:13px}.hero h1{font-size:clamp(30px,5vw,54px);line-height:1.08;margin:18px 0 14px;letter-spacing:-.04em}.hero p{font-size:18px;color:#415163;max-width:860px;margin:0}.grid{display:grid;gap:18px}.cols{grid-template-columns:repeat(3,minmax(0,1fr))}.two{grid-template-columns:1.05fr .95fr}.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 14px 30px rgba(15,23,42,.06)}.card h2,.card h3{margin-top:0;line-height:1.25;letter-spacing:-.025em}.card h2{font-size:26px}.card h3{font-size:20px}.pill{display:inline-block;border-radius:999px;background:#f1f5f9;color:#334155;padding:5px 10px;font-size:13px;font-weight:700}.step{display:flex;gap:14px;align-items:flex-start}.num{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#2563eb;color:#fff;font-weight:800}.mini{font-size:13px;color:var(--muted)}.ok{color:var(--green);font-weight:800}.bad{color:var(--red);font-weight:800}.warn{color:var(--amber);font-weight:800}.formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0f172a;color:#e2e8f0;border-radius:16px;padding:16px;overflow:auto}.flow{display:grid;gap:14px}.flow .item{border-left:5px solid #3b82f6;background:#f8fbff;padding:16px;border-radius:14px}.table{width:100%;border-collapse:collapse;font-size:14px}.table th,.table td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.table th{background:#f8fafc}.calc label{display:block;font-weight:700;margin:12px 0 6px}.calc input,.calc select{width:100%;padding:12px;border:1px solid #cbd5e1;border-radius:12px;font-size:15px;background:#fff}.calc .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.result{background:#0f172a;color:#fff;border-radius:20px;padding:20px}.result .big{font-size:30px;font-weight:900;letter-spacing:-.03em}.badge{display:inline-flex;align-items:center;border-radius:999px;padding:6px 11px;font-size:13px;font-weight:800;background:#e2e8f0;color:#0f172a}.badge.red{background:#fee2e2;color:#991b1b}.badge.green{background:#dcfce7;color:#166534}.badge.amber{background:#fef3c7;color:#92400e}.note{background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:16px;color:#7c2d12}.footer{margin-top:28px;color:#64748b;font-size:13px}.btn{border:0;border-radius:14px;padding:13px 16px;background:#2563eb;color:#fff;font-weight:800;cursor:pointer;width:100%;font-size:15px;margin-top:16px}.smallbtn{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:12px;padding:9px 12px;font-weight:700;cursor:pointer}@media(max-width:900px){.cols,.two{grid-template-columns:1fr}.calc .row{grid-template-columns:1fr}.wrap{padding:20px 14px 60px}.card{padding:18px}.hero h1{font-size:34px}}
+    :root{--bg:#f6f8fb;--card:#fff;--ink:#122033;--muted:#64748b;--line:#dbe4ef;--blue:#2563eb;--navy:#0f172a;--green:#15803d;--red:#b91c1c;--amber:#b45309;--purple:#7c3aed;--soft:#eff6ff;--radius:20px}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",Arial,sans-serif;background:linear-gradient(180deg,#eaf2ff 0,#f8fafc 310px);color:var(--ink);line-height:1.65}a{color:var(--blue);text-decoration:none}b{font-weight:800}.wrap{max-width:1240px;margin:0 auto;padding:28px 18px 80px}.hero{padding:30px 0 18px}.eyebrow{display:inline-flex;gap:8px;align-items:center;padding:6px 12px;border-radius:999px;background:#dbeafe;color:#1e40af;font-weight:800;font-size:13px}.hero h1{font-size:clamp(31px,5vw,58px);line-height:1.07;margin:18px 0 14px;letter-spacing:-.045em}.hero p{font-size:18px;color:#415163;max-width:900px;margin:0}.nav{position:sticky;top:0;z-index:5;background:rgba(248,250,252,.88);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:18px;padding:10px;margin:16px 0 18px;display:flex;gap:8px;overflow:auto}.nav a{white-space:nowrap;padding:8px 11px;border-radius:12px;color:#334155;font-size:14px;font-weight:800}.nav a:hover{background:#e2e8f0}.grid{display:grid;gap:18px}.cols{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}.two{grid-template-columns:1.05fr .95fr}.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:var(--radius);padding:22px;box-shadow:0 14px 30px rgba(15,23,42,.055)}.card h2,.card h3{margin-top:0;line-height:1.25;letter-spacing:-.03em}.card h2{font-size:27px}.card h3{font-size:20px}.pill{display:inline-block;border-radius:999px;background:#f1f5f9;color:#334155;padding:5px 10px;font-size:13px;font-weight:800}.mini{font-size:13px;color:var(--muted)}.ok{color:var(--green);font-weight:900}.bad{color:var(--red);font-weight:900}.warn{color:var(--amber);font-weight:900}.formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0f172a;color:#e2e8f0;border-radius:16px;padding:16px;overflow:auto}.flow{display:grid;gap:14px}.flow .item{border-left:5px solid #3b82f6;background:#f8fbff;padding:16px;border-radius:14px}.step{display:flex;gap:14px;align-items:flex-start}.num{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#2563eb;color:#fff;font-weight:900}.table{width:100%;border-collapse:collapse;font-size:14px}.table th,.table td{border-bottom:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.table th{background:#f8fafc;color:#334155}.case{border:1px solid var(--line);border-radius:16px;padding:16px;background:#fff}.case h3{display:flex;gap:8px;align-items:center}.tag{display:inline-flex;border-radius:999px;padding:4px 9px;font-size:12px;font-weight:900;background:#eef2ff;color:#3730a3}.tag.red{background:#fee2e2;color:#991b1b}.tag.green{background:#dcfce7;color:#166534}.tag.amber{background:#fef3c7;color:#92400e}.tag.blue{background:#dbeafe;color:#1d4ed8}.calc label{display:block;font-weight:800;margin:10px 0 6px}.calc input,.calc select,.calc textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:12px;font-size:14px;background:#fff}.calc textarea{min-height:70px}.calc .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}.calc .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}.btn{border:0;border-radius:14px;padding:13px 16px;background:#2563eb;color:#fff;font-weight:900;cursor:pointer;font-size:15px}.btn.secondary{background:#0f172a}.btn.ghost{background:#fff;color:#334155;border:1px solid #cbd5e1}.smallbtn{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:12px;padding:8px 10px;font-weight:800;cursor:pointer}.result{background:#0f172a;color:#fff;border-radius:20px;padding:20px;position:sticky;top:76px}.result .big{font-size:30px;font-weight:950;letter-spacing:-.03em}.badge{display:inline-flex;align-items:center;border-radius:999px;padding:6px 11px;font-size:13px;font-weight:900;background:#e2e8f0;color:#0f172a}.badge.red{background:#fee2e2;color:#991b1b}.badge.green{background:#dcfce7;color:#166534}.badge.amber{background:#fef3c7;color:#92400e}.badge.blue{background:#dbeafe;color:#1e40af}.note{background:#fff7ed;border:1px solid #fed7aa;border-radius:16px;padding:16px;color:#7c2d12}.info{background:#eff6ff;border:1px solid #bfdbfe;border-radius:16px;padding:16px;color:#1e3a8a}.danger{background:#fef2f2;border:1px solid #fecaca;border-radius:16px;padding:16px;color:#7f1d1d}.editableTable{width:100%;border-collapse:separate;border-spacing:0 8px}.editableTable th{font-size:12px;color:#475569;text-align:left}.editableTable td{background:#f8fafc;border-top:1px solid #e2e8f0;border-bottom:1px solid #e2e8f0;padding:6px}.editableTable td:first-child{border-left:1px solid #e2e8f0;border-radius:12px 0 0 12px}.editableTable td:last-child{border-right:1px solid #e2e8f0;border-radius:0 12px 12px 0}.editableTable input,.editableTable select{padding:8px;border-radius:10px}.summaryBox{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0}.metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:12px}.metric b{display:block;font-size:18px}.footer{margin-top:28px;color:#64748b;font-size:13px}.hide{display:none}@media(max-width:980px){.cols,.four,.two{grid-template-columns:1fr}.calc .row,.calc .row3{grid-template-columns:1fr}.wrap{padding:20px 14px 60px}.card{padding:18px}.hero h1{font-size:34px}.result{position:static}.summaryBox{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <main class="wrap">
     <section class="hero">
-      <span class="eyebrow">상증법 §45의3 · 국세청 안내 기반</span>
+      <span class="eyebrow">상증법 §45의3 · 국세청 안내 기반 · 실무형 자가진단</span>
       <h1>일감몰아주기 과세<br/>요건판단부터 계산까지</h1>
-      <p>특수관계법인이 가족·지배주주가 지분을 가진 법인에 매출을 몰아주어 생긴 간접 이익에 대해 증여세를 과세하는 제도입니다. 아래 순서대로 보면 <b>과세대상 여부</b>와 <b>증여의제이익</b>을 한 번에 판단할 수 있습니다.</p>
+      <p>특수관계법인 매출, 과세제외매출, 지배주주·친족 주주구조를 입력해 <b>수혜법인 요건</b>, <b>수증자 요건</b>, <b>주주별 증여의제이익</b>을 한 번에 검토하는 페이지입니다.</p>
     </section>
 
-    <section class="grid cols">
-      <div class="card"><span class="pill">핵심 1</span><h3>수혜법인</h3><p>사업연도 매출 중 지배주주와 특수관계에 있는 법인에 대한 매출 비율이 정상거래비율을 초과하는 내국법인입니다.</p></div>
-      <div class="card"><span class="pill">핵심 2</span><h3>지배주주</h3><p>수혜법인의 최대주주등 중 주식보유비율이 가장 높은 개인입니다. 법인이 최대 보유자인 경우에는 직·간접 보유비율 합계가 가장 높은 개인을 찾습니다.</p></div>
-      <div class="card"><span class="pill">핵심 3</span><h3>수증자</h3><p>사업연도 종료일 기준 지배주주와 그 친족 중 수혜법인에 대한 직·간접 주식보유비율이 한계보유비율을 초과하는 개인입니다.</p></div>
+    <nav class="nav">
+      <a href="#flow">판단흐름</a><a href="#case">케이스별 적용</a><a href="#calc">상세 계산기</a><a href="#exclude">과세제외매출</a><a href="#shareholder">주주구조</a><a href="#docs">검토자료</a><a href="#caution">주의사항</a>
+    </nav>
+
+    <section class="grid four">
+      <div class="card"><span class="pill">1단계</span><h3>수혜법인 확인</h3><p>내국법인인지, 세후영업이익이 있는지, 특수관계법인 거래비율이 기준을 초과하는지 봅니다.</p></div>
+      <div class="card"><span class="pill">2단계</span><h3>지배주주 확정</h3><p>최대주주등 중 직접·간접 보유비율이 가장 높은 개인을 찾습니다. 법인이 중간에 있으면 간접보유율을 계산합니다.</p></div>
+      <div class="card"><span class="pill">3단계</span><h3>친족 수증자 판단</h3><p>지배주주와 친족인 사람이 한계보유비율을 초과해 수혜법인 주식을 보유하는지 판단합니다.</p></div>
+      <div class="card"><span class="pill">4단계</span><h3>이익 계산</h3><p>세후영업이익 × 조정거래비율 × 조정주식보유비율에서 배당소득 공제액을 차감합니다.</p></div>
     </section>
 
-    <section class="grid two" style="margin-top:18px">
+    <section id="flow" class="grid two" style="margin-top:18px">
       <div class="card">
-        <h2>1분 판단 흐름</h2>
+        <h2>전체 판단 흐름</h2>
         <div class="flow">
-          <div class="item step"><div class="num">1</div><div><b>지배주주 확정</b><br><span class="mini">최대주주등 그룹을 확정하고, 그중 직·간접 주식보유비율이 가장 높은 개인주주를 선정합니다.</span></div></div>
-          <div class="item step"><div class="num">2</div><div><b>특수관계법인 거래비율 판단</b><br><span class="mini">일반 30%, 중견 40%, 중소 50% 초과 여부를 확인합니다. 일반기업은 특수관계법인 매출액 1,000억원 초과 & 거래비율 20% 초과도 체크합니다.</span></div></div>
-          <div class="item step"><div class="num">3</div><div><b>수증자 주식보유비율 판단</b><br><span class="mini">일반기업은 3% 초과, 중견·중소기업은 10% 초과인지 확인합니다.</span></div></div>
-          <div class="item step"><div class="num">4</div><div><b>증여의제이익 계산</b><br><span class="mini">세후영업이익 × 조정 거래비율 × 조정 주식보유비율에서 신고기한 내 배당소득 공제액을 차감합니다.</span></div></div>
+          <div class="item step"><div class="num">1</div><div><b>대상 법인 분류</b><br><span class="mini">중소기업, 중견기업, 일반기업 중 어느 유형인지 먼저 확정합니다. 유형에 따라 거래비율 기준, 주식보유 기준, 계산식 차감률이 달라집니다.</span></div></div>
+          <div class="item step"><div class="num">2</div><div><b>특수관계법인 매출액 집계</b><br><span class="mini">지배주주와 특수관계에 있는 법인에 대한 매출액을 모읍니다. 거래처별로 특수관계 여부와 과세제외 여부를 같이 표시하는 것이 안전합니다.</span></div></div>
+          <div class="item step"><div class="num">3</div><div><b>과세제외매출 차감</b><br><span class="mini">중소기업 간 거래, 일정 지분관계 거래, 수출 목적 거래, 법률상 의무거래 등은 분자와 분모에서 차감될 수 있습니다. 입증자료가 핵심입니다.</span></div></div>
+          <div class="item step"><div class="num">4</div><div><b>거래비율 요건 판단</b><br><span class="mini">일반 30%, 중견 40%, 중소 50% 초과 여부를 판단합니다. 일반기업은 특수관계법인 매출액 1,000억원 초과 및 거래비율 20% 초과 규칙도 별도로 점검합니다.</span></div></div>
+          <div class="item step"><div class="num">5</div><div><b>수증자별 주식보유율 판단</b><br><span class="mini">일반기업은 3% 초과, 중견·중소기업은 10% 초과 보유자가 후보입니다. 직접보유와 간접보유를 합산합니다.</span></div></div>
+          <div class="item step"><div class="num">6</div><div><b>주주별 계산</b><br><span class="mini">주주별 배당소득 공제액까지 반영하여 증여의제이익을 산출합니다.</span></div></div>
         </div>
       </div>
       <div class="card">
-        <h2>법인 유형별 기준</h2>
+        <h2>법인 유형별 기준표</h2>
         <table class="table">
-          <thead><tr><th>구분</th><th>요건 판단 거래비율</th><th>주식보유 기준</th><th>계산식 차감률</th></tr></thead>
+          <thead><tr><th>구분</th><th>거래비율 요건</th><th>수증자 보유비율</th><th>계산식 차감</th></tr></thead>
           <tbody>
-            <tr><td>일반기업</td><td>30% 초과<br><span class="mini">또는 특수관계 매출 1,000억원 초과 & 20% 초과</span></td><td>3% 초과</td><td>거래비율 - 5%<br>주식비율 - 0%</td></tr>
-            <tr><td>중견기업</td><td>40% 초과</td><td>10% 초과</td><td>거래비율 - 20%<br>주식비율 - 5%</td></tr>
-            <tr><td>중소기업</td><td>50% 초과</td><td>10% 초과</td><td>거래비율 - 50%<br>주식비율 - 10%</td></tr>
+            <tr><td><b>일반기업</b></td><td>30% 초과<br><span class="mini">또는 특수관계 매출 1,000억원 초과 & 거래비율 20% 초과</span></td><td>3% 초과</td><td>거래비율 - 5%<br>주식비율 - 0%</td></tr>
+            <tr><td><b>중견기업</b></td><td>40% 초과</td><td>10% 초과</td><td>거래비율 - 20%<br>주식비율 - 5%</td></tr>
+            <tr><td><b>중소기업</b></td><td>50% 초과</td><td>10% 초과</td><td>거래비율 - 50%<br>주식비율 - 10%</td></tr>
           </tbody>
         </table>
-        <p class="mini">※ 실제 신고에서는 직접·간접 보유분 구분, 배당소득 공제, 사업부문별 과세 등 추가 검토가 필요할 수 있습니다.</p>
+        <div class="formula" style="margin-top:14px">증여의제이익 = 세후영업이익 × 조정 특수관계법인거래비율 × 조정 주식보유비율 - 배당소득 공제액</div>
       </div>
     </section>
 
-    <section class="card" style="margin-top:18px">
-      <h2>계산식</h2>
-      <p>국세청 흐름도상 일감몰아주기 증여의제이익은 아래 구조로 계산합니다.</p>
-      <div class="formula">증여의제이익 = [세후영업이익 × 조정 특수관계법인거래비율 × 조정 주식보유비율] - 신고기한 내 배당소득 공제액</div>
-      <table class="table" style="margin-top:14px">
-        <thead><tr><th>구분</th><th>증여의제이익 기본 계산식</th></tr></thead>
-        <tbody>
-          <tr><td>일반기업</td><td>세후영업이익 × (특수관계법인거래비율 - 5%) × 주식보유비율</td></tr>
-          <tr><td>중견기업</td><td>세후영업이익 × (특수관계법인거래비율 - 20%) × (주식보유비율 - 5%)</td></tr>
-          <tr><td>중소기업</td><td>세후영업이익 × (특수관계법인거래비율 - 50%) × (주식보유비율 - 10%)</td></tr>
-        </tbody>
-      </table>
+    <section id="case" class="card" style="margin-top:18px">
+      <h2>케이스별 적용 가이드</h2>
+      <p class="mini">아래는 실무에서 자주 막히는 포인트를 “결론 → 계산기 입력 방법 → 확인자료” 순서로 정리한 것입니다.</p>
+      <div class="grid cols">
+        <div class="case"><h3><span class="tag green">Case 1</span> 중소기업 간 거래</h3><p><b>결론:</b> 수혜법인과 특수관계법인이 모두 중소기업이면 해당 매출은 과세제외 후보입니다.</p><p><b>입력:</b> 과세제외매출 표에 금액을 넣고 “요건+계산 모두 차감”을 선택합니다.</p><p class="mini">확인자료: 중소기업확인서, 거래처별 매출명세, 특수관계 검토표</p></div>
+        <div class="case"><h3><span class="tag blue">Case 2</span> 수혜법인이 자회사에 매출</h3><p><b>결론:</b> 수혜법인이 일정 지분을 보유한 법인과의 거래는 과세제외 후보가 될 수 있습니다.</p><p><b>입력:</b> 지분관계 거래로 분류하고 차감합니다. 다만 지분율, 기간, 구조를 별도 검토해야 합니다.</p><p class="mini">확인자료: 주주명부, 지분구조도, 연결/관계기업 자료</p></div>
+        <div class="case"><h3><span class="tag blue">Case 3</span> 지주회사·자회사 거래</h3><p><b>결론:</b> 지주회사와 자회사·손자회사 등 일정한 법정 지분관계 거래는 과세제외 검토 대상입니다.</p><p><b>입력:</b> 과세제외매출 표에 “지주회사 등 지분관계” 항목으로 넣습니다.</p><p class="mini">확인자료: 지주회사 여부, 자·손자회사 지분율, 사업연도 중 변동</p></div>
+        <div class="case"><h3><span class="tag amber">Case 4</span> 수출 목적 거래</h3><p><b>결론:</b> 제품·상품 수출을 위한 특수관계법인 거래는 과세제외 후보가 될 수 있습니다.</p><p><b>입력:</b> 수출 목적 거래로 입력합니다. 국내 우회거래인지, 실제 수출과 연결되는지 자료가 중요합니다.</p><p class="mini">확인자료: 수출신고필증, 인보이스, 선적서류, 거래흐름도</p></div>
+        <div class="case"><h3><span class="tag amber">Case 5</span> 법률상 의무거래</h3><p><b>결론:</b> 다른 법령상 의무로 발생한 거래는 과세제외 후보입니다.</p><p><b>입력:</b> 법률상 의무거래로 넣고 근거 조문을 메모에 적어둡니다.</p><p class="mini">확인자료: 관련 법령, 인허가 조건, 공문, 계약서</p></div>
+        <div class="case"><h3><span class="tag red">Case 6</span> 단순 그룹 내부거래</h3><p><b>결론:</b> 특수관계법인 거래라는 이유만으로 제외되지 않습니다. 제외 사유가 없으면 분자에 포함합니다.</p><p><b>입력:</b> 특수관계법인 매출액에는 포함하고, 과세제외 표에는 넣지 않습니다.</p><p class="mini">확인자료: 거래처별 특수관계 판단, 계약서, 매출명세</p></div>
+        <div class="case"><h3><span class="tag green">Case 7</span> 세후영업손실</h3><p><b>결론:</b> 세후영업이익이 0 이하이면 계산상 증여의제이익이 발생하지 않습니다.</p><p><b>입력:</b> 세후영업이익에 손실 또는 0을 입력하면 결과가 0으로 표시됩니다.</p><p class="mini">확인자료: 세무조정 반영 후 세후영업이익 계산 내역</p></div>
+        <div class="case"><h3><span class="tag green">Case 8</span> 주식보유비율 미달</h3><p><b>결론:</b> 거래비율 요건을 충족해도 주주가 한계보유비율을 초과하지 않으면 해당 주주는 과세대상이 아닙니다.</p><p><b>입력:</b> 주주구조 표에 모든 후보자의 직접·간접 보유율을 넣어 사람별로 판단합니다.</p><p class="mini">확인자료: 주주명부, 가족관계, 중간법인 지분율</p></div>
+        <div class="case"><h3><span class="tag red">Case 9</span> 일반기업 1,000억원 특례</h3><p><b>결론:</b> 일반기업은 정상거래비율 30% 초과가 아니더라도 특수관계법인 매출액이 1,000억원을 초과하고 거래비율이 20%를 초과하면 과세 요건을 별도로 검토합니다.</p><p><b>입력:</b> 금액 단위를 원으로 두면 계산기가 자동 경고합니다. 억원 단위 입력 시에는 별도 확인합니다.</p><p class="mini">확인자료: 총매출·특수관계매출 집계표, 단위 검토</p></div>
+      </div>
     </section>
 
-    <section class="grid two" style="margin-top:18px">
+    <section id="calc" class="grid two" style="margin-top:18px">
       <div class="card calc">
-        <h2>간편 계산기</h2>
-        <p class="mini">금액은 원 단위로 입력해도 되고, 억원 단위로 맞춰 입력해도 됩니다. 단, 모든 금액 입력 단위는 동일해야 합니다.</p>
-        <div class="row">
+        <h2>상세 계산기</h2>
+        <p class="mini">1. 기본정보 → 2. 과세제외매출 → 3. 주주구조 순서로 입력하세요. 금액 단위는 원/천원/백만원/억원 중 하나로 통일하면 됩니다.</p>
+        <div class="row3">
+          <div><label>금액 단위</label><select id="unit"><option value="1">원</option><option value="1000">천원</option><option value="1000000">백만원</option><option value="100000000">억원</option></select></div>
           <div><label>법인 유형</label><select id="type"><option value="general">일반기업</option><option value="middle">중견기업</option><option value="small">중소기업</option></select></div>
           <div><label>세후영업이익</label><input id="profit" type="number" value="1000000000"></div>
         </div>
         <div class="row">
           <div><label>수혜법인 총매출액</label><input id="totalSales" type="number" value="10000000000"></div>
-          <div><label>특수관계법인 매출액</label><input id="relatedSales" type="number" value="4000000000"></div>
+          <div><label>특수관계법인 매출액 총액</label><input id="relatedSales" type="number" value="4000000000"></div>
         </div>
         <div class="row">
-          <div><label>과세요건 판단용 과세제외매출액</label><input id="excluded" type="number" value="0"></div>
-          <div><label>계산용 추가 과세제외매출액</label><input id="extraExcluded" type="number" value="0"></div>
+          <div><label>법인세 등 차감 여부</label><select id="profitType"><option>세후영업이익을 직접 입력함</option><option>세전영업이익 입력 - 별도 세후 환산 필요</option></select></div>
+          <div><label>검토 메모</label><input id="memo" placeholder="예: 2025사업연도, 가족법인 A/B 매출 포함"></div>
         </div>
-        <div class="row">
-          <div><label>수증자 직·간접 주식보유비율(%)</label><input id="share" type="number" step="0.01" value="15"></div>
-          <div><label>신고기한 내 배당소득 공제액</label><input id="dividend" type="number" value="0"></div>
-        </div>
-        <button class="btn" onclick="calc()">계산하기</button>
+
+        <h3 id="exclude" style="margin-top:24px">과세제외매출 입력</h3>
+        <p class="mini">각 행의 금액은 특수관계법인 매출 중 과세제외로 볼 금액입니다. 선택값에 따라 요건판단용/계산용 거래비율에서 자동 차감됩니다.</p>
+        <table class="editableTable" id="exclusionTable">
+          <thead><tr><th>항목</th><th>금액</th><th>적용</th><th>메모</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="smallbtn" onclick="addExclusion()">+ 과세제외 행 추가</button><button class="smallbtn" onclick="addPresetExclusions()">예시 항목 넣기</button></div>
+
+        <h3 id="shareholder" style="margin-top:24px">주주구조 입력</h3>
+        <p class="mini">지배주주 본인과 친족을 모두 입력하세요. 직접보유율과 간접보유율을 합산해 수증자 여부를 판단합니다. 간접보유율은 중간법인별 계산 결과를 입력합니다.</p>
+        <table class="editableTable" id="shareholderTable">
+          <thead><tr><th>이름</th><th>관계</th><th>직접%</th><th>간접%</th><th>배당공제</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="smallbtn" onclick="addShareholder()">+ 주주 추가</button><button class="smallbtn" onclick="addPresetShareholders()">예시 주주 넣기</button></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px"><button class="btn" onclick="calc()">계산하기</button><button class="btn ghost" onclick="resetAll()">초기화</button></div>
       </div>
+
       <div class="result" id="result">
         <span class="badge amber">입력값 기준 예시</span>
         <h2>결과</h2>
-        <p>계산 버튼을 누르면 과세요건 충족 여부와 예상 증여의제이익이 표시됩니다.</p>
+        <p>계산 버튼을 누르면 거래비율, 과세제외 반영 내역, 주주별 증여의제이익이 표시됩니다.</p>
       </div>
     </section>
 
     <section class="card" style="margin-top:18px">
-      <h2>과세제외매출액 체크</h2>
-      <p>특수관계법인거래비율 계산 시 과세제외매출액은 원칙적으로 분모인 총매출액과 분자인 특수관계법인 매출액 모두에서 차감합니다.</p>
+      <h2>과세제외매출 세부 설명</h2>
+      <p>과세제외매출은 단순히 “특수관계 거래라 제외”하는 것이 아니라, 법령상 제외 사유에 해당하는지와 그 금액이 얼마인지 입증해야 합니다. 일반적으로 해당 금액은 특수관계법인 매출액인 분자와 수혜법인 총매출액인 분모에서 함께 차감하는 구조로 검토합니다.</p>
       <table class="table">
-        <thead><tr><th>주요 과세제외 항목</th><th>설명</th></tr></thead>
+        <thead><tr><th>구분</th><th>적용 포인트</th><th>계산기 입력 팁</th></tr></thead>
         <tbody>
-          <tr><td>중소기업 간 거래</td><td>중소기업인 수혜법인이 중소기업인 특수관계법인과 거래한 매출액</td></tr>
-          <tr><td>자회사 등 지분관계 거래</td><td>수혜법인이 일정 지분을 보유한 특수관계법인과의 거래, 지주회사와 자·손자회사 간 거래 등</td></tr>
-          <tr><td>수출 관련 거래</td><td>제품·상품 수출 목적의 특수관계법인 거래 등</td></tr>
-          <tr><td>법률상 의무거래 등</td><td>다른 법률에 따라 의무적으로 거래한 매출, 특정 프로스포츠 광고매출, 국가사업 관련 거래 등</td></tr>
+          <tr><td>중소기업 간 거래</td><td>수혜법인과 거래상대방이 모두 중소기업인지 확인합니다.</td><td>“요건+계산 모두 차감” 선택</td></tr>
+          <tr><td>일정 지분관계 거래</td><td>자회사, 지주회사, 손자회사 등 법정 지분관계와 보유기간을 확인합니다.</td><td>거래처별로 행을 나눠 입력</td></tr>
+          <tr><td>수출 목적 거래</td><td>실제 수출과 연결되는 제품·상품 흐름인지 확인합니다.</td><td>수출 증빙별로 메모 기재</td></tr>
+          <tr><td>법률상 의무거래</td><td>법률, 인허가, 공공사업 조건 등으로 의무 발생 여부를 확인합니다.</td><td>근거 법령을 메모에 기재</td></tr>
+          <tr><td>계산용에서만 제외</td><td>특정 항목은 요건판단과 실제 계산 적용이 다르게 검토될 수 있으므로 보수적으로 분리합니다.</td><td>불확실하면 행을 별도 분리하고 메모</td></tr>
         </tbody>
       </table>
     </section>
 
-    <section class="note" style="margin-top:18px">
-      <b>실무상 주의</b><br>
-      이 페이지는 국세청 공개 안내를 바탕으로 만든 자가진단용 도구입니다. 실제 신고 여부는 상증법·시행령, 특수관계 판단, 직접·간접 보유비율, 과세제외매출액 입증자료, 배당소득 공제 계산, 신고연도 개정사항을 함께 확인해야 합니다.
+    <section id="docs" class="grid two" style="margin-top:18px">
+      <div class="card"><h2>필수 검토자료</h2><ul><li>수혜법인 사업연도 재무제표 및 세후영업이익 계산자료</li><li>거래처별 매출명세서와 특수관계법인 여부 판단표</li><li>과세제외매출 사유별 증빙: 중소기업확인서, 수출서류, 법령상 의무 근거, 지분관계 자료</li><li>사업연도 종료일 현재 주주명부</li><li>지배주주 및 친족관계 확인자료</li><li>중간법인 주주구조와 간접보유율 계산표</li><li>신고기한 내 배당소득 발생 및 귀속 자료</li></ul></div>
+      <div class="card"><h2>판단 시 자주 생기는 오류</h2><ul><li>특수관계법인 매출액만 보고 과세제외매출 차감을 누락</li><li>친족 보유분은 보면서 간접보유분을 누락</li><li>일반기업 1,000억원·20% 특례를 누락</li><li>거래비율 요건 기준과 계산식 차감률을 혼동</li><li>배당소득 공제를 주주별로 나누지 않고 전체에서 일괄 차감</li><li>사업연도 중 지분 변동이 있는데 종료일 기준을 확인하지 않음</li></ul></div>
     </section>
 
-    <footer class="footer">
-      기준 자료: 국세청 「일감몰아주기 과세개요」 및 「세액계산흐름도」. 마지막 작성일: 2026-05-20.
-    </footer>
+    <section id="caution" class="note" style="margin-top:18px"><b>실무상 주의</b><br>이 페이지는 국세청 공개 안내를 바탕으로 만든 자가진단용 도구입니다. 실제 신고 여부는 상증법·시행령·시행규칙, 해당 사업연도 개정사항, 특수관계 판단, 직접·간접 보유비율, 과세제외매출액 입증자료, 배당소득 공제 계산을 종합하여 검토해야 합니다. 특히 과세제외매출은 사실관계와 증빙에 따라 결론이 달라질 수 있습니다.</section>
+
+    <footer class="footer">기준 자료: 국세청 「일감몰아주기 과세개요」 및 「세액계산흐름도」. 마지막 업데이트: 2026-05-20.</footer>
   </main>
 
-  <script>
-    const fmt = n => isFinite(n) ? Math.round(n).toLocaleString('ko-KR') : '0';
-    const pct = n => isFinite(n) ? (n*100).toFixed(2) + '%' : '0.00%';
-    function calc(){
-      const type = document.getElementById('type').value;
-      const profit = +document.getElementById('profit').value || 0;
-      const totalSales = +document.getElementById('totalSales').value || 0;
-      const relatedSales = +document.getElementById('relatedSales').value || 0;
-      const excluded = +document.getElementById('excluded').value || 0;
-      const extraExcluded = +document.getElementById('extraExcluded').value || 0;
-      const sharePct = (+document.getElementById('share').value || 0) / 100;
-      const dividend = +document.getElementById('dividend').value || 0;
-      const names = {general:'일반기업', middle:'중견기업', small:'중소기업'};
-      const normalThreshold = {general:.30, middle:.40, small:.50}[type];
-      const ownershipThreshold = {general:.03, middle:.10, small:.10}[type];
-      const ratioDeduct = {general:.05, middle:.20, small:.50}[type];
-      const shareDeduct = {general:0, middle:.05, small:.10}[type];
-      const denom1 = totalSales - excluded;
-      const numer1 = relatedSales - excluded;
-      const ratioForTest = denom1 > 0 ? numer1 / denom1 : 0;
-      const specialGeneralRule = type === 'general' && relatedSales > 100000000000 && ratioForTest > .20;
-      const salesTest = ratioForTest > normalThreshold || specialGeneralRule;
-      const shareTest = sharePct > ownershipThreshold;
-      const denom2 = totalSales - excluded - extraExcluded;
-      const numer2 = relatedSales - excluded - extraExcluded;
-      const ratioForCalc = Math.max(0, denom2 > 0 ? numer2 / denom2 : 0);
-      const adjRatio = Math.max(0, ratioForCalc - ratioDeduct);
-      const adjShare = Math.max(0, sharePct - shareDeduct);
-      const gross = profit * adjRatio * adjShare;
-      const deemed = Math.max(0, gross - dividend);
-      const taxable = profit > 0 && salesTest && shareTest && deemed > 0;
-      const badgeClass = taxable ? 'red' : 'green';
-      const badgeText = taxable ? '과세 가능성 있음' : '요건 미충족 또는 과세금액 0';
-      document.getElementById('result').innerHTML = `
-        <span class="badge ${badgeClass}">${badgeText}</span>
-        <h2>${names[type]} 계산 결과</h2>
-        <p class="big">${fmt(deemed)}</p>
-        <p class="mini">입력 단위와 동일한 단위의 증여의제이익입니다.</p>
-        <table class="table" style="color:#e2e8f0;border-color:#334155">
-          <tr><th style="color:#fff;background:#1e293b">항목</th><th style="color:#fff;background:#1e293b">결과</th></tr>
-          <tr><td>세후영업이익 &gt; 0</td><td>${profit>0?'<span class="ok">충족</span>':'<span class="bad">미충족</span>'}</td></tr>
-          <tr><td>요건판단 거래비율</td><td>${pct(ratioForTest)} / 기준 ${pct(normalThreshold)} ${specialGeneralRule?' + 일반기업 1,000억원·20% 규칙 충족':''}</td></tr>
-          <tr><td>거래비율 요건</td><td>${salesTest?'<span class="ok">충족</span>':'<span class="bad">미충족</span>'}</td></tr>
-          <tr><td>주식보유비율</td><td>${pct(sharePct)} / 기준 초과 ${pct(ownershipThreshold)}</td></tr>
-          <tr><td>주식보유 요건</td><td>${shareTest?'<span class="ok">충족</span>':'<span class="bad">미충족</span>'}</td></tr>
-          <tr><td>계산용 거래비율</td><td>${pct(ratioForCalc)}</td></tr>
-          <tr><td>조정 거래비율</td><td>${pct(adjRatio)}</td></tr>
-          <tr><td>조정 주식보유비율</td><td>${pct(adjShare)}</td></tr>
-          <tr><td>배당공제 전 금액</td><td>${fmt(gross)}</td></tr>
-        </table>
-        <p class="mini">※ 1,000억원 판정은 원 단위 입력을 전제로 자동 체크합니다. 억원 단위 등 다른 단위로 입력한 경우 해당 특례 판정은 별도로 확인하세요.</p>`;
-    }
-    calc();
-  </script>
+<script>
+const $=id=>document.getElementById(id);const fmt=n=>isFinite(n)?Math.round(n).toLocaleString('ko-KR'):'0';const pct=n=>isFinite(n)?(n*100).toFixed(2)+'%':'0.00%';
+const names={general:'일반기업',middle:'중견기업',small:'중소기업'};
+const cfg={general:{ratio:.30,share:.03,rd:.05,sd:0},middle:{ratio:.40,share:.10,rd:.20,sd:.05},small:{ratio:.50,share:.10,rd:.50,sd:.10}};
+const exclusionTypes=['중소기업 간 거래','자회사·지분관계 거래','지주회사·자회사 거래','수출 목적 거래','법률상 의무거래','프로스포츠·국가사업 등 특례','기타 직접 입력'];
+function number(v){return +v||0}
+function addExclusion(v={}){const tb=$('exclusionTable').querySelector('tbody');const tr=document.createElement('tr');tr.innerHTML=`<td><select class="ex-type">${exclusionTypes.map(x=>`<option ${v.type===x?'selected':''}>${x}</option>`).join('')}</select></td><td><input class="ex-amount" type="number" value="${v.amount||0}"></td><td><select class="ex-apply"><option value="both" ${v.apply==='both'?'selected':''}>요건+계산 모두 차감</option><option value="test" ${v.apply==='test'?'selected':''}>요건판단만 차감</option><option value="calc" ${v.apply==='calc'?'selected':''}>계산식만 차감</option><option value="none" ${v.apply==='none'?'selected':''}>메모만, 차감 안함</option></select></td><td><input class="ex-memo" value="${v.memo||''}" placeholder="거래처명·근거·증빙"></td><td><button class="smallbtn" onclick="this.closest('tr').remove();calc()">삭제</button></td>`;tb.appendChild(tr)}
+function addPresetExclusions(){addExclusion({type:'중소기업 간 거래',amount:0,apply:'both',memo:'상대방 중소기업확인서 확인'});addExclusion({type:'수출 목적 거래',amount:0,apply:'both',memo:'수출신고필증/인보이스 대사'});addExclusion({type:'자회사·지분관계 거래',amount:0,apply:'both',memo:'지분율 및 보유기간 확인'});calc()}
+function addShareholder(v={}){const tb=$('shareholderTable').querySelector('tbody');const tr=document.createElement('tr');tr.innerHTML=`<td><input class="sh-name" value="${v.name||''}" placeholder="홍길동"></td><td><select class="sh-rel"><option ${v.rel==='지배주주 본인'?'selected':''}>지배주주 본인</option><option ${v.rel==='배우자'?'selected':''}>배우자</option><option ${v.rel==='직계존비속'?'selected':''}>직계존비속</option><option ${v.rel==='친족'?'selected':''}>친족</option><option ${v.rel==='기타 개인'?'selected':''}>기타 개인</option><option ${v.rel==='법인주주'?'selected':''}>법인주주</option></select></td><td><input class="sh-direct" type="number" step="0.01" value="${v.direct||0}"></td><td><input class="sh-indirect" type="number" step="0.01" value="${v.indirect||0}"></td><td><input class="sh-dividend" type="number" value="${v.dividend||0}"></td><td><button class="smallbtn" onclick="this.closest('tr').remove();calc()">삭제</button></td>`;tb.appendChild(tr)}
+function addPresetShareholders(){addShareholder({name:'김지배',rel:'지배주주 본인',direct:20,indirect:0,dividend:0});addShareholder({name:'배우자',rel:'배우자',direct:8,indirect:0,dividend:0});addShareholder({name:'자녀',rel:'직계존비속',direct:12,indirect:3,dividend:0});calc()}
+function readExclusions(){let test=0,calcEx=0,rows=[];document.querySelectorAll('#exclusionTable tbody tr').forEach(tr=>{const amount=number(tr.querySelector('.ex-amount').value);const apply=tr.querySelector('.ex-apply').value;const type=tr.querySelector('.ex-type').value;const memo=tr.querySelector('.ex-memo').value;if(apply==='both'||apply==='test')test+=amount;if(apply==='both'||apply==='calc')calcEx+=amount;rows.push({type,amount,apply,memo})});return{test,calcEx,rows}}
+function readShareholders(){let rows=[];document.querySelectorAll('#shareholderTable tbody tr').forEach(tr=>{const name=tr.querySelector('.sh-name').value||'이름없음';const rel=tr.querySelector('.sh-rel').value;const direct=number(tr.querySelector('.sh-direct').value)/100;const indirect=number(tr.querySelector('.sh-indirect').value)/100;const dividend=number(tr.querySelector('.sh-dividend').value);rows.push({name,rel,direct,indirect,total:direct+indirect,dividend})});return rows}
+function relationEligible(rel){return ['지배주주 본인','배우자','직계존비속','친족'].includes(rel)}
+function calc(){const type=$('type').value;const c=cfg[type];const unit=number($('unit').value)||1;const profit=number($('profit').value);const totalSales=number($('totalSales').value);const relatedSales=number($('relatedSales').value);const ex=readExclusions();const sh=readShareholders();const testEx=Math.min(ex.test,relatedSales,totalSales);const calcEx=Math.min(ex.calcEx,relatedSales,totalSales);const denomTest=Math.max(0,totalSales-testEx);const numerTest=Math.max(0,relatedSales-testEx);const ratioTest=denomTest>0?numerTest/denomTest:0;const denomCalc=Math.max(0,totalSales-calcEx);const numerCalc=Math.max(0,relatedSales-calcEx);const ratioCalc=denomCalc>0?numerCalc/denomCalc:0;const specialGeneral=type==='general'&&(relatedSales*unit>100000000000)&&ratioTest>.20;const salesTest=ratioTest>c.ratio||specialGeneral;const adjRatio=Math.max(0,ratioCalc-c.rd);let controller=sh.filter(x=>x.rel!=='법인주주').sort((a,b)=>b.total-a.total)[0];let shareholderRows=sh.map(x=>{const shareTest=relationEligible(x.rel)&&x.total>c.share;const adjShare=Math.max(0,x.total-c.sd);const gross=profit*adjRatio*adjShare;const deemed=Math.max(0,gross-x.dividend);const taxable=profit>0&&salesTest&&shareTest&&deemed>0;return{...x,shareTest,adjShare,gross,deemed,taxable}});const totalDeemed=shareholderRows.reduce((s,x)=>s+x.deemed,0);const taxableCount=shareholderRows.filter(x=>x.taxable).length;let warnings=[];if(profit<=0)warnings.push('세후영업이익이 0 이하이므로 계산상 증여의제이익이 발생하지 않습니다.');if(relatedSales>totalSales)warnings.push('특수관계법인 매출액이 총매출액보다 큽니다. 입력값을 확인하세요.');if(ex.test>relatedSales||ex.calcEx>relatedSales)warnings.push('과세제외매출액이 특수관계법인 매출액보다 큽니다. 계산기는 차감액을 자동 한도로 제한했습니다.');if(type==='general'&&$('unit').value!=='1')warnings.push('일반기업 1,000억원 특례는 원 단위 기준으로 자동 판정합니다. 현재 단위가 원이 아니므로 별도 확인하세요.');let html=`<span class="badge ${taxableCount?'red':'green'}">${taxableCount?'과세 가능 주주 있음':'현재 입력값상 과세대상 없음'}</span><h2>${names[type]} 상세 결과</h2><div class="summaryBox"><div class="metric"><span class="mini">요건판단 거래비율</span><b>${pct(ratioTest)}</b></div><div class="metric"><span class="mini">계산용 거래비율</span><b>${pct(ratioCalc)}</b></div><div class="metric"><span class="mini">총 증여의제이익</span><b>${fmt(totalDeemed)}</b></div></div><table class="table" style="color:#e2e8f0;border-color:#334155"><tr><th style="color:#fff;background:#1e293b">항목</th><th style="color:#fff;background:#1e293b">판정</th></tr><tr><td>세후영업이익</td><td>${profit>0?'<span class="ok">양수</span>':'<span class="bad">0 이하</span>'} / ${fmt(profit)}</td></tr><tr><td>과세제외매출 차감</td><td>요건판단 ${fmt(testEx)}, 계산식 ${fmt(calcEx)}</td></tr><tr><td>거래비율 요건</td><td>${salesTest?'<span class="ok">충족</span>':'<span class="bad">미충족</span>'} / 기준 ${pct(c.ratio)}${specialGeneral?' · 일반기업 1,000억원/20% 규칙 충족':''}</td></tr><tr><td>조정 거래비율</td><td>${pct(adjRatio)} = ${pct(ratioCalc)} - ${pct(c.rd)}</td></tr><tr><td>자동 추정 지배주주</td><td>${controller?controller.name+' ('+pct(controller.total)+')':'입력 없음'}</td></tr></table>`;
+html+=`<h3 style="margin-top:18px">주주별 계산</h3><table class="table" style="color:#e2e8f0;border-color:#334155"><tr><th style="color:#fff;background:#1e293b">주주</th><th style="color:#fff;background:#1e293b">관계</th><th style="color:#fff;background:#1e293b">보유율</th><th style="color:#fff;background:#1e293b">수증자요건</th><th style="color:#fff;background:#1e293b">증여의제이익</th></tr>`;
+shareholderRows.forEach(x=>{html+=`<tr><td>${x.name}</td><td>${x.rel}</td><td>${pct(x.total)}<br><span class="mini">직접 ${pct(x.direct)}, 간접 ${pct(x.indirect)}</span></td><td>${x.shareTest?'<span class="ok">충족</span>':'<span class="bad">미충족</span>'}<br><span class="mini">기준 초과 ${pct(c.share)}</span></td><td>${fmt(x.deemed)}${x.taxable?' <span class="warn">과세 가능</span>':''}</td></tr>`});html+='</table>';
+if(ex.rows.length){html+='<h3 style="margin-top:18px">과세제외 입력 내역</h3><table class="table" style="color:#e2e8f0;border-color:#334155"><tr><th style="color:#fff;background:#1e293b">항목</th><th style="color:#fff;background:#1e293b">금액</th><th style="color:#fff;background:#1e293b">적용</th></tr>';ex.rows.forEach(r=>{html+=`<tr><td>${r.type}<br><span class="mini">${r.memo||''}</span></td><td>${fmt(r.amount)}</td><td>${r.apply}</td></tr>`});html+='</table>'}
+if(warnings.length){html+='<div class="danger" style="margin-top:14px"><b>확인 필요</b><ul>'+warnings.map(w=>`<li>${w}</li>`).join('')+'</ul></div>'}
+html+='<p class="mini">※ 결과는 입력값 기반 자가진단입니다. 실제 신고 전 법령·증빙·사업연도별 개정사항을 확인하세요.</p>';$('result').innerHTML=html}
+function resetAll(){$('profit').value=1000000000;$('totalSales').value=10000000000;$('relatedSales').value=4000000000;$('memo').value='';$('exclusionTable').querySelector('tbody').innerHTML='';$('shareholderTable').querySelector('tbody').innerHTML='';addPresetExclusions();addPresetShareholders();calc()}
+['unit','type','profit','totalSales','relatedSales','profitType','memo'].forEach(id=>setTimeout(()=>$(id).addEventListener('input',calc),0));
+resetAll();
+</script>
 </body>
 </html>
