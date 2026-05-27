@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>주식 종목 비교 대시보드</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- 종목 매핑 데이터 로드 (외부 파일) -->
+    <script src="stock_map.js"></script>
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --panel-bg: rgba(22, 27, 34, 0.7);
+            --text-main: #c9d1d9;
+            --text-muted: #8b949e;
+            --accent: #58a6ff;
+            --accent2: #ff7b72;
+            --up-color: #3fb950;
+            --down-color: #f85149;
+            --border-color: rgba(48, 54, 61, 0.5);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image:
+                radial-gradient(at 0% 0%, rgba(88, 166, 255, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(63, 185, 80, 0.05) 0px, transparent 50%);
+            background-attachment: fixed;
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            background: -webkit-linear-gradient(45deg, var(--accent), #b392f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+        }
+
+        .search-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+            background: var(--panel-bg);
+            padding: 25px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .search-wrapper:focus-within {
+            transform: translateY(-2px);
+            border-color: var(--accent);
+            box-shadow: 0 12px 40px rgba(88, 166, 255, 0.2);
+        }
+
+        .search-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .search-label {
+            width: 80px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        select,
+        input,
+        button {
+            padding: 12px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        select {
+            background: rgba(13, 17, 23, 0.8);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            cursor: pointer;
+        }
+
+        input {
+            flex-grow: 1;
+            background: rgba(13, 17, 23, 0.8);
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+        }
+
+        button.search-btn {
+            background: var(--accent);
+            color: #0d1117;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            width: 100%;
+            margin-top: 10px;
+            font-size: 1.1rem;
+            padding: 14px;
+        }
+
+        button.search-btn:hover {
+            background: #79c0ff;
+            transform: scale(1.02);
+        }
+
+        .dashboard {
+            display: none;
+            width: 100%;
+            max-width: 1200px;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .dashboard.visible {
+            display: grid;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chart-container {
+            grid-column: 1 / -1;
+            height: 450px;
+            position: relative;
+            background: var(--panel-bg);
+            border-radius: 16px;
+            padding: 24px;
+            padding-bottom: 40px;
+            /* 차트 x축 잘림 방지 */
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+
+        .stock-info-col {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel {
+            background: var(--panel-bg);
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel.color-1::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--accent);
+        }
+
+        .panel.color-2::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background-color: var(--accent2);
+        }
+
+        .panel-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--text-muted);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .price-display {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .current-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+        }
+
+        .price-change {
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .up {
+            color: var(--up-color);
+            background: rgba(63, 185, 80, 0.1);
+        }
+
+        .down {
+            color: var(--down-color);
+            background: rgba(248, 81, 73, 0.1);
+        }
+
+        .financial-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .fin-item {
+            background: rgba(13, 17, 23, 0.5);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .fin-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .fin-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .loading {
+            display: none;
+            color: var(--accent);
+            font-size: 1.2rem;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(88, 166, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--accent);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .search-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-label {
+                margin-bottom: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Stock Compare Dashboard</h1>
+    <p style="margin-bottom: 30px; color: var(--text-muted);">Cafe24 프론트엔드 전용 대시보드 - 종목 주가 비교</p>
+
+    <div class="search-wrapper">
+        <div class="search-row">
+            <div class="search-label">기준 종목</div>
+            <select id="marketType1">
+                <option value=".KS">코스피 (KS)</option>
+                <option value=".KQ">코스닥 (KQ)</option>
+            </select>
+            <input type="text" id="tickerInput1" placeholder="종목명 또는 코드 (예: 삼성전자)" autocomplete="off">
+        </div>
+
+        <div class="search-row">
+            <div class="search-label">비교 종목<br><small style="font-weight:300">(선택)</small></div>
+            <select id="marketType2">
+                <option value=".KS">코스피 (KS)</option>
+                <option value=".KQ">코스닥 (KQ)</option>
+            </select>
+            <input type="text" id="tickerInput2" placeholder="종목명 또는 코드 (예: SK하이닉스)" autocomplete="off">
+        </div>
+
+        <div class="search-row">
+            <div class="search-label">조회 기간</div>
+            <select id="periodSelect" style="width: 100%;">
+                <option value="3mo">최근 3개월</option>
+                <option value="6mo">최근 6개월</option>
+                <option value="1y" selected>최근 1년</option>
+                <option value="3y">최근 3년</option>
+            </select>
+        </div>
+
+        <button class="search-btn" onclick="executeSearch()">조회 및 비교하기</button>
+    </div>
+
+    <div id="loading" class="loading">
+        <div class="spinner"></div>데이터를 불러오는 중입니다...
+    </div>
+
+    <div id="dashboard" class="dashboard">
+        <!-- 차트 패널 (위쪽으로 배치) -->
+        <div class="chart-container">
+            <div class="panel-title" id="chartTitle">최근 1년 상대적 주가 추이 (기준점 대비 % 변화)</div>
+            <canvas id="stockChart"></canvas>
+        </div>
+
+        <!-- 기준 종목 요약 (좌측) -->
+        <div class="stock-info-col" id="stockCol1">
+            <div class="panel color-1">
+                <div class="panel-title" id="stockName1">종목 1</div>
+                <div class="price-display">
+                    <div id="currentPrice1" class="current-price">-</div>
+                    <div id="priceChange1" class="price-change">-</div>
+                </div>
+            </div>
+            <div class="panel color-1">
+                <div class="financial-grid">
+                    <div class="fin-item">
+                        <div class="fin-label">시가총액</div>
+                        <div id="marketCap1" class="fin-value">-</div>
+                    </div>
+                    <div class="fin-item">
+                        <div class="fin-label">PER</div>
+                        <div id="per1" class="fin-value">-</div>
+                    </div>
+                    <div class="fin-item">
+                        <div class="fin-label">PBR</div>
+                        <div id="pbr1" class="fin-value">-</div>
+                    </div>
+                    <div class="fin-item">
+                        <div class="fin-label">배당수익률</div>
+                        <div id="roe1" class="fin-value">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 비교 종목 요약 (우측) -->
+        <div class="stock-info-col" id="stockCol2" style="display:none;">
+            <div class="panel color-2">
+                <div class="panel-title" id="stockName2">종목 2</div>
+                <div class="price-display">
+                    <div id="currentPrice2" class="current-price">-</div>
+                    <div id="priceChange2" class="price-change">-</div>
+                </div>
+            </div>
+            <div class="panel color-2">
+                <div class="financial-grid">
+                    <div class="fin-item">
+                        <div class="fin-label">시가총액</div>
+                        <div id="marketCap2" class="fin-value">-</div>
+                    </div>
+                    <div class="fin-item">
+                        <div class="fin-label">PER</div>
+                        <div id="per2" class="fin-value">-</div>
+                    </div>
+                    <div class="fin-item">
+                        <div class="fin-label">PBR</div>
+                        <div id="pbr2" class="fin-value">-</div>
+                    </div>
+                    <div class="fin-item">
+                        <div class="fin-label">배당수익률</div>
+                        <div id="roe2" class="fin-value">-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let myChart = null;
+
+        function formatNumber(num) {
+            if (!num || num === 0) return 'N/A';
+            if (num >= 1e12) return (num / 1e12).toFixed(2) + '조';
+            if (num >= 1e8) return (num / 1e8).toFixed(2) + '억';
+            return num.toLocaleString();
+        }
+
+        // 종목명 -> 코드 변환 함수
+        function resolveSymbol(ticker, market) {
+            if (/^[0-9]+$/.test(ticker)) {
+                return { symbol: ticker + market, name: ticker };
+            }
+            if (typeof STOCK_MAP === 'undefined') {
+                throw new Error('종목 매핑 데이터를 불러오지 못했습니다. stock_map.js를 확인해주세요.');
+            }
+            const searchName = ticker.replace(/\s/g, '');
+            let found = null;
+            let display = ticker;
+
+            for (let key in STOCK_MAP) {
+                if (key === searchName) {
+                    found = STOCK_MAP[key];
+                    display = key;
+                    break;
+                }
+            }
+            if (!found) {
+                for (let key in STOCK_MAP) {
+                    if (key.includes(searchName)) {
+                        found = STOCK_MAP[key];
+                        display = key;
+                        break;
+                    }
+                }
+            }
+            if (!found) {
+                throw new Error(`"${ticker}" 종목을 찾을 수 없습니다.`);
+            }
+            return { symbol: found, name: display };
+        }
+
+        // CORS 우회 Fetch
+        const fetchWithProxy = async (targetUrl) => {
+            const proxies = [
+                `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`,
+                `https://api.codetabs.com/v1/proxy?quest=${encodeURIComponent(targetUrl)}`,
+                `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`
+            ];
+            for (let proxy of proxies) {
+                try {
+                    const res = await fetch(proxy);
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (!data || (typeof data === 'object' && Object.keys(data).length === 0)) continue;
+                        return data;
+                    }
+                } catch (e) {
+                    // ignore
+                }
+            }
+            throw new Error("데이터 접근이 무료 프록시에 의해 일시적으로 차단되었습니다.");
+        };
+
+        async function fetchStockInfo(symbol, defaultName, period) {
+            const chartUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?range=${period}&interval=1d`;
+            const chartDataRaw = await fetchWithProxy(chartUrl);
+            const chartData = chartDataRaw?.chart?.result?.[0];
+
+            if (!chartData || !chartData.meta || chartData.meta.regularMarketPrice === undefined) {
+                throw new Error(`[${symbol}] 가격 데이터를 찾을 수 없습니다.`);
+            }
+
+            let finData = {};
+            try {
+                // 네이버 금융 API 연동을 통해 깔끔한 시총/PER/PBR 데이터 획득 (Yahoo API 401 이슈 회피)
+                const code = symbol.split('.')[0];
+                const naverUrl = `https://m.stock.naver.com/api/stock/${code}/integration`;
+                const naverRaw = await fetchWithProxy(naverUrl);
+
+                if (naverRaw && naverRaw.totalInfos) {
+                    naverRaw.totalInfos.forEach(item => {
+                        if (item.key === '시총') finData.marketCap = item.value;
+                        if (item.key === 'PER') finData.per = item.value;
+                        if (item.key === 'PBR') finData.pbr = item.value;
+                        if (item.key === '배당수익률') finData.roe = item.value;
+                    });
+                }
+            } catch (e) {
+                console.warn("재무 정보 가져오기 실패", e);
+            }
+
+            return { chartData, finData, name: defaultName };
+        }
+
+        async function executeSearch() {
+            const t1 = document.getElementById('tickerInput1').value.trim();
+            const m1 = document.getElementById('marketType1').value;
+            const t2 = document.getElementById('tickerInput2').value.trim();
+            const m2 = document.getElementById('marketType2').value;
+
+            const periodSelect = document.getElementById('periodSelect');
+            const period = periodSelect ? periodSelect.value : '1y';
+            const periodText = periodSelect ? periodSelect.options[periodSelect.selectedIndex].text : '최근 1년';
+
+            if (!t1) {
+                alert("기준 종목을 입력해주세요.");
+                return;
+            }
+
+            document.getElementById('dashboard').classList.remove('visible');
+            document.getElementById('loading').style.display = 'block';
+
+            try {
+                const s1 = resolveSymbol(t1, m1);
+                const data1 = await fetchStockInfo(s1.symbol, s1.name, period);
+
+                let data2 = null;
+                if (t2) {
+                    const s2 = resolveSymbol(t2, m2);
+                    data2 = await fetchStockInfo(s2.symbol, s2.name, period);
+                }
+
+                updatePanel(1, data1);
+                if (data2) {
+                    document.getElementById('stockCol2').style.display = 'flex';
+                    updatePanel(2, data2);
+                } else {
+                    document.getElementById('stockCol2').style.display = 'none';
+                }
+
+                document.getElementById('chartTitle').innerText = `${periodText} 상대적 주가 추이 (기준점 대비 % 변화)`;
+                renderCompareChart(data1, data2);
+                document.getElementById('dashboard').classList.add('visible');
+
+            } catch (error) {
+                alert(error.message);
+                console.error(error);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+            }
+        }
+
+        function updatePanel(idx, data) {
+            const meta = data.chartData.meta;
+            const finData = data.finData;
+
+            const currentPrice = meta.regularMarketPrice || 0;
+            const prevClose = meta.previousClose || currentPrice;
+            const change = currentPrice - prevClose;
+            const changePercent = prevClose > 0 ? (change / prevClose) * 100 : 0;
+
+            const priceDiffClass = change >= 0 ? 'up' : 'down';
+            const priceDiffSign = change > 0 ? '+' : '';
+
+            document.getElementById(`stockName${idx}`).innerText = `${data.name} 상세 정보`;
+            document.getElementById(`currentPrice${idx}`).innerText = currentPrice > 0 ? currentPrice.toLocaleString() + ' ₩' : 'N/A';
+
+            const changeEl = document.getElementById(`priceChange${idx}`);
+            if (currentPrice > 0) {
+                changeEl.innerText = `${priceDiffSign}${change.toLocaleString()} ₩ (${priceDiffSign}${changePercent.toFixed(2)}%)`;
+                changeEl.className = `price-change ${priceDiffClass}`;
+            } else {
+                changeEl.innerText = '정보 없음';
+                changeEl.className = `price-change`;
+            }
+
+            document.getElementById(`marketCap${idx}`).innerText = finData?.marketCap || 'N/A';
+            document.getElementById(`per${idx}`).innerText = finData?.per || 'N/A';
+            document.getElementById(`pbr${idx}`).innerText = finData?.pbr || 'N/A';
+            document.getElementById(`roe${idx}`).innerText = finData?.roe || 'N/A';
+        }
+
+        // 상대 가격 비교를 위해 1년 전 첫날 종가를 0%로 맞추고 변동률(%) 리스트 생성
+        function extractPercentData(chartData) {
+            const timestamps = chartData.timestamp;
+            const closePrices = chartData.indicators.quote[0].close;
+
+            // 유효한 첫 가격 찾기
+            let basePrice = 0;
+            let startIndex = 0;
+            for (let i = 0; i < closePrices.length; i++) {
+                if (closePrices[i] > 0) {
+                    basePrice = closePrices[i];
+                    startIndex = i;
+                    break;
+                }
+            }
+
+            const dates = timestamps.map(ts => {
+                const d = new Date(ts * 1000);
+                return `${d.getMonth() + 1}/${d.getDate()}`;
+            });
+
+            const percentValues = closePrices.map(price => {
+                if (!price || basePrice === 0) return null;
+                return ((price - basePrice) / basePrice) * 100;
+            });
+
+            return { dates, percentValues };
+        }
+
+        function renderCompareChart(data1, data2) {
+            const d1 = extractPercentData(data1.chartData);
+
+            const datasets = [{
+                label: data1.name + ' (%)',
+                data: d1.percentValues,
+                borderColor: '#58a6ff',
+                backgroundColor: 'rgba(88, 166, 255, 0.1)',
+                borderWidth: 2,
+                pointRadius: 0,
+                pointHoverRadius: 5,
+                fill: true,
+                tension: 0.1,
+                yAxisID: 'y'
+            }];
+
+            if (data2) {
+                const d2 = extractPercentData(data2.chartData);
+                datasets.push({
+                    label: data2.name + ' (%)',
+                    data: d2.percentValues,
+                    borderColor: '#ff7b72', // 비교 종목은 코랄 레드 색상
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    pointRadius: 0,
+                    pointHoverRadius: 5,
+                    fill: false, // 두번째 선은 색 채우기 끔
+                    tension: 0.1,
+                    yAxisID: 'y' // 변동률 보조축을 같이 씀으로써 직관적 스케일 비교 가능
+                });
+            }
+
+            const ctx = document.getElementById('stockChart').getContext('2d');
+            if (myChart) myChart.destroy();
+
+            myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: d1.dates, // 두 차트의 거래일이 거의 같다고 가정 (야후 파이낸스)
+                    datasets: datasets
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: { color: '#c9d1d9', font: { size: 14 } }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(2) + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { color: 'rgba(48, 54, 61, 0.5)' },
+                            ticks: { color: '#8b949e', maxTicksLimit: 12 }
+                        },
+                        y: {
+                            title: { display: true, text: '수익률 (%)', color: '#8b949e' },
+                            grid: { color: 'rgba(48, 54, 61, 0.5)', zeroLineColor: 'rgba(201, 209, 217, 0.3)' },
+                            ticks: {
+                                color: '#8b949e',
+                                callback: function (value) { return value + '%'; }
+                            }
+                        }
+                    },
+                    interaction: {
+                        intersect: false,
+                        mode: 'index',
+                    },
+                }
+            });
+        }
+
+        // 엔터키 지원
+        document.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', function (e) {
+                if (e.key === 'Enter') executeSearch();
+            });
+        });
+    </script>
+</body>
+
+</html>
