@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Codex 첫 웹사이트 만들기 - 완전 초보 가이드</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Noto Sans KR", "Segoe UI", sans-serif;
+  background: #f4f7fb;
+  color: #1f2937;
+  line-height: 1.75;
+}
+
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.card {
+  background: #ffffff;
+  border-radius: 18px;
+  padding: 26px;
+  margin-bottom: 22px;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.08);
+}
+
+.hero {
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  color: white;
+}
+
+h1, h2, h3 {
+  line-height: 1.35;
+}
+
+h1 {
+  font-size: 32px;
+  margin-bottom: 12px;
+}
+
+h2 {
+  color: #1d4ed8;
+  margin-top: 0;
+}
+
+.hero h2 {
+  color: white;
+}
+
+.badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.step {
+  border-left: 5px solid #2563eb;
+  padding: 14px 0 14px 18px;
+  margin: 18px 0;
+  background: #f8fafc;
+  border-radius: 10px;
+}
+
+.check {
+  background: #ecfdf5;
+  border-left: 5px solid #10b981;
+}
+
+.warning {
+  background: #fff7ed;
+  border-left: 5px solid #f97316;
+}
+
+pre {
+  background: #111827;
+  color: #f9fafb;
+  padding: 18px;
+  border-radius: 12px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+code {
+  background: #eef2ff;
+  color: #3730a3;
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.copy-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+}
+
+th, td {
+  border: 1px solid #e5e7eb;
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background: #eff6ff;
+}
+
+.small {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.footer {
+  text-align: center;
+  color: #6b7280;
+  padding: 30px 0;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 14px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <section class="card hero">
+    <span class="badge">Codex 완전 초보용</span>
+    <h1>Codex로 첫 웹사이트 만들기</h1>
+    <h2>가입부터 GitHub Pages 게시까지, 터미널 없이 끝내기</h2>
+    <p>
+      이 가이드는 코딩을 처음 해보는 사람이
+      <strong>Codex와 GitHub 웹페이지</strong>만 사용해서
+      간단한 웹사이트를 만들고 인터넷에 게시하는 과정을 설명합니다.
+    </p>
+  </section>
+
+  <section class="card">
+    <h2>오늘 만들 것</h2>
+    <p>
+      오늘 만들 프로젝트는 <strong>나의 첫 프로필 링크 페이지</strong>입니다.
+      인스타그램 프로필 링크 페이지처럼, 이름과 소개글, 자주 쓰는 링크 버튼이 있는 간단한 페이지입니다.
+    </p>
+
+    <table>
+      <tr>
+        <th>구분</th>
+        <th>내용</th>
+      </tr>
+      <tr>
+        <td>프로젝트 이름</td>
+        <td>나의 첫 프로필 링크 페이지</td>
+      </tr>
+      <tr>
+        <td>사용 도구</td>
+        <td>Codex, GitHub 웹사이트</td>
+      </tr>
+      <tr>
+        <td>설치 필요</td>
+        <td>없음. 터미널, Git 명령어 사용 안 함</td>
+      </tr>
+      <tr>
+        <td>최종 결과</td>
+        <td>인터넷 주소로 접속 가능한 웹페이지</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2>전체 흐름</h2>
+    <ol>
+      <li>GitHub 가입</li>
+      <li>새 저장소 만들기</li>
+      <li>Codex에게 HTML 코드 만들게 하기</li>
+      <li>GitHub 웹페이지에서 <code>index.html</code> 파일 만들기</li>
+      <li>Codex가 만든 코드 붙여넣기</li>
+      <li>Commit changes 클릭</li>
+      <li>GitHub Pages 켜기</li>
+      <li>공개 주소로 접속하기</li>
+    </ol>
+  </section>
+
+  <section class="card">
+    <h2>1단계. GitHub 가입하기</h2>
+
+    <div class="step">
+      <h3>1-1. GitHub 접속</h3>
+      <p>브라우저에서 <code>github.com</code>에 접속합니다.</p>
+    </div>
+
+    <div class="step">
+      <h3>1-2. Sign up 클릭</h3>
+      <p>오른쪽 위의 <strong>Sign up</strong> 버튼을 누릅니다.</p>
+    </div>
+
+    <div class="step">
+      <h3>1-3. 이메일, 비밀번호, 사용자 이름 입력</h3>
+      <p>
+        사용자 이름은 나중에 웹사이트 주소에 들어갑니다.
+      </p>
+      <pre>예시:
+사용자 이름: happycoder123
+
+나중에 만들어질 주소:
+https://happycoder123.github.io/my-first-page/</pre>
+    </div>
+
+    <div class="step check">
+      <h3>확인</h3>
+      <p>로그인 후 GitHub 메인 화면이 보이면 성공입니다.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2단계. 새 저장소 만들기</h2>
+
+    <p>
+      저장소(repository)는 웹사이트 파일을 보관하는 공간입니다.
+      쉽게 말해 <strong>내 웹사이트 전용 폴더</strong>입니다.
+    </p>
+
+    <div class="step">
+      <h3>2-1. New repository 클릭</h3>
+      <p>
+        GitHub 화면 오른쪽 위의 <strong>+</strong> 버튼을 누른 뒤
+        <strong>New repository</strong>를 클릭합니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>2-2. Repository name 입력</h3>
+      <p>저장소 이름에 아래처럼 입력합니다.</p>
+      <pre>my-first-page</pre>
+    </div>
+
+    <div class="step">
+      <h3>2-3. Public 선택</h3>
+      <p>
+        GitHub Pages로 무료 게시하려면 처음에는 <strong>Public</strong>을 선택하는 것이 가장 쉽습니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>2-4. Add a README file 체크</h3>
+      <p>
+        <strong>Add a README file</strong>을 체크합니다.
+        이렇게 하면 저장소가 비어 있지 않게 만들어져서 초보자가 다루기 쉽습니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>2-5. Create repository 클릭</h3>
+      <p>
+        초록색 <strong>Create repository</strong> 버튼을 클릭합니다.
+      </p>
+    </div>
+
+    <div class="step check">
+      <h3>확인</h3>
+      <p>
+        저장소 화면에 <code>README.md</code> 파일이 보이면 성공입니다.
+      </p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3단계. Codex에게 웹페이지 코드 만들게 하기</h2>
+
+    <p>
+      이제 Codex에게 웹페이지 코드를 만들어달라고 요청합니다.
+      아래 문장을 그대로 복사해서 Codex에 넣습니다.
+    </p>
+
+    <div class="copy-title">Codex 요청문</div>
+    <pre>나는 코딩을 처음 해보는 초보자야.
+
+HTML, CSS, JavaScript를 하나의 파일에 모두 넣어서
+"나의 첫 프로필 링크 페이지"를 만들어줘.
+
+조건:
+1. 파일명은 index.html
+2. 모바일에서도 보기 좋게 만들어줘
+3. 이름, 한 줄 소개, 링크 버튼 3개를 넣어줘
+4. 링크 버튼은 Google, GitHub, ChatGPT로 해줘
+5. 버튼을 클릭하면 새 창으로 열리게 해줘
+6. 코드 안에 초보자가 이해할 수 있는 주석을 달아줘
+7. 전체 코드를 한 번에 복사할 수 있게 보여줘</pre>
+
+    <div class="step warning">
+      <h3>중요</h3>
+      <p>
+        Codex가 여러 파일로 나누려고 하면 이렇게 다시 말합니다.
+      </p>
+      <pre>아니, 초보자라서 파일 하나로 하고 싶어.
+HTML 파일 하나 안에 CSS와 JavaScript까지 모두 넣어서 다시 만들어줘.</pre>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>4단계. GitHub 웹에서 index.html 파일 만들기</h2>
+
+    <div class="step">
+      <h3>4-1. 저장소 화면으로 이동</h3>
+      <p>
+        방금 만든 <code>my-first-page</code> 저장소 화면으로 갑니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>4-2. Add file 클릭</h3>
+      <p>
+        파일 목록 위쪽에 있는 <strong>Add file</strong> 버튼을 클릭합니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>4-3. Create new file 클릭</h3>
+      <p>
+        메뉴에서 <strong>Create new file</strong>을 선택합니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>4-4. 파일 이름 입력</h3>
+      <p>파일 이름 입력칸에 아래처럼 입력합니다.</p>
+      <pre>index.html</pre>
+    </div>
+
+    <div class="step">
+      <h3>4-5. 코드 붙여넣기</h3>
+      <p>
+        큰 코드 입력창에 Codex가 만들어준 HTML 코드를 전부 붙여넣습니다.
+      </p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>5단계. 붙여넣을 예시 코드</h2>
+
+    <p>
+      Codex가 만든 코드가 마음에 들지 않거나 너무 복잡하면,
+      아래 코드를 그대로 사용해도 됩니다.
+    </p>
+
+    <pre>&lt;!doctype html&gt;
+&lt;html lang="ko"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+  &lt;title&gt;나의 첫 프로필 링크 페이지&lt;/title&gt;
+
+  &lt;style&gt;
+    /* 전체 화면 스타일 */
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    /* 가운데 카드 */
+    .card {
+      max-width: 420px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 24px;
+      padding: 32px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    }
+
+    /* 프로필 원 */
+    .profile {
+      width: 90px;
+      height: 90px;
+      margin: 0 auto 20px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      font-weight: bold;
+    }
+
+    h1 {
+      margin-bottom: 8px;
+      color: #2563eb;
+    }
+
+    p {
+      color: #4b5563;
+    }
+
+    /* 링크 버튼 */
+    a {
+      display: block;
+      margin: 14px 0;
+      padding: 14px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      border-radius: 12px;
+      font-weight: bold;
+    }
+
+    /* 마우스를 올렸을 때 */
+    a:hover {
+      background: #1d4ed8;
+    }
+
+    .small {
+      margin-top: 24px;
+      font-size: 13px;
+      color: #9ca3af;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+
+  &lt;div class="card"&gt;
+
+    &lt;div class="profile"&gt;나&lt;/div&gt;
+
+    &lt;h1&gt;안녕하세요!&lt;/h1&gt;
+
+    &lt;p&gt;이것은 제가 처음 만든 웹페이지입니다.&lt;/p&gt;
+
+    &lt;a href="https://www.google.com" target="_blank"&gt;Google 바로가기&lt;/a&gt;
+
+    &lt;a href="https://github.com" target="_blank"&gt;GitHub 바로가기&lt;/a&gt;
+
+    &lt;a href="https://chatgpt.com" target="_blank"&gt;ChatGPT 바로가기&lt;/a&gt;
+
+    &lt;div class="small"&gt;
+      Made with Codex
+    &lt;/div&gt;
+
+  &lt;/div&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;</pre>
+  </section>
+
+  <section class="card">
+    <h2>6단계. 파일 저장하기</h2>
+
+    <div class="step">
+      <h3>6-1. Commit changes 클릭</h3>
+      <p>
+        화면 오른쪽 위 또는 아래쪽의 <strong>Commit changes</strong> 버튼을 클릭합니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>6-2. 메시지는 그대로 두어도 됨</h3>
+      <p>
+        Commit message가 자동으로 들어가 있을 수 있습니다.
+        그대로 두거나 아래처럼 입력합니다.
+      </p>
+      <pre>Add index.html</pre>
+    </div>
+
+    <div class="step">
+      <h3>6-3. 다시 Commit changes 클릭</h3>
+      <p>
+        확인 창이 나오면 다시 <strong>Commit changes</strong>를 클릭합니다.
+      </p>
+    </div>
+
+    <div class="step check">
+      <h3>확인</h3>
+      <p>
+        파일 목록에 <code>index.html</code>이 보이면 성공입니다.
+      </p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>7단계. GitHub Pages 켜기</h2>
+
+    <div class="step">
+      <h3>7-1. Settings 클릭</h3>
+      <p>
+        저장소 상단 메뉴에서 <strong>Settings</strong>를 클릭합니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>7-2. Pages 클릭</h3>
+      <p>
+        왼쪽 메뉴에서 <strong>Pages</strong>를 클릭합니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>7-3. Source 선택</h3>
+      <p>
+        <strong>Build and deployment</strong> 영역에서 Source를
+        <strong>Deploy from a branch</strong>로 선택합니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>7-4. Branch 선택</h3>
+      <p>
+        Branch는 <strong>main</strong>, 폴더는 <strong>/root</strong>를 선택합니다.
+      </p>
+    </div>
+
+    <div class="step">
+      <h3>7-5. Save 클릭</h3>
+      <p>
+        <strong>Save</strong> 버튼을 클릭합니다.
+      </p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>8단계. 내 웹사이트 접속하기</h2>
+
+    <p>
+      잠시 후 아래 형식의 주소로 접속할 수 있습니다.
+    </p>
+
+    <pre>https://내깃허브아이디.github.io/my-first-page/</pre>
+
+    <p>
+      예를 들어 GitHub 아이디가 <code>happycoder123</code>이면 주소는 이렇게 됩니다.
+    </p>
+
+    <pre>https://happycoder123.github.io/my-first-page/</pre>
+
+    <div class="step warning">
+      <h3>바로 안 보이면?</h3>
+      <p>
+        GitHub Pages는 반영에 시간이 조금 걸릴 수 있습니다.
+        1~3분 정도 후 새로고침해 보세요.
+      </p>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>9단계. 수정하는 방법</h2>
+
+    <p>
+      웹사이트를 수정하고 싶을 때도 Git 명령어는 필요 없습니다.
+    </p>
+
+    <ol>
+      <li>GitHub 저장소로 이동</li>
+      <li><code>index.html</code> 클릭</li>
+      <li>오른쪽 위 연필 모양 Edit 클릭</li>
+      <li>내용 수정</li>
+      <li>Commit changes 클릭</li>
+      <li>잠시 후 웹사이트에 반영됨</li>
+    </ol>
+
+    <div class="step">
+      <h3>Codex에게 수정 요청 예시</h3>
+      <pre>아래 HTML 코드를 수정해줘.
+
+변경하고 싶은 것:
+1. 배경색을 밝은 노란색으로
+2. 버튼을 5개로 늘리기
+3. 내 소개 문장을 더 친근하게 바꾸기
+
+전체 코드를 다시 보여줘.</pre>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>10단계. 초보자가 자주 막히는 부분</h2>
+
+    <table>
+      <tr>
+        <th>문제</th>
+        <th>해결 방법</th>
+      </tr>
+      <tr>
+        <td>사이트가 404로 나옴</td>
+        <td><code>index.html</code> 파일명이 정확한지 확인</td>
+      </tr>
+      <tr>
+        <td>주소가 안 열림</td>
+        <td>Pages 설정에서 main / root 선택했는지 확인</td>
+      </tr>
+      <tr>
+        <td>수정했는데 반영이 안 됨</td>
+        <td>1~3분 기다린 뒤 새로고침</td>
+      </tr>
+      <tr>
+        <td>코드가 깨짐</td>
+        <td>Codex에게 “전체 HTML을 다시 정리해줘”라고 요청</td>
+      </tr>
+      <tr>
+        <td>버튼 링크가 이상함</td>
+        <td><code>href="주소"</code> 부분 확인</td>
+      </tr>
+    </table>
+  </section>
+
+  <section class="card">
+    <h2>마지막 정리</h2>
+
+    <p>
+      이 과정을 한 번 끝내면 초보자는 아래 전체 흐름을 경험하게 됩니다.
+    </p>
+
+    <ul>
+      <li>Codex에게 원하는 웹페이지 설명하기</li>
+      <li>HTML 코드 받기</li>
+      <li>GitHub 저장소 만들기</li>
+      <li>GitHub 웹에서 파일 생성하기</li>
+      <li>GitHub Pages로 인터넷에 게시하기</li>
+      <li>다시 수정하고 재게시하기</li>
+    </ul>
+
+    <div class="step check">
+      <h3>핵심</h3>
+      <p>
+        초보자는 Git 명령어를 먼저 배울 필요가 없습니다.
+        먼저 <strong>Codex로 만들고, GitHub 웹에서 올리고, 실제 주소로 확인하는 경험</strong>을 하는 것이 가장 중요합니다.
+      </p>
+    </div>
+  </section>
+
+  <div class="footer">
+    Codex 첫 프로젝트 가이드 · Web Only Version
+  </div>
+
+</div>
+
+</body>
+</html>
