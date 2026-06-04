@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>한국 주식 수익률 비교</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root { --bg:#f5f7fb; --card:#fff; --text:#172033; --muted:#6b7280; --line:#e5e7eb; --blue:#2563eb; --red:#dc2626; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans-serif; background:var(--bg); color:var(--text); }
+    .wrap { max-width:1080px; margin:0 auto; padding:28px 16px 48px; }
+    .hero { background:linear-gradient(135deg,#0f172a,#1e40af); color:#fff; border-radius:24px; padding:28px; box-shadow:0 18px 45px rgba(15,23,42,.18); }
+    h1 { margin:0 0 10px; font-size:clamp(26px,4vw,42px); letter-spacing:-.04em; }
+    .hero p { margin:0; color:#dbeafe; line-height:1.65; }
+    .panel { margin-top:18px; background:var(--card); border:1px solid var(--line); border-radius:20px; padding:18px; box-shadow:0 10px 30px rgba(15,23,42,.08); }
+    .form { display:grid; grid-template-columns:1fr 1fr auto; gap:10px; align-items:end; }
+    label { display:block; font-weight:700; font-size:13px; margin-bottom:6px; color:#374151; }
+    input { width:100%; padding:13px 14px; border:1px solid #d1d5db; border-radius:14px; font-size:16px; outline:none; }
+    input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.12); }
+    button { border:0; border-radius:14px; padding:14px 18px; background:var(--blue); color:#fff; font-weight:800; cursor:pointer; font-size:15px; }
+    button:hover { filter:brightness(.95); }
+    .hint { margin-top:10px; color:var(--muted); font-size:13px; line-height:1.6; }
+    .tabs { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0; }
+    .tab { padding:9px 13px; border:1px solid #d1d5db; border-radius:999px; background:#fff; color:#374151; cursor:pointer; font-weight:800; }
+    .tab.active { background:#111827; color:#fff; border-color:#111827; }
+    .cards { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin-bottom:14px; }
+    .card { border:1px solid var(--line); border-radius:16px; padding:14px; background:#fff; }
+    .card .k { color:var(--muted); font-size:12px; font-weight:700; }
+    .card .v { margin-top:6px; font-size:20px; font-weight:900; }
+    .up { color:#dc2626; } .down { color:#2563eb; }
+    .chartBox { height:460px; background:#fff; border:1px solid var(--line); border-radius:20px; padding:18px; }
+    #status { margin-top:12px; color:#374151; line-height:1.6; font-size:14px; white-space:pre-line; }
+    .footer { margin-top:14px; color:#6b7280; font-size:12px; line-height:1.6; }
+    @media (max-width:760px){ .form{grid-template-columns:1fr;} .cards{grid-template-columns:1fr 1fr;} .chartBox{height:390px;} }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="hero">
+      <h1>한국 주식 수익률 비교</h1>
+      <p>두 종목명을 넣으면 1개월, 3개월, 6개월, 1년, 3년 누적수익률을 같은 기준점(0%)으로 비교합니다. 실시간이 아니라 Yahoo Finance의 일봉 데이터를 사용합니다.</p>
+    </section>
+
+    <section class="panel">
+      <div class="form">
+        <div><label for="stockA">종목 1</label><input id="stockA" value="삼성전자" placeholder="예: 삼성전자 또는 005930" /></div>
+        <div><label for="stockB">종목 2</label><input id="stockB" value="SK하이닉스" placeholder="예: SK하이닉스 또는 000660" /></div>
+        <button id="runBtn">비교하기</button>
+      </div>
+      <div class="hint">숫자 6자리 코드를 넣으면 KOSPI(.KS)와 KOSDAQ(.KQ)을 자동 시도합니다. 종목명은 Yahoo Finance 검색 결과 중 한국시장 종목을 우선 선택합니다.</div>
+      <div id="status"></div>
+    </section>
+
+    <section class="panel">
+      <div class="tabs" id="tabs"></div>
+      <div class="cards" id="cards"></div>
+      <div class="chartBox"><canvas id="chart"></canvas></div>
+      <div class="footer">주의: 브라우저에서 Yahoo Finance API를 직접 호출하므로, 네트워크/CORS 정책 변경 시 동작하지 않을 수 있습니다. 그 경우 간단한 서버리스 프록시를 붙이면 안정화할 수 있습니다.</div>
+    </section>
+  </main>
+
+<script>
+const periods = [
+  { key:'1m', label:'1개월', days:31 },
+  { key:'3m', label:'3개월', days:93 },
+  { key:'6m', label:'6개월', days:186 },
+  { key:'1y', label:'1년', days:366 },
+  { key:'3y', label:'3년', days:1098 }
+];
+let chart, loaded = null, active = '1y';
+const $ = id => document.getElementById(id);
+const fmtPct = v => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
+const cls = v => v >= 0 ? 'up' : 'down';
+
+async function fetchJson(url){
+  const r = await fetch(url);
+  if(!r.ok) throw new Error('HTTP ' + r.status);
+  return r.json();
+}
+
+async function resolveSymbol(input){
+  const q = input.trim();
+  if(!q) throw new Error('종목명이 비어 있습니다.');
+  if(/^\d{6}$/.test(q)){
+    for(const suffix of ['.KS','.KQ']){
+      const symbol = q + suffix;
+      try { const data = await getPrices(symbol, 10); if(data.prices.length) return { symbol, name:symbol }; } catch(e) {}
+    }
+    throw new Error(q + ' 코드를 찾지 못했습니다.');
+  }
+  const url = 'https://query2.finance.yahoo.com/v1/finance/search?q=' + encodeURIComponent(q) + '&quotesCount=8&newsCount=0&lang=ko-KR&region=KR';
+  const data = await fetchJson(url);
+  const quotes = (data.quotes || []).filter(x => x.symbol && (x.symbol.endsWith('.KS') || x.symbol.endsWith('.KQ')));
+  if(!quotes.length) throw new Error(q + ' 검색 결과가 없습니다. 6자리 종목코드로 다시 시도해 보세요.');
+  const best = quotes[0];
+  return { symbol:best.symbol, name:best.shortname || best.longname || best.symbol };
+}
+
+async function getPrices(symbol, days=1200){
+  const p2 = Math.floor(Date.now()/1000);
+  const p1 = p2 - days*24*60*60;
+  const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?period1=${p1}&period2=${p2}&interval=1d&events=history&includeAdjustedClose=true`;
+  const data = await fetchJson(url);
+  const result = data.chart && data.chart.result && data.chart.result[0];
+  if(!result) throw new Error(symbol + ' 시세를 불러오지 못했습니다.');
+  const ts = result.timestamp || [];
+  const quote = result.indicators.quote[0];
+  const adj = result.indicators.adjclose && result.indicators.adjclose[0] && result.indicators.adjclose[0].adjclose;
+  const close = (adj || quote.close || []);
+  const prices = ts.map((t,i)=>({ date:new Date(t*1000), close:close[i] })).filter(x => Number.isFinite(x.close));
+  return { symbol, prices };
+}
+
+function slicePeriod(prices, days){
+  if(!prices.length) return [];
+  const end = prices[prices.length-1].date.getTime();
+  const start = end - days*24*60*60*1000;
+  const s = prices.filter(p => p.date.getTime() >= start);
+  return s.length ? s : prices.slice(-1);
+}
+
+function toReturnSeries(prices){
+  if(prices.length < 2) return [];
+  const base = prices[0].close;
+  return prices.map(p => ({ date:p.date.toISOString().slice(0,10), ret:(p.close/base-1)*100 }));
+}
+
+function alignSeries(a, b){
+  const ma = new Map(a.map(x=>[x.date,x.ret]));
+  const mb = new Map(b.map(x=>[x.date,x.ret]));
+  const dates = [...ma.keys()].filter(d => mb.has(d)).sort();
+  return dates.map(d => ({ date:d, a:ma.get(d), b:mb.get(d) }));
+}
+
+function draw(){
+  if(!loaded) return;
+  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.key === active));
+  const p = periods.find(x=>x.key===active);
+  const a = toReturnSeries(slicePeriod(loaded.a.prices, p.days));
+  const b = toReturnSeries(slicePeriod(loaded.b.prices, p.days));
+  const rows = alignSeries(a,b);
+  const last = rows[rows.length-1] || {a:0,b:0};
+  $('cards').innerHTML = periods.map(pp => {
+    const aa = toReturnSeries(slicePeriod(loaded.a.prices, pp.days));
+    const bb = toReturnSeries(slicePeriod(loaded.b.prices, pp.days));
+    const rr = alignSeries(aa,bb); const l = rr[rr.length-1] || {a:0,b:0};
+    return `<div class="card"><div class="k">${pp.label}</div><div class="v"><span class="${cls(l.a)}">${fmtPct(l.a)}</span></div><div class="k">${loaded.a.name}</div><div class="v"><span class="${cls(l.b)}">${fmtPct(l.b)}</span></div><div class="k">${loaded.b.name}</div></div>`;
+  }).join('');
+  const data = { labels:rows.map(r=>r.date), datasets:[
+    { label:loaded.a.name + ' (' + loaded.a.symbol + ')', data:rows.map(r=>r.a), borderColor:'#dc2626', backgroundColor:'rgba(220,38,38,.08)', tension:.18, pointRadius:0, borderWidth:2 },
+    { label:loaded.b.name + ' (' + loaded.b.symbol + ')', data:rows.map(r=>r.b), borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,.08)', tension:.18, pointRadius:0, borderWidth:2 }
+  ]};
+  const options = { responsive:true, maintainAspectRatio:false, interaction:{mode:'index', intersect:false}, plugins:{ legend:{position:'top'}, tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${fmtPct(c.raw)}`}}}, scales:{ y:{ ticks:{callback:v=>v+'%'}, title:{display:true,text:'누적수익률'} }, x:{ ticks:{maxTicksLimit:8} } } };
+  if(chart){ chart.data = data; chart.options = options; chart.update(); } else { chart = new Chart($('chart'), { type:'line', data, options }); }
+}
+
+async function run(){
+  try{
+    $('status').textContent = '종목 검색 및 시세 다운로드 중...';
+    $('runBtn').disabled = true;
+    const [ra, rb] = await Promise.all([resolveSymbol($('stockA').value), resolveSymbol($('stockB').value)]);
+    const [pa, pb] = await Promise.all([getPrices(ra.symbol), getPrices(rb.symbol)]);
+    loaded = { a:{...ra, prices:pa.prices}, b:{...rb, prices:pb.prices} };
+    $('status').textContent = `선택 종목: ${loaded.a.name} (${loaded.a.symbol}) vs ${loaded.b.name} (${loaded.b.symbol})\n가장 최근 가격일: ${loaded.a.prices.at(-1).date.toISOString().slice(0,10)} / ${loaded.b.prices.at(-1).date.toISOString().slice(0,10)}`;
+    draw();
+  } catch(e){ $('status').textContent = '오류: ' + e.message; }
+  finally{ $('runBtn').disabled = false; }
+}
+
+$('tabs').innerHTML = periods.map(p=>`<button class="tab ${p.key===active?'active':''}" data-key="${p.key}">${p.label}</button>`).join('');
+$('tabs').addEventListener('click', e => { if(e.target.dataset.key){ active = e.target.dataset.key; draw(); } });
+$('runBtn').addEventListener('click', run);
+run();
+</script>
+</body>
+</html>
