@@ -20,6 +20,7 @@
     input:focus { border-color:var(--blue); box-shadow:0 0 0 3px rgba(37,99,235,.12); }
     button { border:0; border-radius:14px; padding:14px 18px; background:var(--blue); color:#fff; font-weight:800; cursor:pointer; font-size:15px; }
     button:hover { filter:brightness(.95); }
+    button:disabled { opacity:.55; cursor:not-allowed; }
     .hint { margin-top:10px; color:var(--muted); font-size:13px; line-height:1.6; }
     .tabs { display:flex; flex-wrap:wrap; gap:8px; margin:18px 0; }
     .tab { padding:9px 13px; border:1px solid #d1d5db; border-radius:999px; background:#fff; color:#374151; cursor:pointer; font-weight:800; }
@@ -48,7 +49,7 @@
         <div><label for="stockB">종목 2</label><input id="stockB" value="SK하이닉스" placeholder="예: SK하이닉스 또는 000660" /></div>
         <button id="runBtn">비교하기</button>
       </div>
-      <div class="hint">숫자 6자리 코드를 넣으면 KOSPI(.KS)와 KOSDAQ(.KQ)을 자동 시도합니다. 종목명은 Yahoo Finance 검색 결과 중 한국시장 종목을 우선 선택합니다.</div>
+      <div class="hint">숫자 6자리 코드를 넣으면 KOSPI(.KS)와 KOSDAQ(.KQ)을 자동 시도합니다. 주요 종목명은 내장 매핑을 쓰고, 그 외에는 Yahoo Finance 검색을 보조로 사용합니다.</div>
       <div id="status"></div>
     </section>
 
@@ -56,7 +57,7 @@
       <div class="tabs" id="tabs"></div>
       <div class="cards" id="cards"></div>
       <div class="chartBox"><canvas id="chart"></canvas></div>
-      <div class="footer">주의: 브라우저에서 Yahoo Finance API를 직접 호출하므로, 네트워크/CORS 정책 변경 시 동작하지 않을 수 있습니다. 그 경우 간단한 서버리스 프록시를 붙이면 안정화할 수 있습니다.</div>
+      <div class="footer">주의: 정적 페이지라 외부 무료 데이터 소스와 공개 CORS 프록시에 의존합니다. 더 안정적으로 쓰려면 Cloudflare Worker 같은 전용 프록시를 붙이는 방식이 좋습니다.</div>
     </section>
   </main>
 
@@ -68,20 +69,79 @@ const periods = [
   { key:'1y', label:'1년', days:366 },
   { key:'3y', label:'3년', days:1098 }
 ];
+
+const aliases = {
+  '삼성전자': { symbol:'005930.KS', name:'삼성전자' },
+  '삼전': { symbol:'005930.KS', name:'삼성전자' },
+  'sk하이닉스': { symbol:'000660.KS', name:'SK하이닉스' },
+  '하이닉스': { symbol:'000660.KS', name:'SK하이닉스' },
+  '현대차': { symbol:'005380.KS', name:'현대차' },
+  '기아': { symbol:'000270.KS', name:'기아' },
+  '셀트리온': { symbol:'068270.KS', name:'셀트리온' },
+  '네이버': { symbol:'035420.KS', name:'NAVER' },
+  'naver': { symbol:'035420.KS', name:'NAVER' },
+  '카카오': { symbol:'035720.KS', name:'카카오' },
+  '삼성바이오로직스': { symbol:'207940.KS', name:'삼성바이오로직스' },
+  'lg에너지솔루션': { symbol:'373220.KS', name:'LG에너지솔루션' },
+  'lg화학': { symbol:'051910.KS', name:'LG화학' },
+  '포스코홀딩스': { symbol:'005490.KS', name:'POSCO홀딩스' },
+  'posco홀딩스': { symbol:'005490.KS', name:'POSCO홀딩스' },
+  '삼성sdi': { symbol:'006400.KS', name:'삼성SDI' },
+  '두산에너빌리티': { symbol:'034020.KS', name:'두산에너빌리티' },
+  '한화에어로스페이스': { symbol:'012450.KS', name:'한화에어로스페이스' },
+  '에코프로': { symbol:'086520.KQ', name:'에코프로' },
+  '에코프로비엠': { symbol:'247540.KQ', name:'에코프로비엠' },
+  '알테오젠': { symbol:'196170.KQ', name:'알테오젠' },
+  'hlb': { symbol:'028300.KQ', name:'HLB' }
+};
+
 let chart, loaded = null, active = '1y';
 const $ = id => document.getElementById(id);
 const fmtPct = v => (v >= 0 ? '+' : '') + v.toFixed(2) + '%';
 const cls = v => v >= 0 ? 'up' : 'down';
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function proxied(url){
+  return [
+    url,
+    'https://api.allorigins.win/raw?url=' + encodeURIComponent(url),
+    'https://corsproxy.io/?' + encodeURIComponent(url)
+  ];
+}
+
+async function fetchText(url){
+  let lastErr;
+  for(const u of proxied(url)){
+    try{
+      const controller = new AbortController();
+      const timer = setTimeout(() => controller.abort(), 12000);
+      const r = await fetch(u, { signal:controller.signal, cache:'no-store' });
+      clearTimeout(timer);
+      if(!r.ok) throw new Error('HTTP ' + r.status);
+      const text = await r.text();
+      if(!text || text.trim().length < 2) throw new Error('empty response');
+      return text;
+    }catch(e){ lastErr = e; await sleep(250); }
+  }
+  throw lastErr || new Error('fetch failed');
+}
 
 async function fetchJson(url){
-  const r = await fetch(url);
-  if(!r.ok) throw new Error('HTTP ' + r.status);
-  return r.json();
+  const text = await fetchText(url);
+  return JSON.parse(text);
+}
+
+function normalizeName(s){
+  return String(s || '').trim().toLowerCase().replace(/\s+/g, '');
 }
 
 async function resolveSymbol(input){
   const q = input.trim();
   if(!q) throw new Error('종목명이 비어 있습니다.');
+
+  const mapped = aliases[normalizeName(q)];
+  if(mapped) return mapped;
+
   if(/^\d{6}$/.test(q)){
     for(const suffix of ['.KS','.KQ']){
       const symbol = q + suffix;
@@ -89,10 +149,11 @@ async function resolveSymbol(input){
     }
     throw new Error(q + ' 코드를 찾지 못했습니다.');
   }
-  const url = 'https://query2.finance.yahoo.com/v1/finance/search?q=' + encodeURIComponent(q) + '&quotesCount=8&newsCount=0&lang=ko-KR&region=KR';
+
+  const url = 'https://query2.finance.yahoo.com/v1/finance/search?q=' + encodeURIComponent(q) + '&quotesCount=10&newsCount=0&lang=ko-KR&region=KR';
   const data = await fetchJson(url);
   const quotes = (data.quotes || []).filter(x => x.symbol && (x.symbol.endsWith('.KS') || x.symbol.endsWith('.KQ')));
-  if(!quotes.length) throw new Error(q + ' 검색 결과가 없습니다. 6자리 종목코드로 다시 시도해 보세요.');
+  if(!quotes.length) throw new Error(q + ' 검색 결과가 없습니다. 종목명 대신 6자리 종목코드로 다시 시도해 보세요.');
   const best = quotes[0];
   return { symbol:best.symbol, name:best.shortname || best.longname || best.symbol };
 }
@@ -105,10 +166,11 @@ async function getPrices(symbol, days=1200){
   const result = data.chart && data.chart.result && data.chart.result[0];
   if(!result) throw new Error(symbol + ' 시세를 불러오지 못했습니다.');
   const ts = result.timestamp || [];
-  const quote = result.indicators.quote[0];
+  const quote = result.indicators.quote && result.indicators.quote[0];
   const adj = result.indicators.adjclose && result.indicators.adjclose[0] && result.indicators.adjclose[0].adjclose;
-  const close = (adj || quote.close || []);
+  const close = (adj || (quote && quote.close) || []);
   const prices = ts.map((t,i)=>({ date:new Date(t*1000), close:close[i] })).filter(x => Number.isFinite(x.close));
+  if(!prices.length) throw new Error(symbol + ' 가격 데이터가 비어 있습니다.');
   return { symbol, prices };
 }
 
@@ -140,12 +202,14 @@ function draw(){
   const a = toReturnSeries(slicePeriod(loaded.a.prices, p.days));
   const b = toReturnSeries(slicePeriod(loaded.b.prices, p.days));
   const rows = alignSeries(a,b);
+
   $('cards').innerHTML = periods.map(pp => {
     const aa = toReturnSeries(slicePeriod(loaded.a.prices, pp.days));
     const bb = toReturnSeries(slicePeriod(loaded.b.prices, pp.days));
     const rr = alignSeries(aa,bb); const l = rr[rr.length-1] || {a:0,b:0};
     return `<div class="card"><div class="k">${pp.label}</div><div class="v"><span class="${cls(l.a)}">${fmtPct(l.a)}</span></div><div class="k">${loaded.a.name}</div><div class="v"><span class="${cls(l.b)}">${fmtPct(l.b)}</span></div><div class="k">${loaded.b.name}</div></div>`;
   }).join('');
+
   const data = { labels:rows.map(r=>r.date), datasets:[
     { label:loaded.a.name + ' (' + loaded.a.symbol + ')', data:rows.map(r=>r.a), borderColor:'#dc2626', backgroundColor:'rgba(220,38,38,.08)', tension:.18, pointRadius:0, borderWidth:2 },
     { label:loaded.b.name + ' (' + loaded.b.symbol + ')', data:rows.map(r=>r.b), borderColor:'#2563eb', backgroundColor:'rgba(37,99,235,.08)', tension:.18, pointRadius:0, borderWidth:2 }
@@ -156,14 +220,17 @@ function draw(){
 
 async function run(){
   try{
-    $('status').textContent = '종목 검색 및 시세 다운로드 중...';
+    $('status').textContent = '종목 확인 중...';
     $('runBtn').disabled = true;
     const [ra, rb] = await Promise.all([resolveSymbol($('stockA').value), resolveSymbol($('stockB').value)]);
+    $('status').textContent = `시세 다운로드 중...\n${ra.name} (${ra.symbol}) / ${rb.name} (${rb.symbol})`;
     const [pa, pb] = await Promise.all([getPrices(ra.symbol), getPrices(rb.symbol)]);
     loaded = { a:{...ra, prices:pa.prices}, b:{...rb, prices:pb.prices} };
     $('status').textContent = `선택 종목: ${loaded.a.name} (${loaded.a.symbol}) vs ${loaded.b.name} (${loaded.b.symbol})\n가장 최근 가격일: ${loaded.a.prices.at(-1).date.toISOString().slice(0,10)} / ${loaded.b.prices.at(-1).date.toISOString().slice(0,10)}`;
     draw();
-  } catch(e){ $('status').textContent = '오류: ' + e.message; }
+  } catch(e){
+    $('status').textContent = '오류: ' + e.message + '\n그래도 안 되면 종목명을 6자리 코드로 입력해 보세요. 예: 삼성전자 005930, SK하이닉스 000660';
+  }
   finally{ $('runBtn').disabled = false; }
 }
 
