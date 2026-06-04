@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>미국 주식 수익률 비교</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root{--bg:#f5f7fb;--card:#fff;--text:#172033;--muted:#6b7280;--line:#e5e7eb;--blue:#2563eb}
+    *{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text)}
+    .wrap{max-width:1080px;margin:0 auto;padding:28px 16px 48px}.hero{background:linear-gradient(135deg,#0f172a,#1e40af);color:#fff;border-radius:24px;padding:28px;box-shadow:0 18px 45px rgba(15,23,42,.18)}
+    h1{margin:0 0 10px;font-size:clamp(26px,4vw,42px);letter-spacing:-.04em}.hero p{margin:0;color:#dbeafe;line-height:1.65}.panel{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 10px 30px rgba(15,23,42,.08)}
+    .form{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end}label{display:block;font-weight:700;font-size:13px;margin-bottom:6px;color:#374151}input{width:100%;padding:13px 14px;border:1px solid #d1d5db;border-radius:14px;font-size:16px;outline:none;text-transform:uppercase}input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.12)}button{border:0;border-radius:14px;padding:14px 18px;background:var(--blue);color:#fff;font-weight:800;cursor:pointer;font-size:15px}button:disabled{opacity:.55;cursor:not-allowed}.hint{margin-top:10px;color:var(--muted);font-size:13px;line-height:1.6}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0}.tab{padding:9px 13px;border:1px solid #d1d5db;border-radius:999px;background:#fff;color:#374151;cursor:pointer;font-weight:800}.tab.active{background:#111827;color:#fff;border-color:#111827}.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:14px}.card{border:1px solid var(--line);border-radius:16px;padding:14px;background:#fff}.card .k{color:var(--muted);font-size:12px;font-weight:700}.card .v{margin-top:6px;font-size:18px;font-weight:900}.ticker{font-size:12px;color:#111827;font-weight:800;margin-top:4px}.up{color:#16a34a}.down{color:#dc2626}.chartBox{height:460px;background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px}#status{margin-top:12px;color:#374151;line-height:1.6;font-size:14px;white-space:pre-line}.footer{margin-top:14px;color:#6b7280;font-size:12px;line-height:1.6}@media(max-width:860px){.form{grid-template-columns:1fr}.cards{grid-template-columns:1fr 1fr}.chartBox{height:390px}}
+  </style>
+</head>
+<body>
+<main class="wrap">
+  <section class="hero"><h1>미국 주식 수익률 비교</h1><p>미국 주식 티커를 최대 3개까지 입력하면 1개월, 3개월, 6개월, 1년, 3년 누적수익률을 같은 기준점(0%)으로 비교합니다. 종목명은 Yahoo Finance에서 자동 조회합니다.</p></section>
+  <section class="panel">
+    <div class="form">
+      <div><label for="stockA">티커 1</label><input id="stockA" placeholder="예: AAPL" /></div>
+      <div><label for="stockB">티커 2</label><input id="stockB" placeholder="예: NVDA" /></div>
+      <div><label for="stockC">티커 3 선택</label><input id="stockC" placeholder="예: TSLA" /></div>
+      <button id="runBtn">비교하기</button>
+    </div>
+    <div class="hint">티커만 입력하세요. 예: AAPL, MSFT, NVDA, TSLA, IREN, RKLB. 세 번째 칸은 비워도 됩니다.</div>
+    <div id="status">티커를 입력하고 비교하기를 눌러주세요.</div>
+  </section>
+  <section class="panel"><div class="tabs" id="tabs"></div><div class="cards" id="cards"></div><div class="chartBox"><canvas id="chart"></canvas></div><div class="footer">주의: Yahoo Finance 일봉 데이터를 사용합니다. 브라우저에서 외부 API를 직접 호출하므로 CORS/네트워크 정책 변경 시 일부 조회가 실패할 수 있습니다.</div></section>
+</main>
+<script>
+const periods=[{key:'1m',label:'1개월',days:31},{key:'3m',label:'3개월',days:93},{key:'6m',label:'6개월',days:186},{key:'1y',label:'1년',days:366},{key:'3y',label:'3년',days:1098}];
+const colors=['#2563eb','#dc2626','#16a34a'];
+let loaded=[],active='1y',chart;const $=id=>document.getElementById(id),sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const fmtPct=v=>(v>=0?'+':'')+v.toFixed(2)+'%',cls=v=>v>=0?'up':'down';
+function cleanTicker(v){return String(v||'').trim().toUpperCase().replace(/\s+/g,'')}
+function proxies(url){return [url,'https://api.allorigins.win/raw?url='+encodeURIComponent(url),'https://corsproxy.io/?'+encodeURIComponent(url)]}
+async function fetchJsonSmart(url){let err;for(const u of proxies(url)){try{const c=new AbortController(),t=setTimeout(()=>c.abort(),14000);const r=await fetch(u,{signal:c.signal,cache:'no-store'});clearTimeout(t);if(!r.ok)throw Error('HTTP '+r.status);return await r.json()}catch(e){err=e;await sleep(200)}}throw err||Error('fetch failed')}
+async function resolveName(ticker){try{const url='https://query2.finance.yahoo.com/v1/finance/search?q='+encodeURIComponent(ticker)+'&quotesCount=5&newsCount=0&lang=en-US&region=US';const data=await fetchJsonSmart(url);const quotes=data.quotes||[];const exact=quotes.find(q=>String(q.symbol||'').toUpperCase()===ticker);const q=exact||quotes[0];return (q&&(q.shortname||q.longname||q.symbol))||ticker}catch(e){return ticker}}
+async function getPrices(ticker,days=1200){const p2=Math.floor(Date.now()/1000),p1=p2-days*86400,url=`https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?period1=${p1}&period2=${p2}&interval=1d&events=history&includeAdjustedClose=true`;const data=await fetchJsonSmart(url),r=data.chart&&data.chart.result&&data.chart.result[0];if(!r)throw Error(ticker+' 시세 없음');const ts=r.timestamp||[],q=r.indicators.quote&&r.indicators.quote[0],adj=r.indicators.adjclose&&r.indicators.adjclose[0]&&r.indicators.adjclose[0].adjclose,close=adj||(q&&q.close)||[];const prices=ts.map((t,i)=>({date:new Date(t*1000),close:close[i]})).filter(x=>Number.isFinite(x.close));if(!prices.length)throw Error(ticker+' 가격 데이터 없음');return prices}
+function slice(prices,days){const e=prices.at(-1).date.getTime(),s=e-days*86400000;return prices.filter(p=>p.date.getTime()>=s)}
+function retSeries(prices){if(prices.length<2)return[];const base=prices[0].close;return prices.map(p=>({date:p.date.toISOString().slice(0,10),ret:(p.close/base-1)*100}))}
+function alignAll(seriesList){if(!seriesList.length)return[];const maps=seriesList.map(s=>new Map(s.map(x=>[x.date,x.ret])));const dates=[...maps[0].keys()].filter(d=>maps.every(m=>m.has(d))).sort();return dates.map(d=>({date:d,vals:maps.map(m=>m.get(d))}))}
+function draw(){if(!loaded.length)return;document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x.dataset.key===active));const p=periods.find(x=>x.key===active),series=loaded.map(s=>retSeries(slice(s.prices,p.days))),rows=alignAll(series);
+  $('cards').innerHTML=periods.map(pp=>{const periodSeries=loaded.map(s=>retSeries(slice(s.prices,pp.days))),rr=alignAll(periodSeries),last=rr.at(-1);let body='';loaded.forEach((s,i)=>{const val=last?last.vals[i]:0;body+=`<div class="v"><span class="${cls(val)}">${fmtPct(val)}</span></div><div class="ticker">${s.ticker} · ${s.name}</div>`});return`<div class="card"><div class="k">${pp.label}</div>${body}</div>`}).join('');
+  const data={labels:rows.map(r=>r.date),datasets:loaded.map((s,i)=>({label:`${s.ticker} · ${s.name}`,data:rows.map(r=>r.vals[i]),borderColor:colors[i],backgroundColor:colors[i]+'22',tension:.18,pointRadius:0,borderWidth:2}))};
+  const options={responsive:true,maintainAspectRatio:false,interaction:{mode:'index',intersect:false},plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${fmtPct(c.raw)}`}}},scales:{y:{ticks:{callback:v=>v+'%'},title:{display:true,text:'누적수익률'}},x:{ticks:{maxTicksLimit:8}}}};if(chart){chart.data=data;chart.options=options;chart.update()}else chart=new Chart($('chart'),{type:'line',data,options})}
+async function run(){try{$('runBtn').disabled=true;const tickers=[$('stockA').value,$('stockB').value,$('stockC').value].map(cleanTicker).filter(Boolean);if(tickers.length<1)throw Error('최소 1개 티커를 입력하세요.');const uniq=[...new Set(tickers)].slice(0,3);$('status').textContent='티커 확인 및 시세 다운로드 중...\n'+uniq.join(' / ');const result=[];for(const ticker of uniq){const [name,prices]=await Promise.all([resolveName(ticker),getPrices(ticker)]);result.push({ticker,name,prices})}loaded=result;$('status').textContent='선택 종목: '+loaded.map(s=>`${s.ticker} · ${s.name}`).join(' vs ')+'\n가장 최근 가격일: '+loaded.map(s=>s.prices.at(-1).date.toISOString().slice(0,10)).join(' / ');draw()}catch(e){$('status').textContent='오류: '+e.message+'\n티커가 정확한지 확인해 주세요. 예: AAPL, MSFT, NVDA, IREN, RKLB'}finally{$('runBtn').disabled=false}}
+$('tabs').innerHTML=periods.map(p=>`<button class="tab ${p.key===active?'active':''}" data-key="${p.key}">${p.label}</button>`).join('');$('tabs').onclick=e=>{if(e.target.dataset.key){active=e.target.dataset.key;draw()}};$('runBtn').onclick=run;['stockA','stockB','stockC'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')run()}));
+</script>
+</body>
+</html>
