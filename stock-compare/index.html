@@ -140,7 +140,6 @@ function draw(){
   const a = toReturnSeries(slicePeriod(loaded.a.prices, p.days));
   const b = toReturnSeries(slicePeriod(loaded.b.prices, p.days));
   const rows = alignSeries(a,b);
-  const last = rows[rows.length-1] || {a:0,b:0};
   $('cards').innerHTML = periods.map(pp => {
     const aa = toReturnSeries(slicePeriod(loaded.a.prices, pp.days));
     const bb = toReturnSeries(slicePeriod(loaded.b.prices, pp.days));
