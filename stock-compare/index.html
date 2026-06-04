@@ -92,7 +92,27 @@ const aliases = {
   '에코프로': { symbol:'086520.KQ', name:'에코프로' },
   '에코프로비엠': { symbol:'247540.KQ', name:'에코프로비엠' },
   '알테오젠': { symbol:'196170.KQ', name:'알테오젠' },
-  'hlb': { symbol:'028300.KQ', name:'HLB' }
+  'hlb': { symbol:'028300.KQ', name:'HLB' },
+  '라온텍': { symbol:'418420.KQ', name:'라온텍' },
+  '라온테크': { symbol:'232680.KQ', name:'라온테크' },
+  '사피엔반도체': { symbol:'452430.KQ', name:'사피엔반도체' },
+  '제주반도체': { symbol:'080220.KQ', name:'제주반도체' },
+  '칩스앤미디어': { symbol:'094360.KQ', name:'칩스앤미디어' },
+  '리노공업': { symbol:'058470.KQ', name:'리노공업' },
+  'isc': { symbol:'095340.KQ', name:'ISC' },
+  'hpsp': { symbol:'403870.KQ', name:'HPSP' },
+  '이오테크닉스': { symbol:'039030.KQ', name:'이오테크닉스' },
+  '주성엔지니어링': { symbol:'036930.KQ', name:'주성엔지니어링' },
+  '원익ips': { symbol:'240810.KQ', name:'원익IPS' },
+  '하나마이크론': { symbol:'067310.KQ', name:'하나마이크론' },
+  '테크윙': { symbol:'089030.KQ', name:'테크윙' },
+  '네오셈': { symbol:'253590.KQ', name:'네오셈' },
+  '와이씨': { symbol:'232140.KQ', name:'와이씨' },
+  '고영': { symbol:'098460.KQ', name:'고영' },
+  '솔브레인': { symbol:'357780.KQ', name:'솔브레인' },
+  '동진쎄미켐': { symbol:'005290.KQ', name:'동진쎄미켐' },
+  '레인보우로보틱스': { symbol:'277810.KQ', name:'레인보우로보틱스' },
+  '로보티즈': { symbol:'108490.KQ', name:'로보티즈' }
 };
 
 let chart, loaded = null, active = '1y';
@@ -229,7 +249,7 @@ async function run(){
     $('status').textContent = `선택 종목: ${loaded.a.name} (${loaded.a.symbol}) vs ${loaded.b.name} (${loaded.b.symbol})\n가장 최근 가격일: ${loaded.a.prices.at(-1).date.toISOString().slice(0,10)} / ${loaded.b.prices.at(-1).date.toISOString().slice(0,10)}`;
     draw();
   } catch(e){
-    $('status').textContent = '오류: ' + e.message + '\n그래도 안 되면 종목명을 6자리 코드로 입력해 보세요. 예: 삼성전자 005930, SK하이닉스 000660';
+    $('status').textContent = '오류: ' + e.message + '\n그래도 안 되면 종목명을 6자리 코드로 입력해 보세요. 예: 삼성전자 005930, SK하이닉스 000660, 사피엔반도체 452430, 라온텍 418420';
   }
   finally{ $('runBtn').disabled = false; }
 }
@@ -237,7 +257,6 @@ async function run(){
 $('tabs').innerHTML = periods.map(p=>`<button class="tab ${p.key===active?'active':''}" data-key="${p.key}">${p.label}</button>`).join('');
 $('tabs').addEventListener('click', e => { if(e.target.dataset.key){ active = e.target.dataset.key; draw(); } });
 $('runBtn').addEventListener('click', run);
-run();
 </script>
 </body>
 </html>
