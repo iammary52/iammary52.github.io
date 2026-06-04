@@ -14,7 +14,7 @@
 <main class="wrap">
   <section class="hero"><h1>한국 주식 수익률 비교</h1><p>국문 종목명 또는 6자리 코드를 입력하면 기간별 누적수익률을 비교합니다. 종목명 검색은 엑셀 종목마스터를 브라우저에 저장해 사용하는 방식입니다.</p></section>
   <section class="panel">
-    <div class="form"><div><label for="stockA">종목 1</label><input id="stockA" type="text" list="stockList" value="한미반도체" placeholder="예: 한미반도체 또는 042700" /></div><div><label for="stockB">종목 2</label><input id="stockB" type="text" list="stockList" value="SK하이닉스" placeholder="예: SK하이닉스 또는 000660" /></div><button id="runBtn">비교하기</button></div>
+    <div class="form"><div><label for="stockA">종목 1</label><input id="stockA" type="text" list="stockList" placeholder="예: 한미반도체 또는 042700" /></div><div><label for="stockB">종목 2</label><input id="stockB" type="text" list="stockList" placeholder="예: SK하이닉스 또는 000660" /></div><button id="runBtn">비교하기</button></div>
     <datalist id="stockList"></datalist>
     <div class="upload"><b>종목마스터 엑셀</b><input id="masterFile" type="file" accept=".xlsx,.xls,.csv" /><button class="miniBtn" id="clearMaster" type="button">저장된 종목마스터 삭제</button><span class="hint">업로드한 KRX 엑셀은 브라우저 localStorage에 저장됩니다. 한 번 올리면 이 PC/브라우저에서는 계속 2,877개를 씁니다.</span></div>
     <div class="hint">필수 컬럼: 단축코드, 한글 종목명, 한글 종목약명, 시장구분. 종목코드 입력 시 KOSPI(.KS), KOSDAQ(.KQ)을 자동 시도합니다.</div>
