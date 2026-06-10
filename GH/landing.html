@@ -147,7 +147,7 @@
             backdrop-filter: blur(14px);
             height: 40px;
             padding: 0 18px;
-            border-radius: 999px;
+            border-radius: 8px;
             font-size: 13px;
             font-weight: 850;
             display: inline-flex;
@@ -193,7 +193,7 @@
             content: '';
             background-size: cover;
             background-position: center;
-            animation: imageFade 18s infinite;
+            animation: imageFade 9s infinite;
         }
 
         .hero-bg {
@@ -201,19 +201,19 @@
             background-size: cover;
             background-position: center;
             transform: scale(1.06);
-            animation: heroScale 18s ease-in-out infinite alternate;
+            animation: heroScale 9s ease-in-out infinite alternate;
         }
 
         .hero-bg::before {
             background-image: url('gh-main-visual-2.png');
             opacity: 0;
-            animation-delay: 6s;
+            animation-delay: 3s;
         }
 
         .hero-bg::after {
             background-image: url('gh-main-visual-3.png');
             opacity: 0;
-            animation-delay: 12s;
+            animation-delay: 6s;
         }
 
         .hero::before {
@@ -244,12 +244,16 @@
             margin: 0 auto;
             padding-top: 72px;
             position: relative;
-            text-align: center;
+            text-align: left;
+            display: grid;
+            grid-template-columns: minmax(0, 700px) minmax(320px, 360px);
+            align-items: center;
+            gap: clamp(56px, 7vw, 116px);
         }
 
         .hero-copy {
-            width: min(980px, 100%);
-            margin: 0 auto;
+            width: 100%;
+            margin: 0;
         }
 
         .eyebrow {
@@ -259,7 +263,7 @@
             color: rgba(255, 255, 255, .86);
             font-size: 13px;
             font-weight: 800;
-            letter-spacing: .08em;
+            letter-spacing: 0;
             text-transform: uppercase;
             margin-bottom: 22px;
             animation: fadeUp .8s ease both;
@@ -275,16 +279,13 @@
 
         .eyebrow::after {
             content: '';
-            width: 42px;
-            height: 2px;
-            background: var(--blue-2);
-            box-shadow: 0 0 22px rgba(0, 145, 218, .8);
+            display: none;
         }
 
         .hero h1 {
-            font-size: clamp(48px, 5.4vw, 88px);
-            line-height: 1.04;
-            letter-spacing: -0.035em;
+            font-size: clamp(40px, 3.8vw, 64px);
+            line-height: 1.12;
+            letter-spacing: 0;
             font-weight: 850;
             text-wrap: balance;
             animation: fadeUp .9s .08s ease both;
@@ -298,18 +299,18 @@
         .hero-desc {
             margin-top: 24px;
             width: min(640px, 100%);
-            margin-left: auto;
-            margin-right: auto;
+            margin-left: 0;
+            margin-right: 0;
             color: rgba(255, 255, 255, .82);
-            font-size: clamp(22px, 2.5vw, 34px);
+            font-size: clamp(22px, 2.1vw, 30px);
             line-height: 1.75;
             font-weight: 850;
-            letter-spacing: -0.02em;
+            letter-spacing: 0;
             animation: fadeUp .9s .18s ease both;
         }
 
         .hero-actions {
-            justify-content: center;
+            justify-content: flex-start;
             margin-top: 30px;
         }
 
@@ -321,11 +322,215 @@
         .hero-actions {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
             gap: 12px;
-            margin-top: 30px;
+            width: min(720px, 100%);
+            margin-top: 34px;
             flex-wrap: wrap;
             animation: fadeUp .9s .28s ease both;
+        }
+
+        .hero-enter {
+            position: relative;
+            min-width: 168px;
+            height: 50px;
+            border: 1px solid rgba(189, 239, 255, .46);
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            color: #fff;
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(16px);
+            font-size: 14px;
+            font-weight: 850;
+            letter-spacing: 0;
+            text-decoration: none;
+            overflow: hidden;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 20px 44px rgba(0, 0, 0, .18);
+            transition: transform .25s ease, border-color .25s ease, background .25s ease, color .25s ease;
+        }
+
+        .hero-enter::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--blue-2);
+            box-shadow: 0 0 18px rgba(0, 145, 218, .8);
+        }
+
+        .hero-enter::after {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-top: 2px solid currentColor;
+            border-right: 2px solid currentColor;
+            transform: rotate(45deg);
+            transition: transform .25s ease;
+        }
+
+        .hero-enter:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 255, 255, .72);
+            background: rgba(0, 145, 218, .28);
+        }
+
+        .hero-enter:hover::after {
+            transform: translateX(4px) rotate(45deg);
+        }
+
+        .entry-panel {
+            position: relative;
+            padding: 16px;
+            border: 1px solid rgba(177, 207, 235, .24);
+            border-radius: 10px;
+            background:
+                radial-gradient(circle at 100% 0%, rgba(0, 145, 218, .18), transparent 34%),
+                linear-gradient(180deg, rgba(12, 23, 40, .86), rgba(4, 10, 19, .76));
+            box-shadow: 0 34px 92px rgba(0, 0, 0, .42);
+            backdrop-filter: blur(20px);
+            overflow: hidden;
+            animation: fadeUp .9s .3s ease both;
+        }
+
+        .entry-panel::before {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            border-radius: 9px;
+            border: 1px solid rgba(255, 255, 255, .06);
+            pointer-events: none;
+        }
+
+        .entry-panel::after {
+            content: '';
+            position: absolute;
+            right: -30px;
+            bottom: 52px;
+            width: 72px;
+            height: 112px;
+            background: linear-gradient(180deg, rgba(0, 145, 218, .28), rgba(189, 239, 255, .08));
+            filter: blur(28px);
+        }
+
+        .entry-head {
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 4px 2px 14px;
+        }
+
+        .entry-kicker {
+            position: relative;
+            color: rgba(189, 239, 255, .62);
+            font-size: 10px;
+            font-weight: 850;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        .entry-title {
+            position: relative;
+            margin-top: 4px;
+            color: #fff;
+            font-size: 20px;
+            line-height: 1.18;
+            font-weight: 850;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        .entry-live {
+            height: 28px;
+            padding: 0 14px;
+            border: 1px solid rgba(80, 231, 178, .55);
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #a8f8d7;
+            font-size: 11px;
+            font-weight: 850;
+            letter-spacing: 0;
+        }
+
+        .entry-row {
+            position: relative;
+            min-height: 54px;
+            border: 1px solid rgba(177, 207, 235, .22);
+            border-radius: 8px;
+            display: grid;
+            grid-template-columns: 40px minmax(0, 1fr) auto;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 12px 9px 10px;
+            color: rgba(221, 235, 248, .88);
+            text-decoration: none;
+            background: rgba(4, 12, 24, .42);
+            transition: transform .24s ease, border-color .24s ease, background .24s ease;
+        }
+
+        .entry-row + .entry-row {
+            margin-top: 8px;
+        }
+
+        .entry-row-active {
+            border-color: rgba(189, 239, 255, .66);
+            background:
+                linear-gradient(100deg, rgba(0, 74, 156, .58), rgba(0, 145, 218, .24)),
+                rgba(17, 32, 59, .72);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, .2), 0 18px 48px rgba(0, 0, 0, .22);
+        }
+
+        .entry-row:hover {
+            transform: translateY(-2px);
+            border-color: rgba(189, 239, 255, .72);
+            background: rgba(0, 145, 218, .22);
+        }
+
+        .entry-code {
+            width: 30px;
+            height: 30px;
+            border: 1px solid rgba(177, 207, 235, .34);
+            border-radius: 7px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #cde9ff;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .entry-row strong {
+            display: block;
+            color: #eef7ff;
+            font-size: 13px;
+            line-height: 1.15;
+            font-weight: 850;
+            letter-spacing: 0;
+            text-transform: uppercase;
+        }
+
+        .entry-row small {
+            display: block;
+            margin-top: 4px;
+            color: rgba(177, 207, 235, .58);
+            font-size: 11px;
+            line-height: 1.2;
+            font-weight: 650;
+        }
+
+        .entry-row em {
+            color: #cde9ff;
+            font-size: 11px;
+            font-style: normal;
+            font-weight: 800;
         }
 
         .btn {
@@ -905,9 +1110,24 @@
             85%, 100% { transform: translateX(120%); }
         }
 
+        @keyframes lineFlow {
+            0%, 100% { transform: translateX(-24%) scaleX(.72); opacity: .72; }
+            50% { transform: translateX(42%) scaleX(1); opacity: 1; }
+        }
+
         @media (max-width: 1020px) {
             .nav-links {
                 display: none;
+            }
+
+            .hero-inner {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .entry-panel {
+                width: min(360px, 100%);
+                min-height: 220px;
             }
 
             .hero-panel {
@@ -956,12 +1176,33 @@
                 width: calc(100% - 28px);
             }
 
+            .hero-inner {
+                padding-top: 90px;
+            }
+
             .hero h1 {
-                font-size: 42px;
+                font-size: 34px;
             }
 
             .hero-desc {
                 font-size: 22px;
+            }
+
+            .entry-panel {
+                min-height: 210px;
+                padding: 24px;
+            }
+
+            .entry-enter {
+                left: 24px;
+                right: 24px;
+                bottom: 24px;
+            }
+
+            .entry-lines {
+                left: 24px;
+                right: 24px;
+                bottom: 92px;
             }
 
             .metric-row,
@@ -1009,7 +1250,7 @@
                 <a class="brand" href="#">
                     <img src="gh-header-logo.png" alt="GH 경기주택도시공사">
                 </a>
-                <a class="nav-cta" href="index.html">재무의사결정시스템 입장</a>
+                <a class="nav-cta" href="index.html">ENTER</a>
             </nav>
         </header>
 
@@ -1019,12 +1260,42 @@
                 <div class="hero-inner">
                     <div class="hero-copy">
                         <div class="eyebrow">Financial Decision Support System</div>
-                        <h1 id="heroTitle">대한민국 도시주택의<br><span>미래를 만들어가는 GH</span></h1>
+                        <h1 id="heroTitle">대한민국 도시주택의<br><span>미래를 만들어가는</span> GH</h1>
                         <p class="hero-desc">재무 의사결정지원 시스템</p>
-                        <div class="hero-actions">
-                            <a class="btn btn-primary" href="index.html">재무의사결정시스템 입장</a>
-                        </div>
                     </div>
+                    <aside class="entry-panel" aria-label="재무 의사결정지원 시스템">
+                        <div class="entry-head">
+                            <div>
+                                <div class="entry-kicker">GH Interface</div>
+                                <div class="entry-title">Financial Decision</div>
+                            </div>
+                            <span class="entry-live">LIVE</span>
+                        </div>
+                        <a class="entry-row entry-row-active" href="index.html">
+                            <span class="entry-code">ENT</span>
+                            <span>
+                                <strong>Enter System</strong>
+                                <small>재무 의사결정지원 시스템</small>
+                            </span>
+                            <em>open</em>
+                        </a>
+                        <div class="entry-row">
+                            <span class="entry-code">GH</span>
+                            <span>
+                                <strong>Future Housing</strong>
+                                <small>대한민국 도시주택의 미래</small>
+                            </span>
+                            <em>ready</em>
+                        </div>
+                        <div class="entry-row">
+                            <span class="entry-code">SYS</span>
+                            <span>
+                                <strong>Decision Support</strong>
+                                <small>Financial Decision Support System</small>
+                            </span>
+                            <em>live</em>
+                        </div>
+                    </aside>
                 </div>
             </section>
         </main>
