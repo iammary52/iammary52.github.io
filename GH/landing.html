@@ -238,10 +238,12 @@
             margin: 0 auto;
             padding-top: 92px;
             position: relative;
+            text-align: center;
         }
 
         .hero-copy {
-            width: min(780px, 100%);
+            width: min(980px, 100%);
+            margin: 0 auto;
         }
 
         .eyebrow {
@@ -265,9 +267,17 @@
             box-shadow: 0 0 22px rgba(0, 145, 218, .8);
         }
 
+        .eyebrow::after {
+            content: '';
+            width: 42px;
+            height: 2px;
+            background: var(--blue-2);
+            box-shadow: 0 0 22px rgba(0, 145, 218, .8);
+        }
+
         .hero h1 {
-            font-size: clamp(44px, 7vw, 92px);
-            line-height: .98;
+            font-size: clamp(42px, 5.2vw, 78px);
+            line-height: 1.08;
             letter-spacing: -0.035em;
             font-weight: 850;
             text-wrap: balance;
@@ -282,10 +292,13 @@
         .hero-desc {
             margin-top: 24px;
             width: min(640px, 100%);
+            margin-left: auto;
+            margin-right: auto;
             color: rgba(255, 255, 255, .82);
-            font-size: 18px;
+            font-size: clamp(22px, 2.5vw, 34px);
             line-height: 1.75;
-            font-weight: 500;
+            font-weight: 850;
+            letter-spacing: -0.02em;
             animation: fadeUp .9s .18s ease both;
         }
 
@@ -979,13 +992,6 @@
                 <a class="brand" href="#">
                     <img src="gh-header-logo.png" alt="GH 경기주택도시공사">
                 </a>
-                <div class="nav-links">
-                    <a class="nav-link" href="#features">핵심 기능</a>
-                    <a class="nav-link" href="#flow">업무 흐름</a>
-                    <a class="nav-link" href="#insight">분석 지표</a>
-                    <a class="nav-link" href="guide.html">가이드</a>
-                    <a class="nav-cta" href="index.html">시스템 열기</a>
-                </div>
             </nav>
         </header>
 
@@ -994,189 +1000,9 @@
                 <div class="hero-bg" id="heroBg"></div>
                 <div class="hero-inner">
                     <div class="hero-copy">
-                        <div class="eyebrow">GH Financial Intelligence</div>
-                        <h1 id="heroTitle">도시의 흐름을 읽고<br><span>재무 판단</span>을 빠르게.</h1>
-                        <p class="hero-desc">
-                            원가, 공급, 회수 데이터를 하나의 의사결정 화면으로 연결합니다.
-                            사업별 재무 흐름을 실시간으로 비교하고, 실행 가능한 판단 근거를 선명하게 제공합니다.
-                        </p>
-                        <div class="hero-actions">
-                            <a class="btn btn-primary" href="index.html">대시보드 시작</a>
-                            <a class="btn btn-ghost" href="#features">구성 살펴보기</a>
-                        </div>
-                    </div>
-
-                    <aside class="hero-panel" id="heroPanel" aria-label="핵심 지표 미리보기">
-                        <div class="panel-top">
-                            <span>Decision Signal</span>
-                            <span class="pulse" aria-hidden="true"></span>
-                        </div>
-                        <div class="metric-row">
-                            <div class="metric"><b data-count="42">0</b><span>연동 사업</span></div>
-                            <div class="metric"><b data-count="98">0</b><span>데이터 정합</span></div>
-                            <div class="metric"><b data-count="12">0</b><span>분석 지표</span></div>
-                        </div>
-                        <div class="signal">
-                            <div class="signal-line"><i style="--w: 86%;"></i></div>
-                            <div class="signal-line"><i style="--w: 68%;"></i></div>
-                            <div class="signal-line"><i style="--w: 94%;"></i></div>
-                        </div>
-                    </aside>
-                </div>
-                <div class="scroll-cue">Scroll</div>
-            </section>
-
-            <section class="blue-band reveal" aria-label="빠른 진입">
-                <a class="band-item" href="index.html">
-                    <div>
-                        <div class="band-kicker">Dashboard</div>
-                        <div class="band-title">재무 현황 보기</div>
-                    </div>
-                    <div class="band-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 15l3-4 3 2 5-7"/></svg>
-                    </div>
-                </a>
-                <a class="band-item" href="guide.html">
-                    <div>
-                        <div class="band-kicker">Guide</div>
-                        <div class="band-title">설명 자료 열기</div>
-                    </div>
-                    <div class="band-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-1.5z"/><path d="M8 7h6"/><path d="M8 11h7"/></svg>
-                    </div>
-                </a>
-                <a class="band-item" href="#flow">
-                    <div>
-                        <div class="band-kicker">Workflow</div>
-                        <div class="band-title">업무 흐름 확인</div>
-                    </div>
-                    <div class="band-icon">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M5 8h14"/><path d="M7 16h10"/></svg>
-                    </div>
-                </a>
-            </section>
-
-            <section class="section" id="features">
-                <div class="section-head reveal">
-                    <div>
-                        <div class="section-kicker">Core Capabilities</div>
-                        <h2>분산된 사업 데이터를 하나의 판단 체계로.</h2>
-                    </div>
-                    <p>
-                        공공 개발사업의 재무 흐름은 단순 집계보다 맥락이 중요합니다.
-                        이 화면은 업로드, 검증, 분석, 보고를 끊김 없이 이어 의사결정 속도를 높입니다.
-                    </p>
-                </div>
-
-                <div class="feature-grid">
-                    <article class="feature reveal">
-                        <div class="feature-number">01</div>
-                        <h3>사업별 재무 흐름</h3>
-                        <p>투입, 공급, 회수 데이터를 같은 기준으로 정리해 사업 간 비교와 변화 추적을 쉽게 합니다.</p>
-                        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h5l2-7 4 14 2-7h5"/></svg></div>
-                    </article>
-                    <article class="feature reveal">
-                        <div class="feature-number">02</div>
-                        <h3>엑셀 기반 파이프라인</h3>
-                        <p>기존 업무 파일을 활용하면서도 DB 구조에 맞춰 표준화된 분석 기반을 만듭니다.</p>
-                        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 21h14"/></svg></div>
-                    </article>
-                    <article class="feature reveal">
-                        <div class="feature-number">03</div>
-                        <h3>차트와 피벗 조회</h3>
-                        <p>연도별 흐름, 누적 수지, 카테고리별 집계를 시각화해 회의에서 바로 설명할 수 있습니다.</p>
-                        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M8 17v-6"/><path d="M13 17V7"/><path d="M18 17v-9"/></svg></div>
-                    </article>
-                    <article class="feature reveal">
-                        <div class="feature-number">04</div>
-                        <h3>보고용 출력</h3>
-                        <p>조회 조건과 단위를 반영한 결과를 엑셀로 내보내 실무 보고 흐름에 맞게 활용합니다.</p>
-                        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/></svg></div>
-                    </article>
-                </div>
-            </section>
-
-            <section class="section" id="flow">
-                <div class="section-head reveal">
-                    <div>
-                        <div class="section-kicker">Operating Flow</div>
-                        <h2>도시 개발의 숫자가<br>결정 가능한 정보가 되는 과정.</h2>
-                    </div>
-                    <p>
-                        시스템은 데이터 입력부터 의사결정 리포트까지의 경로를 단순하게 정리합니다.
-                        각 단계는 업무 담당자가 반복적으로 쓰기 편한 구조를 기준으로 설계되었습니다.
-                    </p>
-                </div>
-
-                <div class="flow">
-                    <div class="map-panel reveal">
-                        <div class="map-label">
-                            <b>Gyeonggi Growth Map</b>
-                            <p>사업 단위의 재무 흐름을 도시 공간의 변화와 함께 바라봅니다.</p>
-                        </div>
-                    </div>
-                    <div class="timeline reveal">
-                        <div class="step">
-                            <div class="step-no">01</div>
-                            <div>
-                                <h3>자료 수집</h3>
-                                <p>사업별 원가, 공급, 회수 자료를 정리하고 프로젝트명을 기준으로 연결합니다.</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <div class="step-no">02</div>
-                            <div>
-                                <h3>DB 적재</h3>
-                                <p>엑셀 원본을 표준 테이블로 변환해 조회와 분석에 적합한 상태로 저장합니다.</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <div class="step-no">03</div>
-                            <div>
-                                <h3>지표 분석</h3>
-                                <p>투입, 회수, 누적 수지, NPV, IRR 등 핵심 지표를 사업별로 비교합니다.</p>
-                            </div>
-                        </div>
-                        <div class="step">
-                            <div class="step-no">04</div>
-                            <div>
-                                <h3>의사결정 지원</h3>
-                                <p>대시보드와 리포트로 현재 상태와 다음 판단 지점을 한눈에 공유합니다.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="insight" id="insight">
-                <div class="insight-inner">
-                    <div class="section-head reveal">
-                        <div>
-                            <div class="section-kicker" style="color:#76dcff;">Live Intelligence</div>
-                            <h2>한 번의 조회로 확인하는 사업 재무 신호.</h2>
-                        </div>
-                        <p style="color:rgba(255,255,255,.74);">
-                            반복 보고에 필요한 숫자를 빠르게 꺼내고, 사업별 추세를 같은 기준으로 해석합니다.
-                        </p>
-                    </div>
-                    <div class="stat-grid">
-                        <div class="stat reveal"><strong data-count="4">0</strong><span>핵심 DB 테이블</span></div>
-                        <div class="stat reveal"><strong data-count="12">0</strong><span>재무 분석 지표</span></div>
-                        <div class="stat reveal"><strong data-count="5">0</strong><span>업무 화면 구성</span></div>
-                        <div class="stat reveal"><strong data-count="1">0</strong><span>통합 의사결정 화면</span></div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="cta-section">
-                <div class="cta-box reveal">
-                    <div class="cta-content">
-                        <h2>데이터를 모으는 화면에서, 판단을 만드는 화면으로.</h2>
-                        <p>
-                            재무 의사결정지원 시스템은 사업 데이터를 더 빠르게 읽고,
-                            더 명확하게 설명하며, 더 일관된 기준으로 공유하기 위한 GH 내부 업무 도구입니다.
-                        </p>
-                        <a class="btn btn-primary" href="index.html">시스템으로 이동</a>
+                        <div class="eyebrow">GH</div>
+                        <h1 id="heroTitle">대한민국 도시주택의 미래를 만들어가는 GH</h1>
+                        <p class="hero-desc">재무 의사결정지원 시스템</p>
                     </div>
                 </div>
             </section>
@@ -1193,55 +1019,12 @@
     <script>
         const header = document.getElementById('siteHeader');
         const heroBg = document.getElementById('heroBg');
-        const heroPanel = document.getElementById('heroPanel');
-        const revealItems = document.querySelectorAll('.reveal');
-        const counters = document.querySelectorAll('[data-count]');
 
         window.addEventListener('scroll', () => {
             const y = window.scrollY;
             header.classList.toggle('scrolled', y > 24);
             heroBg.style.transform = `scale(${1.06 + Math.min(y, 600) / 9000}) translate3d(0, ${y * .035}px, 0)`;
         }, { passive: true });
-
-        window.addEventListener('pointermove', (event) => {
-            if (window.matchMedia('(max-width: 1020px)').matches) return;
-            const x = (event.clientX / window.innerWidth - .5) * 18;
-            const y = (event.clientY / window.innerHeight - .5) * 18;
-            heroPanel.style.transform = `translate3d(${x * .45}px, ${y * .35}px, 0)`;
-        });
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: .18 });
-
-        revealItems.forEach(item => observer.observe(item));
-
-        const countObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (!entry.isIntersecting) return;
-                const el = entry.target;
-                const target = Number(el.dataset.count || 0);
-                const duration = 1300;
-                const start = performance.now();
-
-                const tick = (now) => {
-                    const progress = Math.min((now - start) / duration, 1);
-                    const eased = 1 - Math.pow(1 - progress, 3);
-                    el.textContent = Math.round(target * eased).toLocaleString('ko-KR');
-                    if (progress < 1) requestAnimationFrame(tick);
-                };
-
-                requestAnimationFrame(tick);
-                countObserver.unobserve(el);
-            });
-        }, { threshold: .5 });
-
-        counters.forEach(counter => countObserver.observe(counter));
     </script>
 </body>
 
