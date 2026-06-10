@@ -887,11 +887,11 @@
             z-index: 1;
             min-height: inherit;
             padding: 48px;
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) 340px;
-            gap: 32px;
-            align-items: end;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             color: #fff;
+            text-align: center;
         }
 
         .intro-kicker {
@@ -914,180 +914,42 @@
             box-shadow: 0 0 18px rgba(0, 145, 218, .85);
         }
 
+        .intro-kicker::after {
+            content: '';
+            width: 38px;
+            height: 2px;
+            background: var(--teal);
+            box-shadow: 0 0 18px rgba(0, 145, 218, .85);
+        }
+
         .intro-title {
             font-size: clamp(36px, 5vw, 64px);
             line-height: 1.02;
             letter-spacing: -0.04em;
             font-weight: 850;
             max-width: 700px;
+            margin: 0 auto;
         }
 
         .intro-title span {
             color: #bdefff;
         }
 
-        .intro-desc {
+        .intro-system-title {
             width: min(620px, 100%);
             margin-top: 20px;
-            color: rgba(255, 255, 255, .76);
-            font-size: 15px;
-            line-height: 1.75;
-            font-weight: 500;
-        }
-
-        .intro-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 28px;
-        }
-
-        .intro-btn {
-            height: 38px;
-            padding: 0 15px;
-            border-radius: 999px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            border: 1px solid rgba(255, 255, 255, .38);
-            color: #fff;
-            background: rgba(255, 255, 255, .12);
-            backdrop-filter: blur(14px);
-            font-size: 12px;
-            font-weight: 750;
-            transition: transform .18s, background .18s, color .18s;
-        }
-
-        .intro-btn.primary {
-            background: #fff;
-            border-color: #fff;
-            color: var(--acc);
-        }
-
-        .intro-btn:hover {
-            transform: translateY(-2px);
-            background: #fff;
-            color: var(--acc);
-        }
-
-        .intro-glass {
-            padding: 20px;
-            border: 1px solid rgba(255, 255, 255, .28);
-            border-radius: 22px;
-            background: rgba(255, 255, 255, .13);
-            backdrop-filter: blur(22px);
-            box-shadow: 0 24px 80px rgba(0, 0, 0, .18);
-        }
-
-        .intro-glass-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: rgba(255, 255, 255, .8);
-            font-size: 12px;
+            color: rgba(255, 255, 255, .86);
+            font-size: clamp(20px, 2.2vw, 30px);
+            line-height: 1.35;
             font-weight: 800;
-            margin-bottom: 16px;
-        }
-
-        .intro-pulse {
-            width: 9px;
-            height: 9px;
-            border-radius: 50%;
-            background: #3ff6c8;
-            box-shadow: 0 0 0 0 rgba(63, 246, 200, .65);
-            animation: introPulse 1.8s infinite;
-        }
-
-        .intro-mini-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .intro-mini {
-            padding: 12px;
-            border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, .16);
-            background: rgba(255, 255, 255, .13);
-        }
-
-        .intro-mini b {
-            display: block;
-            font-size: 22px;
-            line-height: 1;
             letter-spacing: -0.02em;
+            margin-left: auto;
+            margin-right: auto;
         }
 
-        .intro-mini span {
+        .intro-system-title b {
             display: block;
-            margin-top: 7px;
-            color: rgba(255, 255, 255, .66);
-            font-size: 10.5px;
-            font-weight: 650;
-        }
-
-        .intro-line {
-            height: 9px;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, .18);
-            overflow: hidden;
-            margin-top: 9px;
-        }
-
-        .intro-line i {
-            display: block;
-            height: 100%;
-            width: var(--w);
-            border-radius: inherit;
-            background: linear-gradient(90deg, #76dcff, #fff);
-        }
-
-        .intro-card-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 12px;
-        }
-
-        .intro-card {
-            min-height: 150px;
-            padding: 18px;
-            border-radius: var(--r-lg);
-            border: 1px solid var(--border);
-            background: linear-gradient(180deg, #fff 0%, #f8fbfd 100%);
-            box-shadow: var(--shadow-1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .intro-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--acc), var(--teal));
-        }
-
-        .intro-card-no {
-            color: var(--teal);
-            font-size: 11px;
-            font-weight: 800;
-            margin-bottom: 18px;
-        }
-
-        .intro-card h3 {
-            font-size: 15px;
-            color: var(--text);
-            letter-spacing: -0.015em;
-            margin-bottom: 8px;
-        }
-
-        .intro-card p {
-            color: var(--text3);
-            font-size: 12px;
-            line-height: 1.65;
+            color: #bdefff;
         }
 
         @keyframes introPulse {
@@ -1098,16 +960,7 @@
 
         @media (max-width: 1180px) {
             .intro-hero-inner {
-                grid-template-columns: 1fr;
-                align-items: end;
-            }
-
-            .intro-glass {
-                width: min(420px, 100%);
-            }
-
-            .intro-card-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                align-items: center;
             }
         }
 
@@ -1124,9 +977,9 @@
                 font-size: 34px;
             }
 
-            .intro-mini-grid,
-            .intro-card-grid {
-                grid-template-columns: 1fr;
+            .intro-kicker::before,
+            .intro-kicker::after {
+                width: 24px;
             }
         }
 
@@ -2385,7 +2238,7 @@
 
                             {appMode === 'intro' ? (
                                 <div className="tb-sec">
-                                    <span className="tb-lbl">도시 전경 기반 인트로 · 재무 데이터 의사결정 흐름 소개</span>
+                                    <span className="tb-lbl">대한민국 도시주택의 미래를 만들어가는 GH</span>
                                 </div>
                             ) : appMode === 'upload' ? (
                                 <div className="tb-sec">
@@ -2467,57 +2320,12 @@
                                         <section className="intro-hero">
                                             <div className="intro-hero-inner">
                                                 <div>
-                                                    <div className="intro-kicker">GH Financial Intelligence</div>
-                                                    <div className="intro-title">도시의 흐름을 읽고 <span>재무 판단</span>을 빠르게.</div>
-                                                    <div className="intro-desc">
-                                                        원가, 공급, 회수 데이터를 하나의 의사결정 화면으로 연결합니다.
-                                                        사업별 재무 흐름을 같은 기준으로 비교하고, 회의와 보고에 바로 쓸 수 있는 판단 근거를 제공합니다.
-                                                    </div>
-                                                    <div className="intro-actions">
-                                                        <button className="intro-btn primary" onClick={() => setAppMode('dashboard')}>대시보드 보기</button>
-                                                        <a className="intro-btn" href="landing.html" target="_blank" rel="noopener noreferrer">랜딩 페이지 열기</a>
-                                                        <a className="intro-btn" href="guide.html" target="_blank" rel="noopener noreferrer">가이드 보기</a>
-                                                    </div>
-                                                </div>
-                                                <div className="intro-glass">
-                                                    <div className="intro-glass-head">
-                                                        <span>Decision Signal</span>
-                                                        <span className="intro-pulse"></span>
-                                                    </div>
-                                                    <div className="intro-mini-grid">
-                                                        <div className="intro-mini"><b>{projectList.length || 0}</b><span>연동 사업</span></div>
-                                                        <div className="intro-mini"><b>4</b><span>핵심 테이블</span></div>
-                                                        <div className="intro-mini"><b>12</b><span>분석 지표</span></div>
-                                                    </div>
-                                                    <div className="intro-line"><i style={{ '--w': '86%' }}></i></div>
-                                                    <div className="intro-line"><i style={{ '--w': '68%' }}></i></div>
-                                                    <div className="intro-line"><i style={{ '--w': '94%' }}></i></div>
+                                                    <div className="intro-kicker">GH</div>
+                                                    <div className="intro-title">대한민국 도시주택의 미래를 만들어가는 GH</div>
+                                                    <div className="intro-system-title"><b>재무 의사결정지원 시스템</b></div>
                                                 </div>
                                             </div>
                                         </section>
-
-                                        <div className="intro-card-grid">
-                                            <div className="intro-card">
-                                                <div className="intro-card-no">01</div>
-                                                <h3>사업별 재무 흐름</h3>
-                                                <p>투입, 공급, 회수 데이터를 같은 기준으로 정리해 사업 간 비교와 변화 추적을 쉽게 합니다.</p>
-                                            </div>
-                                            <div className="intro-card">
-                                                <div className="intro-card-no">02</div>
-                                                <h3>엑셀 기반 파이프라인</h3>
-                                                <p>기존 업무 파일을 활용하면서도 DB 구조에 맞춰 분석 가능한 데이터로 전환합니다.</p>
-                                            </div>
-                                            <div className="intro-card">
-                                                <div className="intro-card-no">03</div>
-                                                <h3>차트와 피벗 조회</h3>
-                                                <p>연도별 흐름과 누적 수지를 시각화해 보고 자료의 설명력을 높입니다.</p>
-                                            </div>
-                                            <div className="intro-card">
-                                                <div className="intro-card-no">04</div>
-                                                <h3>의사결정 리포트</h3>
-                                                <p>조회 조건과 단위를 반영한 결과를 엑셀로 내보내 실무 보고에 활용합니다.</p>
-                                            </div>
-                                        </div>
                                     </div>
                                 )}
 
