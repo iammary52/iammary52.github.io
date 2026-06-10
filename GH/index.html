@@ -1840,9 +1840,17 @@
 
         const { useState, useRef, useEffect, useMemo } = React;
         const { createClient } = supabase;
-        // ✅ 로그인 세션이 브라우저에 저장되도록 설정 (새로고침해도 로그인 유지)
+        Object.keys(window.localStorage)
+            .filter(key => key.startsWith('sb-') && key.endsWith('-auth-token'))
+            .forEach(key => window.localStorage.removeItem(key));
+
+        // 세션은 현재 브라우저 창에서만 유지합니다. 창을 닫으면 다시 로그인해야 합니다.
         const sbClient = createClient(SUPABASE_URL, SUPABASE_KEY, {
-            auth: { persistSession: true, autoRefreshToken: true }
+            auth: {
+                persistSession: true,
+                autoRefreshToken: true,
+                storage: window.sessionStorage
+            }
         });
 
         const TABLES = [
