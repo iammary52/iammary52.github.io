@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재무 의사결정지원 시스템 | GH Landing</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --blue: #004a9c;
+            --blue-2: #0091da;
+            --blue-3: #eaf6fc;
+            --ink: #071421;
+            --ink-2: #253449;
+            --muted: #68778d;
+            --line: rgba(226, 232, 240, .9);
+            --white: #fff;
+            --shadow: 0 24px 70px rgba(7, 20, 33, .14);
+            --sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', system-ui, sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background: #f6f9fc;
+        }
+
+        body {
+            min-height: 100%;
+            color: var(--ink);
+            font-family: var(--sans);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font: inherit;
+        }
+
+        .page {
+            position: relative;
+            background:
+                linear-gradient(180deg, rgba(246, 249, 252, 0) 0%, #f6f9fc 760px),
+                #f6f9fc;
+        }
+
+        .site-header {
+            position: fixed;
+            z-index: 50;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .35s ease, box-shadow .35s ease, height .35s ease;
+        }
+
+        .site-header.scrolled {
+            height: 64px;
+            background: rgba(255, 255, 255, .86);
+            box-shadow: 0 1px 0 rgba(226, 232, 240, .9), 0 14px 40px rgba(15, 23, 42, .08);
+            backdrop-filter: blur(18px);
+        }
+
+        .nav {
+            width: min(1180px, calc(100% - 40px));
+            display: flex;
+            align-items: center;
+            gap: 34px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 250px;
+        }
+
+        .brand img {
+            width: 180px;
+            height: 44px;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 8px 16px rgba(0, 74, 156, .12));
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 26px;
+            margin-left: auto;
+            color: rgba(255, 255, 255, .86);
+            font-size: 14px;
+            font-weight: 650;
+            transition: color .35s ease;
+        }
+
+        .site-header.scrolled .nav-links {
+            color: var(--ink-2);
+        }
+
+        .nav-link {
+            position: relative;
+            padding: 8px 0;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 2px;
+            background: var(--blue-2);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform .25s ease;
+        }
+
+        .nav-link:hover::after {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        .nav-cta {
+            border: 1px solid rgba(255, 255, 255, .42);
+            color: #fff;
+            background: rgba(255, 255, 255, .12);
+            backdrop-filter: blur(14px);
+            height: 38px;
+            padding: 0 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 750;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform .25s ease, background .25s ease, border-color .25s ease, color .25s ease;
+        }
+
+        .site-header.scrolled .nav-cta {
+            color: var(--blue);
+            border-color: rgba(0, 74, 156, .18);
+            background: var(--blue-3);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            background: #fff;
+            color: var(--blue);
+        }
+
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            display: grid;
+            align-items: center;
+            overflow: hidden;
+            isolation: isolate;
+            color: #fff;
+        }
+
+        .hero-bg,
+        .hero-bg::before,
+        .hero-bg::after {
+            position: absolute;
+            inset: 0;
+            z-index: -3;
+        }
+
+        .hero-bg::before,
+        .hero-bg::after {
+            content: '';
+            background-size: cover;
+            background-position: center;
+            animation: imageFade 18s infinite;
+        }
+
+        .hero-bg {
+            background-image: url('gh-main-visual.jpg');
+            background-size: cover;
+            background-position: center;
+            transform: scale(1.06);
+            animation: heroScale 18s ease-in-out infinite alternate;
+        }
+
+        .hero-bg::before {
+            background-image: url('gh-main-visual-2.png');
+            opacity: 0;
+            animation-delay: 6s;
+        }
+
+        .hero-bg::after {
+            background-image: url('gh-main-visual-3.png');
+            opacity: 0;
+            animation-delay: 12s;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            background:
+                linear-gradient(90deg, rgba(3, 14, 26, .72) 0%, rgba(3, 14, 26, .38) 47%, rgba(3, 14, 26, .54) 100%),
+                linear-gradient(180deg, rgba(0, 74, 156, .34) 0%, rgba(0, 0, 0, .12) 44%, rgba(3, 14, 26, .65) 100%);
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, .065) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .055) 1px, transparent 1px);
+            background-size: 72px 72px;
+            mask-image: linear-gradient(90deg, transparent 0%, #000 18%, #000 78%, transparent 100%);
+            opacity: .55;
+        }
+
+        .hero-inner {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding-top: 92px;
+            position: relative;
+        }
+
+        .hero-copy {
+            width: min(780px, 100%);
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, .86);
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+            margin-bottom: 22px;
+            animation: fadeUp .8s ease both;
+        }
+
+        .eyebrow::before {
+            content: '';
+            width: 42px;
+            height: 2px;
+            background: var(--blue-2);
+            box-shadow: 0 0 22px rgba(0, 145, 218, .8);
+        }
+
+        .hero h1 {
+            font-size: clamp(44px, 7vw, 92px);
+            line-height: .98;
+            letter-spacing: -0.035em;
+            font-weight: 850;
+            text-wrap: balance;
+            animation: fadeUp .9s .08s ease both;
+        }
+
+        .hero h1 span {
+            color: #bdefff;
+            text-shadow: 0 0 36px rgba(0, 145, 218, .36);
+        }
+
+        .hero-desc {
+            margin-top: 24px;
+            width: min(640px, 100%);
+            color: rgba(255, 255, 255, .82);
+            font-size: 18px;
+            line-height: 1.75;
+            font-weight: 500;
+            animation: fadeUp .9s .18s ease both;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 36px;
+            flex-wrap: wrap;
+            animation: fadeUp .9s .28s ease both;
+        }
+
+        .btn {
+            height: 52px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 0 22px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: transform .25s ease, box-shadow .25s ease, background .25s ease, border-color .25s ease;
+        }
+
+        .btn-primary {
+            background: #fff;
+            color: var(--blue);
+            box-shadow: 0 18px 45px rgba(255, 255, 255, .18);
+        }
+
+        .btn-ghost {
+            color: #fff;
+            border-color: rgba(255, 255, 255, .38);
+            background: rgba(255, 255, 255, .1);
+            backdrop-filter: blur(14px);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 22px 52px rgba(0, 74, 156, .24);
+        }
+
+        .hero-panel {
+            position: absolute;
+            right: 0;
+            bottom: -110px;
+            width: min(480px, 42vw);
+            min-height: 260px;
+            padding: 22px;
+            border: 1px solid rgba(255, 255, 255, .28);
+            border-radius: 28px;
+            background: rgba(255, 255, 255, .13);
+            backdrop-filter: blur(22px);
+            box-shadow: 0 28px 80px rgba(0, 0, 0, .2);
+            animation: floatPanel 7s ease-in-out infinite, fadeUp .9s .38s ease both;
+        }
+
+        .panel-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 18px;
+            color: rgba(255, 255, 255, .86);
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .pulse {
+            width: 10px;
+            height: 10px;
+            border-radius: 999px;
+            background: #3ff6c8;
+            box-shadow: 0 0 0 0 rgba(63, 246, 200, .68);
+            animation: pulse 1.8s infinite;
+        }
+
+        .metric-row {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        .metric {
+            padding: 14px;
+            border-radius: 18px;
+            background: rgba(255, 255, 255, .16);
+            border: 1px solid rgba(255, 255, 255, .18);
+        }
+
+        .metric b {
+            display: block;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: -0.02em;
+        }
+
+        .metric span {
+            display: block;
+            margin-top: 8px;
+            color: rgba(255, 255, 255, .72);
+            font-size: 12px;
+            font-weight: 650;
+        }
+
+        .signal {
+            display: grid;
+            gap: 10px;
+        }
+
+        .signal-line {
+            height: 10px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .18);
+            overflow: hidden;
+        }
+
+        .signal-line i {
+            display: block;
+            height: 100%;
+            width: var(--w);
+            border-radius: inherit;
+            background: linear-gradient(90deg, #76dcff, #fff);
+            animation: loadBar 2.2s ease both;
+        }
+
+        .scroll-cue {
+            position: absolute;
+            left: 50%;
+            bottom: 28px;
+            transform: translateX(-50%);
+            display: grid;
+            justify-items: center;
+            gap: 10px;
+            color: rgba(255, 255, 255, .7);
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .scroll-cue::after {
+            content: '';
+            width: 1px;
+            height: 46px;
+            background: linear-gradient(#fff, transparent);
+            animation: scrollLine 1.7s ease-in-out infinite;
+        }
+
+        .blue-band {
+            position: relative;
+            z-index: 3;
+            width: min(1180px, calc(100% - 40px));
+            margin: -72px auto 0;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            box-shadow: var(--shadow);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .band-item {
+            min-height: 104px;
+            padding: 24px 26px;
+            background: var(--blue);
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .band-item:nth-child(2) {
+            background: #047bc2;
+        }
+
+        .band-item:nth-child(3) {
+            background: #073f88;
+        }
+
+        .band-item::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(110deg, transparent 0%, rgba(255, 255, 255, .18) 45%, transparent 62%);
+            transform: translateX(-120%);
+            animation: sheen 4.8s infinite;
+        }
+
+        .band-kicker {
+            color: rgba(255, 255, 255, .72);
+            font-size: 12px;
+            font-weight: 750;
+            margin-bottom: 5px;
+        }
+
+        .band-title {
+            font-size: 18px;
+            font-weight: 850;
+        }
+
+        .band-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, .18);
+            display: grid;
+            place-items: center;
+            flex-shrink: 0;
+        }
+
+        .section {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 130px 0 0;
+        }
+
+        .section-head {
+            display: grid;
+            grid-template-columns: minmax(0, .85fr) minmax(280px, .55fr);
+            gap: 64px;
+            align-items: end;
+            margin-bottom: 42px;
+        }
+
+        .section-kicker {
+            color: var(--blue);
+            font-size: 13px;
+            font-weight: 850;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+
+        .section h2 {
+            font-size: clamp(32px, 4vw, 56px);
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+            font-weight: 850;
+        }
+
+        .section p {
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(34px);
+            transition: opacity .8s ease, transform .8s cubic-bezier(.2, .75, .24, 1);
+        }
+
+        .reveal.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .feature {
+            min-height: 290px;
+            padding: 28px;
+            border: 1px solid var(--line);
+            border-radius: 26px;
+            background: rgba(255, 255, 255, .78);
+            backdrop-filter: blur(18px);
+            box-shadow: 0 14px 44px rgba(15, 23, 42, .05);
+            position: relative;
+            overflow: hidden;
+            transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+        }
+
+        .feature:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 24px 60px rgba(0, 74, 156, .14);
+            border-color: rgba(0, 145, 218, .36);
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--blue), var(--blue-2));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform .35s ease;
+        }
+
+        .feature:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-number {
+            font-size: 13px;
+            font-weight: 850;
+            color: var(--blue-2);
+            margin-bottom: 28px;
+        }
+
+        .feature h3 {
+            font-size: 22px;
+            line-height: 1.25;
+            letter-spacing: -0.02em;
+            margin-bottom: 14px;
+        }
+
+        .feature p {
+            font-size: 14px;
+            line-height: 1.75;
+        }
+
+        .feature-icon {
+            position: absolute;
+            right: 22px;
+            bottom: 22px;
+            width: 74px;
+            height: 74px;
+            border-radius: 24px;
+            background: var(--blue-3);
+            color: var(--blue);
+            display: grid;
+            place-items: center;
+        }
+
+        .flow {
+            display: grid;
+            grid-template-columns: .82fr 1.18fr;
+            gap: 24px;
+            align-items: stretch;
+        }
+
+        .map-panel {
+            min-height: 520px;
+            border-radius: 34px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: var(--shadow);
+            background-image: url('gh-main-visual-2.png');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .map-panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(180deg, rgba(0, 74, 156, .06), rgba(0, 74, 156, .72)),
+                linear-gradient(90deg, rgba(0, 0, 0, .2), rgba(0, 0, 0, .04));
+        }
+
+        .map-label {
+            position: absolute;
+            left: 26px;
+            right: 26px;
+            bottom: 26px;
+            color: #fff;
+        }
+
+        .map-label b {
+            display: block;
+            font-size: 30px;
+            letter-spacing: -0.03em;
+            margin-bottom: 8px;
+        }
+
+        .timeline {
+            border: 1px solid var(--line);
+            border-radius: 34px;
+            background: #fff;
+            padding: 26px;
+            box-shadow: 0 18px 60px rgba(15, 23, 42, .06);
+        }
+
+        .step {
+            display: grid;
+            grid-template-columns: 58px 1fr;
+            gap: 18px;
+            padding: 24px 0;
+            position: relative;
+        }
+
+        .step + .step {
+            border-top: 1px solid var(--line);
+        }
+
+        .step-no {
+            width: 50px;
+            height: 50px;
+            border-radius: 18px;
+            background: var(--blue-3);
+            color: var(--blue);
+            display: grid;
+            place-items: center;
+            font-weight: 850;
+        }
+
+        .step h3 {
+            font-size: 21px;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .step p {
+            font-size: 15px;
+        }
+
+        .insight {
+            margin-top: 130px;
+            padding: 92px 0;
+            background:
+                linear-gradient(135deg, #071421 0%, #073f88 60%, #005daa 100%);
+            color: #fff;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .insight::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, .08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, .06) 1px, transparent 1px);
+            background-size: 68px 68px;
+            mask-image: radial-gradient(circle at 50% 45%, #000 0%, transparent 76%);
+        }
+
+        .insight-inner {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 42px;
+        }
+
+        .stat {
+            padding: 30px 24px;
+            border-radius: 26px;
+            border: 1px solid rgba(255, 255, 255, .14);
+            background: rgba(255, 255, 255, .08);
+            backdrop-filter: blur(16px);
+        }
+
+        .stat strong {
+            font-size: 44px;
+            line-height: 1;
+            letter-spacing: -0.04em;
+            display: block;
+        }
+
+        .stat span {
+            margin-top: 12px;
+            display: block;
+            color: rgba(255, 255, 255, .72);
+            font-weight: 650;
+        }
+
+        .cta-section {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 120px 0;
+        }
+
+        .cta-box {
+            min-height: 360px;
+            border-radius: 38px;
+            overflow: hidden;
+            position: relative;
+            display: grid;
+            align-items: center;
+            padding: 58px;
+            color: #fff;
+            background-image: url('gh-main-visual-3.png');
+            background-size: cover;
+            background-position: center;
+            box-shadow: var(--shadow);
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, rgba(3, 14, 26, .82), rgba(3, 14, 26, .28));
+        }
+
+        .cta-content {
+            position: relative;
+            width: min(660px, 100%);
+        }
+
+        .cta-content h2 {
+            font-size: clamp(32px, 4.5vw, 58px);
+            line-height: 1.08;
+            letter-spacing: -0.035em;
+            margin-bottom: 20px;
+        }
+
+        .cta-content p {
+            color: rgba(255, 255, 255, .78);
+            font-size: 17px;
+            line-height: 1.75;
+            margin-bottom: 28px;
+        }
+
+        .footer {
+            border-top: 1px solid var(--line);
+            background: #fff;
+            padding: 34px 0;
+        }
+
+        .footer-inner {
+            width: min(1180px, calc(100% - 40px));
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .footer img {
+            width: 154px;
+            height: auto;
+        }
+
+        @keyframes heroScale {
+            from { transform: scale(1.06) translate3d(0, 0, 0); }
+            to { transform: scale(1.12) translate3d(-1.5%, 1%, 0); }
+        }
+
+        @keyframes imageFade {
+            0%, 28% { opacity: 0; }
+            34%, 60% { opacity: 1; }
+            66%, 100% { opacity: 0; }
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(28px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes floatPanel {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-16px); }
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(63, 246, 200, .68); }
+            70% { box-shadow: 0 0 0 12px rgba(63, 246, 200, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(63, 246, 200, 0); }
+        }
+
+        @keyframes loadBar {
+            from { width: 0; }
+            to { width: var(--w); }
+        }
+
+        @keyframes scrollLine {
+            0% { transform: scaleY(0); transform-origin: top; opacity: .2; }
+            45% { transform: scaleY(1); opacity: 1; }
+            100% { transform: scaleY(0); transform-origin: bottom; opacity: .2; }
+        }
+
+        @keyframes sheen {
+            0%, 55% { transform: translateX(-120%); }
+            85%, 100% { transform: translateX(120%); }
+        }
+
+        @media (max-width: 1020px) {
+            .nav-links {
+                display: none;
+            }
+
+            .hero-panel {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                width: 100%;
+                margin-top: 42px;
+            }
+
+            .blue-band,
+            .section-head,
+            .flow,
+            .stat-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 680px) {
+            .site-header {
+                height: 64px;
+            }
+
+            .nav {
+                width: calc(100% - 28px);
+            }
+
+            .brand img {
+                width: 154px;
+            }
+
+            .hero {
+                min-height: auto;
+                padding: 120px 0 92px;
+            }
+
+            .hero-inner,
+            .section,
+            .insight-inner,
+            .cta-section,
+            .footer-inner {
+                width: calc(100% - 28px);
+            }
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .hero-desc {
+                font-size: 15px;
+            }
+
+            .metric-row,
+            .blue-band,
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding-top: 86px;
+            }
+
+            .map-panel {
+                min-height: 360px;
+            }
+
+            .cta-box {
+                padding: 34px 24px;
+                border-radius: 28px;
+            }
+
+            .footer-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: .001ms !important;
+                animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
+                transition-duration: .001ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="page">
+        <header class="site-header" id="siteHeader">
+            <nav class="nav" aria-label="주요 메뉴">
+                <a class="brand" href="#">
+                    <img src="gh-header-logo.png" alt="GH 경기주택도시공사">
+                </a>
+                <div class="nav-links">
+                    <a class="nav-link" href="#features">핵심 기능</a>
+                    <a class="nav-link" href="#flow">업무 흐름</a>
+                    <a class="nav-link" href="#insight">분석 지표</a>
+                    <a class="nav-link" href="guide.html">가이드</a>
+                    <a class="nav-cta" href="index.html">시스템 열기</a>
+                </div>
+            </nav>
+        </header>
+
+        <main>
+            <section class="hero" aria-labelledby="heroTitle">
+                <div class="hero-bg" id="heroBg"></div>
+                <div class="hero-inner">
+                    <div class="hero-copy">
+                        <div class="eyebrow">GH Financial Intelligence</div>
+                        <h1 id="heroTitle">도시의 흐름을 읽고<br><span>재무 판단</span>을 빠르게.</h1>
+                        <p class="hero-desc">
+                            원가, 공급, 회수 데이터를 하나의 의사결정 화면으로 연결합니다.
+                            사업별 재무 흐름을 실시간으로 비교하고, 실행 가능한 판단 근거를 선명하게 제공합니다.
+                        </p>
+                        <div class="hero-actions">
+                            <a class="btn btn-primary" href="index.html">대시보드 시작</a>
+                            <a class="btn btn-ghost" href="#features">구성 살펴보기</a>
+                        </div>
+                    </div>
+
+                    <aside class="hero-panel" id="heroPanel" aria-label="핵심 지표 미리보기">
+                        <div class="panel-top">
+                            <span>Decision Signal</span>
+                            <span class="pulse" aria-hidden="true"></span>
+                        </div>
+                        <div class="metric-row">
+                            <div class="metric"><b data-count="42">0</b><span>연동 사업</span></div>
+                            <div class="metric"><b data-count="98">0</b><span>데이터 정합</span></div>
+                            <div class="metric"><b data-count="12">0</b><span>분석 지표</span></div>
+                        </div>
+                        <div class="signal">
+                            <div class="signal-line"><i style="--w: 86%;"></i></div>
+                            <div class="signal-line"><i style="--w: 68%;"></i></div>
+                            <div class="signal-line"><i style="--w: 94%;"></i></div>
+                        </div>
+                    </aside>
+                </div>
+                <div class="scroll-cue">Scroll</div>
+            </section>
+
+            <section class="blue-band reveal" aria-label="빠른 진입">
+                <a class="band-item" href="index.html">
+                    <div>
+                        <div class="band-kicker">Dashboard</div>
+                        <div class="band-title">재무 현황 보기</div>
+                    </div>
+                    <div class="band-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M4 19h16"/><path d="M8 15l3-4 3 2 5-7"/></svg>
+                    </div>
+                </a>
+                <a class="band-item" href="guide.html">
+                    <div>
+                        <div class="band-kicker">Guide</div>
+                        <div class="band-title">설명 자료 열기</div>
+                    </div>
+                    <div class="band-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5V5a2 2 0 0 1 2-2h12v18H6a2 2 0 0 1-2-1.5z"/><path d="M8 7h6"/><path d="M8 11h7"/></svg>
+                    </div>
+                </a>
+                <a class="band-item" href="#flow">
+                    <div>
+                        <div class="band-kicker">Workflow</div>
+                        <div class="band-title">업무 흐름 확인</div>
+                    </div>
+                    <div class="band-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v18"/><path d="M5 8h14"/><path d="M7 16h10"/></svg>
+                    </div>
+                </a>
+            </section>
+
+            <section class="section" id="features">
+                <div class="section-head reveal">
+                    <div>
+                        <div class="section-kicker">Core Capabilities</div>
+                        <h2>분산된 사업 데이터를 하나의 판단 체계로.</h2>
+                    </div>
+                    <p>
+                        공공 개발사업의 재무 흐름은 단순 집계보다 맥락이 중요합니다.
+                        이 화면은 업로드, 검증, 분석, 보고를 끊김 없이 이어 의사결정 속도를 높입니다.
+                    </p>
+                </div>
+
+                <div class="feature-grid">
+                    <article class="feature reveal">
+                        <div class="feature-number">01</div>
+                        <h3>사업별 재무 흐름</h3>
+                        <p>투입, 공급, 회수 데이터를 같은 기준으로 정리해 사업 간 비교와 변화 추적을 쉽게 합니다.</p>
+                        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h5l2-7 4 14 2-7h5"/></svg></div>
+                    </article>
+                    <article class="feature reveal">
+                        <div class="feature-number">02</div>
+                        <h3>엑셀 기반 파이프라인</h3>
+                        <p>기존 업무 파일을 활용하면서도 DB 구조에 맞춰 표준화된 분석 기반을 만듭니다.</p>
+                        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 8l5-5 5 5"/><path d="M5 21h14"/></svg></div>
+                    </article>
+                    <article class="feature reveal">
+                        <div class="feature-number">03</div>
+                        <h3>차트와 피벗 조회</h3>
+                        <p>연도별 흐름, 누적 수지, 카테고리별 집계를 시각화해 회의에서 바로 설명할 수 있습니다.</p>
+                        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V5"/><path d="M8 17v-6"/><path d="M13 17V7"/><path d="M18 17v-9"/></svg></div>
+                    </article>
+                    <article class="feature reveal">
+                        <div class="feature-number">04</div>
+                        <h3>보고용 출력</h3>
+                        <p>조회 조건과 단위를 반영한 결과를 엑셀로 내보내 실무 보고 흐름에 맞게 활용합니다.</p>
+                        <div class="feature-icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/></svg></div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="section" id="flow">
+                <div class="section-head reveal">
+                    <div>
+                        <div class="section-kicker">Operating Flow</div>
+                        <h2>도시 개발의 숫자가<br>결정 가능한 정보가 되는 과정.</h2>
+                    </div>
+                    <p>
+                        시스템은 데이터 입력부터 의사결정 리포트까지의 경로를 단순하게 정리합니다.
+                        각 단계는 업무 담당자가 반복적으로 쓰기 편한 구조를 기준으로 설계되었습니다.
+                    </p>
+                </div>
+
+                <div class="flow">
+                    <div class="map-panel reveal">
+                        <div class="map-label">
+                            <b>Gyeonggi Growth Map</b>
+                            <p>사업 단위의 재무 흐름을 도시 공간의 변화와 함께 바라봅니다.</p>
+                        </div>
+                    </div>
+                    <div class="timeline reveal">
+                        <div class="step">
+                            <div class="step-no">01</div>
+                            <div>
+                                <h3>자료 수집</h3>
+                                <p>사업별 원가, 공급, 회수 자료를 정리하고 프로젝트명을 기준으로 연결합니다.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-no">02</div>
+                            <div>
+                                <h3>DB 적재</h3>
+                                <p>엑셀 원본을 표준 테이블로 변환해 조회와 분석에 적합한 상태로 저장합니다.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-no">03</div>
+                            <div>
+                                <h3>지표 분석</h3>
+                                <p>투입, 회수, 누적 수지, NPV, IRR 등 핵심 지표를 사업별로 비교합니다.</p>
+                            </div>
+                        </div>
+                        <div class="step">
+                            <div class="step-no">04</div>
+                            <div>
+                                <h3>의사결정 지원</h3>
+                                <p>대시보드와 리포트로 현재 상태와 다음 판단 지점을 한눈에 공유합니다.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="insight" id="insight">
+                <div class="insight-inner">
+                    <div class="section-head reveal">
+                        <div>
+                            <div class="section-kicker" style="color:#76dcff;">Live Intelligence</div>
+                            <h2>한 번의 조회로 확인하는 사업 재무 신호.</h2>
+                        </div>
+                        <p style="color:rgba(255,255,255,.74);">
+                            반복 보고에 필요한 숫자를 빠르게 꺼내고, 사업별 추세를 같은 기준으로 해석합니다.
+                        </p>
+                    </div>
+                    <div class="stat-grid">
+                        <div class="stat reveal"><strong data-count="4">0</strong><span>핵심 DB 테이블</span></div>
+                        <div class="stat reveal"><strong data-count="12">0</strong><span>재무 분석 지표</span></div>
+                        <div class="stat reveal"><strong data-count="5">0</strong><span>업무 화면 구성</span></div>
+                        <div class="stat reveal"><strong data-count="1">0</strong><span>통합 의사결정 화면</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-section">
+                <div class="cta-box reveal">
+                    <div class="cta-content">
+                        <h2>데이터를 모으는 화면에서, 판단을 만드는 화면으로.</h2>
+                        <p>
+                            재무 의사결정지원 시스템은 사업 데이터를 더 빠르게 읽고,
+                            더 명확하게 설명하며, 더 일관된 기준으로 공유하기 위한 GH 내부 업무 도구입니다.
+                        </p>
+                        <a class="btn btn-primary" href="index.html">시스템으로 이동</a>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <div class="footer-inner">
+                <img src="gh-header-logo.png" alt="GH 경기주택도시공사">
+                <span>Financial Decision Support System · GH</span>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const header = document.getElementById('siteHeader');
+        const heroBg = document.getElementById('heroBg');
+        const heroPanel = document.getElementById('heroPanel');
+        const revealItems = document.querySelectorAll('.reveal');
+        const counters = document.querySelectorAll('[data-count]');
+
+        window.addEventListener('scroll', () => {
+            const y = window.scrollY;
+            header.classList.toggle('scrolled', y > 24);
+            heroBg.style.transform = `scale(${1.06 + Math.min(y, 600) / 9000}) translate3d(0, ${y * .035}px, 0)`;
+        }, { passive: true });
+
+        window.addEventListener('pointermove', (event) => {
+            if (window.matchMedia('(max-width: 1020px)').matches) return;
+            const x = (event.clientX / window.innerWidth - .5) * 18;
+            const y = (event.clientY / window.innerHeight - .5) * 18;
+            heroPanel.style.transform = `translate3d(${x * .45}px, ${y * .35}px, 0)`;
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: .18 });
+
+        revealItems.forEach(item => observer.observe(item));
+
+        const countObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) return;
+                const el = entry.target;
+                const target = Number(el.dataset.count || 0);
+                const duration = 1300;
+                const start = performance.now();
+
+                const tick = (now) => {
+                    const progress = Math.min((now - start) / duration, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    el.textContent = Math.round(target * eased).toLocaleString('ko-KR');
+                    if (progress < 1) requestAnimationFrame(tick);
+                };
+
+                requestAnimationFrame(tick);
+                countObserver.unobserve(el);
+            });
+        }, { threshold: .5 });
+
+        counters.forEach(counter => countObserver.observe(counter));
+    </script>
+</body>
+
+</html>
