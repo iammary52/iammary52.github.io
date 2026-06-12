@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ko">
 
 <head>
@@ -2995,61 +2995,7 @@
                 } catch (err) { setStatus({ type: 'error', message: `File Error: ${err.message}` }); }
             };
 
-            // ✅ 중장기 10개년 재무전망 데이터 집계 함수
-            const getOutlookData = () => {
-                const parsed = parseProjectName(projectName);
-                const by = parsed.year || 2025;
-                const half = parsed.half;
-                const scen = parsed.scenario;
-                const years = Array.from({ length: 10 }, (_, i) => by + i);
 
-                const filterProj = (arr) => {
-                    return (arr || []).filter(row => row.year === by && row.half === half && row.scenario === scen);
-                };
-
-                const fLand = filterProj(dbLand);
-                const fDev = filterProj(dbDev);
-                const fSup = filterProj(dbSup);
-                const fRec = filterProj(dbRec);
-
-                const landMap = {};
-                const devMap = {};
-                const supMap = {};
-                const recMap = {};
-
-                years.forEach(y => {
-                    landMap[y] = 0;
-                    devMap[y] = 0;
-                    supMap[y] = 0;
-                    recMap[y] = 0;
-                });
-
-                fLand.forEach(r => { if (landMap[r.target_year] !== undefined) landMap[r.target_year] += r.amount; });
-                fDev.forEach(r => { if (devMap[r.target_year] !== undefined) devMap[r.target_year] += r.amount; });
-                fSup.forEach(r => { if (supMap[r.target_year] !== undefined) supMap[r.target_year] += r.amount; });
-                fRec.forEach(r => { if (recMap[r.target_year] !== undefined) recMap[r.target_year] += r.amount; });
-
-                const rows = [
-                    { label: '용지비 (Land Costs)', data: years.map(y => landMap[y]), type: 'expense' },
-                    { label: '조성비 (Development Costs)', data: years.map(y => devMap[y]), type: 'expense' },
-                    { label: '투자 지출 계 (A)', data: years.map(y => landMap[y] + devMap[y]), type: 'subtotal' },
-                    { label: '분양 수입 (Supplies)', data: years.map(y => supMap[y]), type: 'revenue' },
-                    { label: '자금 회수액 (Recoveries)', data: years.map(y => recMap[y]), type: 'revenue' },
-                    { label: '회수/유입 계 (B)', data: years.map(y => supMap[y] + recMap[y]), type: 'subtotal' },
-                    { label: '당해년 순현금흐름 (B - A)', data: years.map(y => (supMap[y] + recMap[y]) - (landMap[y] + devMap[y])), type: 'ncf' },
-                ];
-
-                const ncfRow = rows[6].data;
-                const cumulative = [];
-                let runningSum = 0;
-                ncfRow.forEach(val => {
-                    runningSum += val;
-                    cumulative.push(runningSum);
-                });
-                rows.push({ label: '누적 자금 수지 (Cumulative Balance)', data: cumulative, type: 'cumulative' });
-
-                return { years, rows };
-            };
 
             const executeDataView = async () => {
                 if (!projectName) return setStatus({ type: 'error', message: '리스트에서 사업명을 선택하세요.' });
@@ -3457,8 +3403,7 @@
                 ]},
                 { group: '분석 및 리포트', items: [
                     { id: 'view', label: '데이터 조회', icon: 'M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14z M21 21l-4.3-4.3' },
-                    { id: 'report', label: '현금흐름 리포트', icon: 'M3 3v18h18 M7 14l4-4 4 4 5-5' },
-                    { id: 'financial_outlook', label: '중장기 재무전망 (10개년)', icon: 'M12 2v20 M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6' }
+                    { id: 'report', label: '현금흐름 리포트', icon: 'M3 3v18h18 M7 14l4-4 4 4 5-5' }
                 ]}
             ];
 
@@ -3471,8 +3416,7 @@
                 management: { eyebrow: 'Master Data', title: '마스터 프로젝트 제어' },
                 upload: { eyebrow: 'Pipeline', title: '데이터 파싱 / 이관' },
                 view: { eyebrow: 'Project Data', title: '데이터 조회' },
-                report: { eyebrow: 'Project Analysis', title: '현금흐름 리포트' },
-                financial_outlook: { eyebrow: 'Finance Forecast', title: '중장기 재무전망 (10개년)' }
+                report: { eyebrow: 'Project Analysis', title: '현금흐름 리포트' }
             }[appMode] || { eyebrow: 'System', title: '준비중인 화면' };
 
             return (
@@ -3548,7 +3492,7 @@
                                     <span className="tb-lbl">새 업로드 사업명</span>
                                     <input type="text" className="popt-inp" value={uploadProjName} onChange={e => setUploadProjName(e.target.value)} placeholder="예: 평택고덕국제신도시" />
                                 </div>
-                            ) : (appMode === 'view' || appMode === 'report' || appMode === 'financial_outlook') ? (
+                            ) : (appMode === 'view' || appMode === 'report') ? (
                                 <div className="tb-sec">
                                     <span className="tb-lbl">선택된 대상 사업: <b style={{ color: 'var(--acc)' }}>{(() => {
                                          if (!projectName) return '(없음)';
@@ -4106,67 +4050,6 @@
                                     </>
                                 )}
 
-                                {appMode === 'financial_outlook' && (() => {
-                                    const { years, rows } = getOutlookData();
-                                    return (
-                                        <div className="panel">
-                                            <div className="phd">
-                                                <div className="pt">중장기 재무전망 (선택 사업 기준 10개년 흐름)</div>
-                                                <div style={{ fontSize: '11px', color: 'var(--text3)' }}>단위: {amountUnit}</div>
-                                            </div>
-                                            <div className="pb0">
-                                                <div className="grid-wrap" style={{ overflowX: 'auto' }}>
-                                                    <table className="dgrid" style={{ minWidth: '1000px' }}>
-                                                        <thead>
-                                                            <tr>
-                                                                <th style={{ minWidth: '220px', textAlign: 'left', position: 'sticky', left: 0, zIndex: 10, background: 'var(--panel-2)', borderRight: '1px solid var(--border)' }}>구분 (Financial Line Items)</th>
-                                                                {years.map(y => <th key={y} style={{ textAlign: 'right' }}>{y}년</th>)}
-                                                                <th style={{ textAlign: 'right', fontWeight: 'bold' }}>10개년 합계</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {rows.map((row, idx) => {
-                                                                let trClass = '';
-                                                                if (row.type === 'subtotal') trClass = 'sub';
-                                                                if (row.type === 'cumulative') trClass = 'tot';
-                                                                if (row.type === 'ncf') trClass = 'tot';
-
-                                                                const rowSum = row.data.reduce((s, v) => s + v, 0);
-
-                                                                return (
-                                                                    <tr key={idx} className={trClass}>
-                                                                        <td style={{ 
-                                                                            textAlign: 'left', 
-                                                                            position: 'sticky', 
-                                                                            left: 0, 
-                                                                            zIndex: 4, 
-                                                                            background: trClass === 'tot' ? 'var(--acc-lt)' : trClass === 'sub' ? 'var(--panel-2)' : '#fff',
-                                                                            fontWeight: trClass ? '700' : 'normal',
-                                                                            borderRight: '1px solid var(--border)'
-                                                                        }}>
-                                                                            {row.label}
-                                                                        </td>
-                                                                        {row.data.map((val, i) => {
-                                                                            let tdClass = val < 0 ? 'neg' : '';
-                                                                            return (
-                                                                                <td key={i} className={tdClass}>
-                                                                                    {formatAmount(val)}
-                                                                                </td>
-                                                                            );
-                                                                        })}
-                                                                        <td className={rowSum < 0 ? 'neg' : ''} style={{ fontWeight: 'bold' }}>
-                                                                            {row.type === 'cumulative' ? '-' : formatAmount(rowSum)}
-                                                                        </td>
-                                                                    </tr>
-                                                                );
-                                                            })}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    );
-                                })()}
 
                                 {/* ========================================================================= */}
                                 {/* END OF LEGACY PAGES RENDER CODE                                          */}
