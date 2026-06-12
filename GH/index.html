@@ -427,15 +427,650 @@
     </script>
 
     <!-- ═══════════════════════════════════════════════════════
-         React 컴포넌트 (Babel JSX)
-         로드 순서: 공통 → 페이지 → 루트
+         React 컴포넌트 (Babel JSX · 인라인)
+         file:// 로컬 실행 호환 — src 속성 대신 인라인으로 포함
+         소스 원본은 js/ 폴더에 분리 보관
     ════════════════════════════════════════════════════════ -->
-    <script type="text/babel" src="js/components/Login.js"></script>
-    <script type="text/babel" src="js/components/Sidebar.js"></script>
-    <script type="text/babel" src="js/components/pages/Stub.js"></script>
-    <script type="text/babel" src="js/components/pages/ProjectMgr.js"></script>
-    <script type="text/babel" src="js/components/pages/DataView.js"></script>
-    <script type="text/babel" src="js/components/pages/Report.js"></script>
-    <script type="text/babel" src="js/App.js"></script>
+    <script type="text/babel">
+    // ── Login.js ────────────────────────────────────────────
+    function LoginScreen({ onLoginSuccess }) {
+        const [email,    setEmail]    = React.useState('');
+        const [password, setPassword] = React.useState('');
+        const [loading,  setLoading]  = React.useState(false);
+        const [error,    setError]    = React.useState('');
+
+        const handleLogin = async (e) => {
+            e.preventDefault();
+            if (!email || !password) { setError('이메일과 비밀번호를 모두 입력해주세요.'); return; }
+            setLoading(true); setError('');
+            try {
+                const { data, error: authErr } = await window.db.auth.signIn(email.trim(), password);
+                if (authErr) throw authErr;
+                if (data?.session) { onLoginSuccess(data.session); }
+                else throw new Error('세션 발급에 실패했습니다.');
+            } catch (err) {
+                let msg = err.message || '로그인에 실패했습니다.';
+                if (msg.includes('Invalid login credentials')) msg = '이메일 또는 비밀번호가 일치하지 않습니다.';
+                else if (msg.includes('Email not confirmed')) msg = '이메일 인증이 완료되지 않았습니다. 관리자에게 문의하세요.';
+                setError(msg);
+            } finally { setLoading(false); }
+        };
+
+        return (
+            <div className="login-bg">
+                <div className="login-card">
+                    <div className="login-head">
+                        <div className="login-mark">
+                            <div className="login-mark-dot"><img src="assets/gh-header-logo.png" alt="GH CI" /></div>
+                            <div className="login-mark-name">GH · 재무 의사결정지원 시스템</div>
+                        </div>
+                        <div className="login-title">로그인</div>
+                        <div className="login-sub">승인된 운영자 계정으로 데이터 파이프라인에 접근합니다</div>
+                    </div>
+                    <form className="login-body" onSubmit={handleLogin}>
+                        {error && <div className="login-err">{error}</div>}
+                        <div className="login-field">
+                            <label className="login-lbl">이메일</label>
+                            <input type="email" className="login-inp" value={email} onChange={e => setEmail(e.target.value)} placeholder="admin@company.local" autoFocus disabled={loading} />
+                        </div>
+                        <div className="login-field">
+                            <label className="login-lbl">비밀번호</label>
+                            <input type="password" className="login-inp" value={password} onChange={e => setPassword(e.target.value)} placeholder="••••••••" disabled={loading} />
+                        </div>
+                        <button type="submit" className="login-btn" disabled={loading}>{loading ? '인증 중...' : '로그인'}</button>
+                    </form>
+                    <div className="login-footer">Secured by Auth · 승인된 사용자만 접근 가능</div>
+                </div>
+            </div>
+        );
+    }
+    </script>
+
+    <script type="text/babel">
+    // ── Sidebar.js ───────────────────────────────────────────
+    const NAV = [
+        { group: '관리 및 설정', items: [
+            { id: 'project_mgr',   label: '프로젝트 등록 및 관리', icon: 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2' },
+            { id: 'biz_master_mgr',label: '사업마스터관리',         icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' },
+            { id: 'excel_upload',  label: '엑셀 업로드',            icon: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M17 8l-5-5-5 5 M12 3v12' },
+            { id: 'settings_mgr',  label: '설정',                   icon: 'M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z M12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z' },
+        ]},
+    ];
+
+    function Sidebar({ appMode, setAppMode, onLogout, userEmail }) {
+        const userInitial = userEmail.charAt(0).toUpperCase();
+        return (
+            <aside className="sidebar">
+                <div className="sb-brand">
+                    <div className="sb-mark"><img src="assets/gh-header-logo.png" alt="GH CI" /></div>
+                    <div>
+                        <div className="sb-brand-name">재무 의사결정지원 시스템</div>
+                        <div className="sb-brand-sub">Financial Decision Support</div>
+                    </div>
+                </div>
+                <nav className="sb-nav">
+                    {NAV.map((g, gi) => (
+                        <div key={gi}>
+                            <div className="sb-grp">{g.group}</div>
+                            {g.items.map(it => (
+                                <div key={it.id} className={`sb-item ${appMode === it.id ? 'active' : ''}`} onClick={() => setAppMode(it.id)}>
+                                    <svg className="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d={it.icon} /></svg>
+                                    <span>{it.label}</span>
+                                </div>
+                            ))}
+                        </div>
+                    ))}
+                </nav>
+                <div className="sb-foot">
+                    <div className="sb-avatar">{userInitial}</div>
+                    <div className="sb-user-meta">
+                        <div className="sb-user-name">{userEmail}</div>
+                        <div className="sb-user-status">DB 정상</div>
+                    </div>
+                    <button className="logout-btn" onClick={onLogout}>로그아웃</button>
+                </div>
+            </aside>
+        );
+    }
+    </script>
+
+    <script type="text/babel">
+    // ── Stub.js ──────────────────────────────────────────────
+    const STUB_META = {
+        biz_master_mgr: { icon: '🏗️', title: '사업마스터관리',  desc: '전체 사업 마스터 데이터의 통합 편집·분류·이관 기능을 제공합니다.' },
+        excel_upload:   { icon: '📤', title: '엑셀 업로드',     desc: '엑셀 파일을 파싱해 용지비·조성비·공급·회수 테이블로 자동 이관합니다.' },
+        settings_mgr:   { icon: '⚙️', title: '시스템 설정',    desc: 'DB 연결 정보, 사용자 권한, 알림 설정 등을 관리합니다.' },
+    };
+    function StubPage({ mode }) {
+        const meta = STUB_META[mode] || { icon: '🚧', title: '준비중인 화면', desc: '이 기능은 현재 개발 준비 중입니다.' };
+        return (
+            <div className="panel" style={{ padding: '60px 40px', textAlign: 'center', background: '#fff' }}>
+                <div style={{ fontSize: '48px', marginBottom: '16px' }}>{meta.icon}</div>
+                <h2 style={{ fontSize: '18px', fontWeight: 700, color: 'var(--text)', marginBottom: '8px' }}>{meta.title}</h2>
+                <p style={{ color: 'var(--text3)', fontSize: '13px', maxWidth: '360px', margin: '0 auto', lineHeight: 1.7 }}>{meta.desc}</p>
+                <p style={{ color: 'var(--text4)', fontSize: '11.5px', marginTop: '20px' }}>개발 예정 · 준비중</p>
+            </div>
+        );
+    }
+    </script>
+
+    <script type="text/babel">
+    // ── ProjectMgr.js ────────────────────────────────────────
+    function ProjectMgr({ manageList, onRefresh, setStatus }) {
+        const [projYear,           setProjYear]           = React.useState(2025);
+        const [projHalf,           setProjHalf]           = React.useState('상반기');
+        const [projScenarioType,   setProjScenarioType]   = React.useState('기본안');
+        const [projScenarioVal,    setProjScenarioVal]    = React.useState('시나리오1');
+        const [projScenarioCustom, setProjScenarioCustom] = React.useState('');
+        const [projScenarioDesc,   setProjScenarioDesc]   = React.useState('');
+        const [isEditModalOpen,    setIsEditModalOpen]    = React.useState(false);
+        const [editingProject,     setEditingProject]     = React.useState(null);
+        const [editProjDesc,       setEditProjDesc]       = React.useState('');
+
+        const handleCreate = async (e) => {
+            e.preventDefault();
+            const scenarioName = projScenarioType === '기본안'
+                ? '기본안'
+                : (projScenarioVal === '직접입력' ? projScenarioCustom.trim() : projScenarioVal);
+            if (projScenarioType === '시나리오' && projScenarioVal === '직접입력' && !projScenarioCustom.trim()) {
+                setStatus({ type: 'error', message: '시나리오 이름을 직접 입력해 주세요.' }); return;
+            }
+            const projName = `${projYear}년 ${projHalf} ${scenarioName}`;
+            setStatus({ type: 'loading', message: `'${projName}' 프로젝트를 DB에 생성 중...` });
+            try {
+                await window.db.createProject({ year: parseInt(projYear), half: projHalf, scenario: scenarioName, description: projScenarioType === '시나리오' ? projScenarioDesc : null });
+                setStatus({ type: 'success', message: `'${projName}' 프로젝트가 등록되었습니다.` });
+                if (projScenarioVal === '직접입력') setProjScenarioCustom('');
+                setProjScenarioDesc('');
+                setTimeout(onRefresh, 500);
+            } catch (err) { setStatus({ type: 'error', message: err.message }); }
+        };
+
+        const handleDelete = async (p) => {
+            if (!window.confirm(`[경고] '${p.origName}' 사업을 삭제하시겠습니까?\n\n하위 4개 테이블의 관련 데이터가 모두 영구 삭제됩니다.\n이 작업은 되돌릴 수 없습니다.`)) return;
+            setStatus({ type: 'loading', message: `'${p.origName}' 삭제 중...` });
+            try {
+                await window.db.deleteProject({ year: p.year, half: p.half, scenario: p.scenario });
+                setStatus({ type: 'success', message: `'${p.origName}' 삭제 완료.` });
+                setTimeout(onRefresh, 500);
+            } catch (err) { setStatus({ type: 'error', message: `삭제 실패: ${err.message}` }); }
+        };
+
+        const handleEditDesc = async () => {
+            if (!editingProject) return;
+            setStatus({ type: 'loading', message: '설명 수정 중...' });
+            try {
+                await window.db.updateProjectDescription({ year: editingProject.year, half: editingProject.half, scenario: editingProject.scenario, description: editProjDesc });
+                setStatus({ type: 'success', message: `'${editingProject.scenario}' 설명이 수정되었습니다.` });
+                setIsEditModalOpen(false); setEditingProject(null); setEditProjDesc('');
+                setTimeout(onRefresh, 500);
+            } catch (err) { setStatus({ type: 'error', message: `수정 실패: ${err.message}` }); }
+        };
+
+        return (
+            <>
+                <div className="two-col" style={{ gridTemplateColumns: '4fr 6fr', alignItems: 'start' }}>
+                    {/* 생성 폼 */}
+                    <div className="panel" style={{ overflow: 'visible' }}>
+                        <div className="phd"><div className="pt">새 프로젝트 생성</div></div>
+                        <form onSubmit={handleCreate} className="pb" style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                            <div>
+                                <label className="login-lbl">연도 선택 (2025 ~ 2030년)</label>
+                                <div className="year-btn-grid">
+                                    {[2025, 2026, 2027, 2028, 2029, 2030].map(y => (
+                                        <button key={y} type="button" className={`year-btn ${projYear === y ? 'active' : ''}`} onClick={() => setProjYear(y)}>
+                                            <span>{y}년</span><span className="year-btn-sub">Target Year</span>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <label className="login-lbl">반기 선택</label>
+                                <div className="segmented-control">
+                                    {['상반기','하반기'].map(h => (<button key={h} type="button" className={`seg-btn ${projHalf === h ? 'active' : ''}`} onClick={() => setProjHalf(h)}>{h}</button>))}
+                                </div>
+                            </div>
+                            <div>
+                                <label className="login-lbl">안 구분</label>
+                                <div className="segmented-control">
+                                    <button type="button" className={`seg-btn ${projScenarioType === '기본안' ? 'active' : ''}`} onClick={() => { setProjScenarioType('기본안'); setProjScenarioDesc(''); }}>기본안</button>
+                                    <button type="button" className={`seg-btn ${projScenarioType === '시나리오' ? 'active' : ''}`} onClick={() => setProjScenarioType('시나리오')}>시나리오 지정</button>
+                                </div>
+                            </div>
+                            {projScenarioType === '시나리오' && (
+                                <div>
+                                    <label className="login-lbl">시나리오 구분</label>
+                                    <div style={{ display: 'flex', gap: '8px' }}>
+                                        <select className="popt-inp" style={{ flex: 1, minWidth: '100px' }} value={projScenarioVal} onChange={e => setProjScenarioVal(e.target.value)}>
+                                            {['시나리오1','시나리오2','시나리오3','시나리오4','직접입력'].map(v => (<option key={v} value={v}>{v === '직접입력' ? '직접 입력' : v}</option>))}
+                                        </select>
+                                        {projScenarioVal === '직접입력' && (
+                                            <input type="text" className="popt-inp" style={{ flex: 1.5 }} value={projScenarioCustom} onChange={e => setProjScenarioCustom(e.target.value)} placeholder="예: 시나리오5" />
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+                            <div>
+                                <label className="login-lbl">시나리오 설명</label>
+                                <textarea className="popt-inp" style={{ width: '100%', height: '70px', resize: 'none' }} value={projScenarioDesc} onChange={e => setProjScenarioDesc(e.target.value)}
+                                    placeholder={projScenarioType === '기본안' ? '기본안은 설명이 필요하지 않습니다.' : '시나리오 상세 설명을 입력하세요.'} disabled={projScenarioType === '기본안'} />
+                            </div>
+                            <button type="submit" className="tbtn acc" style={{ width: '100%', height: '40px', justifyContent: 'center', marginTop: '6px' }}>프로젝트 생성하기</button>
+                        </form>
+                    </div>
+
+                    {/* 프로젝트 목록 */}
+                    <div className="panel" style={{ display: 'flex', flexDirection: 'column', minHeight: '520px' }}>
+                        <div className="phd"><div className="pt">마스터 프로젝트 목록 및 데이터 입력 현황</div></div>
+                        <div className="pb" style={{ flex: 1, overflow: 'auto', padding: '15px' }}>
+                            {manageList.length === 0 ? (
+                                <div style={{ color: 'var(--text4)', textAlign: 'center', padding: '40px 0' }}>등록된 마스터 프로젝트가 없습니다.</div>
+                            ) : (
+                                <div style={{ overflowX: 'auto' }}>
+                                    <table className="proj-table">
+                                        <thead><tr><th>연도</th><th>반기</th><th>시나리오</th><th>설명</th><th style={{textAlign:'center'}}>토지비</th><th style={{textAlign:'center'}}>개발비</th><th style={{textAlign:'center'}}>분양</th><th style={{textAlign:'center'}}>회수</th><th style={{textAlign:'center'}}>관리</th></tr></thead>
+                                        <tbody>
+                                            {manageList.map(p => (
+                                                <tr key={p.origName}>
+                                                    <td style={{ fontWeight: 600 }}>{p.year}년</td>
+                                                    <td>{p.half}</td>
+                                                    <td style={{ color: 'var(--acc)', fontWeight: 600 }}>{p.scenario}</td>
+                                                    <td style={{ whiteSpace: 'normal', wordBreak: 'break-all', color: 'var(--text3)', fontSize: '11.5px', maxWidth: '150px' }}>{p.description || '-'}</td>
+                                                    {[p.hasLand, p.hasDev, p.hasSup, p.hasRec].map((has, i) => (
+                                                        <td key={i} style={{ textAlign: 'center' }}><span className={`badge ${has ? 'success' : 'empty'}`}>{has ? '입력완료' : '미입력'}</span></td>
+                                                    ))}
+                                                    <td style={{ textAlign: 'center' }}>
+                                                        <div style={{ display: 'flex', gap: '4px', justifyContent: 'center' }}>
+                                                            <button className="tbtn" style={{ height: '24px', padding: '1px 8px', fontSize: '11px' }} onClick={() => { setEditingProject(p); setEditProjDesc(p.description || ''); setIsEditModalOpen(true); }}>수정</button>
+                                                            <button className="tbtn danger" style={{ height: '24px', padding: '1px 8px', fontSize: '11px' }} onClick={() => handleDelete(p)}>삭제</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+
+                {/* 설명 수정 모달 */}
+                {isEditModalOpen && editingProject && (
+                    <div className="modal-overlay">
+                        <div className="modal-box">
+                            <div className="modal-head">
+                                <div className="modal-title">프로젝트 설명 수정</div>
+                                <button className="modal-close" onClick={() => { setIsEditModalOpen(false); setEditingProject(null); setEditProjDesc(''); }}>×</button>
+                            </div>
+                            <div className="modal-body">
+                                <div style={{ fontSize: '11.5px', color: 'var(--text3)' }}>대상: <b>{editingProject.year}년 {editingProject.half} {editingProject.scenario}</b></div>
+                                <div>
+                                    <label className="login-lbl">시나리오 설명</label>
+                                    <textarea className="popt-inp" style={{ width: '100%', height: '80px', resize: 'none', fontSize: '12px' }} value={editProjDesc} onChange={e => setEditProjDesc(e.target.value)} placeholder="수정할 설명을 입력하세요." />
+                                </div>
+                            </div>
+                            <div className="modal-foot">
+                                <button className="tbtn" onClick={() => { setIsEditModalOpen(false); setEditingProject(null); setEditProjDesc(''); }}>취소</button>
+                                <button className="tbtn acc" onClick={handleEditDesc}>저장</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </>
+        );
+    }
+    </script>
+
+    <script type="text/babel">
+    // ── DataView.js ──────────────────────────────────────────
+    function DataView({ projectName, amountUnit, setStatus }) {
+        const { TABLES } = window.APP_CONFIG;
+        const [viewTable, setViewTable] = React.useState('land_costs');
+        const [viewData,  setViewData]  = React.useState([]);
+        const [viewYears, setViewYears] = React.useState([]);
+
+        React.useEffect(() => { setViewData([]); setViewYears([]); }, [viewTable]);
+
+        const execute = async () => {
+            if (!projectName) { setStatus({ type: 'error', message: '대상 사업을 선택하세요.' }); return; }
+            setStatus({ type: 'loading', message: 'DB 조회 중...' }); setViewData([]);
+            try {
+                const parsed = window.parseProjectName(projectName);
+                const data = await window.db.getTableData(viewTable, { year: parsed.year, half: parsed.half, scenario: parsed.scenario });
+                if (!data || data.length === 0) { setStatus({ type: 'error', message: '해당 조건으로 등록된 데이터가 없습니다.' }); return; }
+                const yearSet = new Set(); const itemMap = new Map();
+                data.forEach(d => {
+                    yearSet.add(d.target_year);
+                    if (!itemMap.has(d.detail_item)) itemMap.set(d.detail_item, {});
+                    itemMap.get(d.detail_item)[d.target_year] = (itemMap.get(d.detail_item)[d.target_year] || 0) + d.amount;
+                });
+                const sortedYears = Array.from(yearSet).sort((a, b) => a - b);
+                const pivotArray = [];
+                for (const [itemName, amounts] of itemMap.entries()) {
+                    let total = 0; const yData = {};
+                    sortedYears.forEach(y => { const amt = amounts[y] || 0; yData[y] = amt; total += amt; });
+                    pivotArray.push({ detailItem: itemName, yearData: yData, total });
+                }
+                setViewYears(sortedYears); setViewData(pivotArray); setStatus(null);
+            } catch (err) { setStatus({ type: 'error', message: `DB 오류: ${err.message}` }); }
+        };
+
+        const reset = () => { setViewData([]); setViewYears([]); setStatus(null); };
+
+        const exportToExcel = () => {
+            if (!viewData.length) return;
+            const scale = window.getScale(amountUnit); const wb = XLSX.utils.book_new();
+            const rows = viewData.map(row => {
+                const r = { '세부 항목명': row.detailItem };
+                viewYears.forEach(y => r[`${y}년(${amountUnit})`] = (row.yearData[y] || 0) / scale);
+                r[`총계(${amountUnit})`] = row.total / scale; return r;
+            });
+            window.appendStyledSheet(wb, rows, `${projectName}_${TABLES.find(t => t.id === viewTable)?.label}`);
+            XLSX.writeFile(wb, `${window.sanitizeText(projectName)}_데이터조회.xlsx`);
+        };
+
+        return (
+            <>
+                <div className="tabbar">
+                    {TABLES.map(t => (<div key={t.id} className={`tab ${viewTable === t.id ? 'active' : ''}`} onClick={() => setViewTable(t.id)}>{t.label} 뷰</div>))}
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 24px', background: '#fff', borderBottom: '1px solid var(--border)' }}>
+                    <button className="tbtn acc" onClick={execute} disabled={!projectName}>조회 실행</button>
+                    <button className="tbtn" onClick={reset}>초기화</button>
+                    {viewData.length > 0 && <button className="tbtn" onClick={exportToExcel} style={{ marginLeft: 'auto' }}>엑셀 내보내기</button>}
+                </div>
+                {viewData.length > 0 && (
+                    <div className="panel">
+                        <div className="phd"><div className="pt">DB 조회결과 · {TABLES.find(t => t.id === viewTable)?.label}</div><span style={{ fontSize: '11.5px', color: 'var(--text3)' }}>단위: {amountUnit}</span></div>
+                        <div className="pb0"><div className="grid-wrap" style={{ maxHeight: '500px' }}>
+                            <table className="dgrid">
+                                <thead><tr><th>세부 항목명</th>{viewYears.map(y => <th key={y}>{y}년</th>)}<th>총계</th></tr></thead>
+                                <tbody>
+                                    {viewData.map((row, i) => (
+                                        <tr key={i}>
+                                            <td>{row.detailItem}</td>
+                                            {viewYears.map(y => (<td key={y} className={row.yearData[y] < 0 ? 'neg' : ''}>{window.formatAmount(row.yearData[y], amountUnit)}</td>))}
+                                            <td className={row.total < 0 ? 'neg' : ''}>{window.formatAmount(row.total, amountUnit)}</td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div></div>
+                    </div>
+                )}
+            </>
+        );
+    }
+    </script>
+
+    <script type="text/babel">
+    // ── Report.js ────────────────────────────────────────────
+    function Report({ projectName, amountUnit, setStatus }) {
+        const [reportData,  setReportData]  = React.useState([]);
+        const [reportStats, setReportStats] = React.useState(null);
+        const chartCanvasRef   = React.useRef(null);
+        const chartInstanceRef = React.useRef(null);
+
+        const execute = async () => {
+            if (!projectName) { setStatus({ type: 'error', message: '대상 사업을 선택하세요.' }); return; }
+            setStatus({ type: 'loading', message: '재무 연산 중...' }); setReportData([]); setReportStats(null);
+            try {
+                const parsed = window.parseProjectName(projectName);
+                const filter = { year: parsed.year, half: parsed.half, scenario: parsed.scenario };
+                const [dataLand, dataDev, dataSup, dataRec] = await Promise.all([
+                    window.db.getTableData('land_costs', filter), window.db.getTableData('development_costs', filter),
+                    window.db.getTableData('supplies', filter),   window.db.getTableData('recoveries', filter),
+                ]);
+                const allYears = new Set(); const grouped = {};
+                const add = (rows, type) => rows.forEach(d => {
+                    if (!grouped[d.target_year]) grouped[d.target_year] = { investment: 0, supply: 0, recovery: 0 };
+                    grouped[d.target_year][type] += d.amount; allYears.add(d.target_year);
+                });
+                add(dataLand||[], 'investment'); add(dataDev||[], 'investment');
+                add(dataSup||[], 'supply'); add(dataRec||[], 'recovery');
+                const sortedYears = Array.from(allYears).sort((a,b) => a-b);
+                const rData = []; let cumulative=0, totalInv=0, totalSup=0, totalRec=0;
+                for (const y of sortedYears) {
+                    const row = grouped[y]; const net = row.recovery - row.investment; cumulative += net;
+                    rData.push({ year:y, investment:row.investment, recovery:row.recovery, supply:row.supply, netFlow:net, cumulative });
+                    totalInv+=row.investment; totalSup+=row.supply; totalRec+=row.recovery;
+                }
+                let npv=0, irr=0;
+                if (rData.length > 0) {
+                    const firstYear = rData[0].year; const rate = 0.045;
+                    rData.forEach(r => { npv += r.netFlow / Math.pow(1+rate, r.year-firstYear); });
+                    const lastYear = rData[rData.length-1].year; const cfArray=[];
+                    for (let y=firstYear; y<=lastYear; y++) { const f=rData.find(d=>d.year===y); cfArray.push(f?f.netFlow:0); }
+                    irr = window.calculateIRR(cfArray);
+                }
+                setStatus(rData.length>0 ? null : { type:'error', message:'분석 가능한 투자/회수 데이터가 없습니다.' });
+                setReportData(rData); setReportStats({ totalInv, totalSup, totalRec, npv, irr });
+            } catch (err) { setStatus({ type:'error', message:`분석 실패: ${err.message}` }); }
+        };
+
+        const reset = () => { setReportData([]); setReportStats(null); setStatus(null); };
+
+        React.useEffect(() => {
+            if (!reportData.length || !chartCanvasRef.current) return;
+            if (chartInstanceRef.current) chartInstanceRef.current.destroy();
+            const scale = window.getScale(amountUnit);
+            chartInstanceRef.current = new Chart(chartCanvasRef.current.getContext('2d'), {
+                type: 'line',
+                data: { labels: reportData.map(d => d.year+'년'), datasets: [
+                    { label:'투자 규모 (Outflow)', data:reportData.map(d=>Math.abs(d.investment)/scale), backgroundColor:'rgba(0,74,156,.12)', borderColor:'#004a9c', borderWidth:2, fill:true, tension:.35, pointRadius:2, pointHoverRadius:5, pointBackgroundColor:'#004a9c' },
+                    { label:'회수 규모 (Inflow)',  data:reportData.map(d=>d.recovery/scale),             backgroundColor:'rgba(22,163,74,.18)', borderColor:'#16a34a', borderWidth:2, fill:true, tension:.35, pointRadius:2, pointHoverRadius:5, pointBackgroundColor:'#16a34a' },
+                    { label:'공급 규모 (Supply)',  data:reportData.map(d=>d.supply/scale),               backgroundColor:'transparent',          borderColor:'#ea580c', borderWidth:2, fill:false, tension:.35, pointRadius:2, pointHoverRadius:5, pointBackgroundColor:'#ea580c', borderDash:[5,5] },
+                ]},
+                options: { responsive:true, maintainAspectRatio:false, interaction:{mode:'index',intersect:false},
+                    plugins:{ legend:{position:'top',labels:{font:{size:11,weight:'bold'},usePointStyle:true,boxWidth:8}}, tooltip:{callbacks:{label:c=>`${c.dataset.label}: ${Math.round(c.raw).toLocaleString()}${amountUnit}`}} },
+                    scales:{ x:{grid:{color:'#eaecf0'}}, y:{grid:{color:'#eaecf0'},ticks:{callback:v=>v+amountUnit},beginAtZero:true} } }
+            });
+        }, [reportData, amountUnit]);
+
+        const exportToExcel = () => {
+            if (!reportData.length) return;
+            const scale=window.getScale(amountUnit); const wb=XLSX.utils.book_new();
+            window.appendStyledSheet(wb, reportData.map(r=>({ '귀속연도':`${r.year}년`, [`투입액(${amountUnit})`]:r.investment/scale, [`회수액(${amountUnit})`]:r.recovery/scale, [`순흐름_NCF(${amountUnit})`]:r.netFlow/scale, [`누적자금수지(${amountUnit})`]:r.cumulative/scale })), `${projectName}_현금흐름`);
+            XLSX.writeFile(wb, `${window.sanitizeText(projectName)}_현금흐름리포트.xlsx`);
+        };
+
+        const fmt = v => window.formatAmount(v, amountUnit);
+
+        return (
+            <>
+                <div style={{ display:'flex', alignItems:'center', gap:'8px', padding:'10px 24px', background:'#fff', borderBottom:'1px solid var(--border)' }}>
+                    <button className="tbtn acc" onClick={execute} disabled={!projectName}>분석 실행</button>
+                    <button className="tbtn" onClick={reset}>초기화</button>
+                    {reportData.length>0 && <button className="tbtn" onClick={exportToExcel} style={{marginLeft:'auto'}}>엑셀 내보내기</button>}
+                </div>
+                {reportStats && (
+                    <div className="stat-row" style={{ gridTemplateColumns:'repeat(5,1fr)' }}>
+                        <div className="scard b"><div className="sl">NPV (할인율 4.5%)</div><div><span className="sv">{fmt(reportStats.npv)}</span><span className="su">{amountUnit}</span></div><div className="ss">최초 투자연도 기준</div></div>
+                        <div className="scard t"><div className="sl">IRR (내부수익률)</div><div><span className="sv">{(reportStats.irr*100).toFixed(2)}</span><span className="su">%</span></div><div className="ss">현금흐름 근사 추정치</div></div>
+                        <div className="scard g"><div className="sl">총 투자 (용지+조성)</div><div><span className="sv">{fmt(reportStats.totalInv)}</span><span className="su">{amountUnit}</span></div><div className="ss">집행 예상/실적 총계</div></div>
+                        <div className="scard o"><div className="sl">총 공급</div><div><span className="sv">{fmt(reportStats.totalSup)}</span><span className="su">{amountUnit}</span></div><div className="ss">분양/공급 계획 총계</div></div>
+                        <div className="scard p"><div className="sl">총 회수</div><div><span className="sv">{fmt(reportStats.totalRec)}</span><span className="su">{amountUnit}</span></div><div className="ss">실 회수 실적 총계</div></div>
+                    </div>
+                )}
+                {reportData.length>0 && (
+                    <div className="panel" style={{ height:'300px', display:'flex', flexDirection:'column' }}>
+                        <div className="phd" style={{flexShrink:0}}><div className="pt">투자 / 회수 추이 차트</div></div>
+                        <div className="chart-contain" style={{padding:'10px'}}><canvas ref={chartCanvasRef}></canvas></div>
+                    </div>
+                )}
+                {reportData.length>0 && (
+                    <div className="panel"><div className="phd"><div className="pt">집행/회수 테이블 요약</div></div>
+                        <div className="pb0"><div className="grid-wrap" style={{maxHeight:'350px'}}>
+                            <table className="dgrid">
+                                <thead><tr><th>귀속 연도</th><th>투입액 (용지/조성)</th><th>회수액</th><th>당해년 NCF</th><th>누적 자금수지</th></tr></thead>
+                                <tbody>
+                                    {reportData.map((r,i)=>(
+                                        <tr key={i}>
+                                            <td style={{textAlign:'center'}}>{r.year}년</td>
+                                            <td className="neg">{fmt(r.investment)}</td>
+                                            <td className="pos">{fmt(r.recovery)}</td>
+                                            <td className={r.netFlow>=0?'pos':'neg'} style={{background:'var(--panel-2)'}}>{fmt(r.netFlow)}</td>
+                                            <td className={r.cumulative>=0?'pos':'neg'} style={{background:'var(--acc-lt)',fontWeight:700}}>{fmt(r.cumulative)}</td>
+                                        </tr>
+                                    ))}
+                                    <tr className="tot">
+                                        <td style={{textAlign:'center'}}>총계</td>
+                                        <td className="neg">{fmt(reportData.reduce((s,x)=>s+x.investment,0))}</td>
+                                        <td className="pos">{fmt(reportData.reduce((s,x)=>s+x.recovery,0))}</td>
+                                        <td className={reportData.reduce((s,x)=>s+x.netFlow,0)>=0?'pos':'neg'}>{fmt(reportData.reduce((s,x)=>s+x.netFlow,0))}</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div></div>
+                    </div>
+                )}
+            </>
+        );
+    }
+    </script>
+
+    <script type="text/babel">
+    // ── App.js ───────────────────────────────────────────────
+    const PAGE_LABEL = {
+        project_mgr:    { eyebrow: 'Project List',    title: '프로젝트 등록 및 관리' },
+        biz_master_mgr: { eyebrow: 'Business Master', title: '사업마스터관리' },
+        excel_upload:   { eyebrow: 'Excel Upload',    title: '엑셀 업로드' },
+        settings_mgr:   { eyebrow: 'Settings',        title: '설정' },
+        view:           { eyebrow: 'Project Data',    title: '데이터 조회' },
+        report:         { eyebrow: 'Project Analysis',title: '현금흐름 리포트' },
+    };
+    const STUB_MODES = new Set(['biz_master_mgr', 'excel_upload', 'settings_mgr']);
+
+    function MainApp({ session, onLogout }) {
+        const [appMode,     setAppMode]     = React.useState('project_mgr');
+        const [amountUnit,  setAmountUnit]  = React.useState('억원');
+        const [status,      setStatus]      = React.useState(null);
+        const [manageList,  setManageList]  = React.useState([]);
+        const [projectName, setProjectName] = React.useState('');
+        const [nowTime,     setNowTime]     = React.useState('');
+
+        React.useEffect(() => {
+            const t = setInterval(() => setNowTime(new Date().toLocaleString('ko-KR', { hour12: false })), 1000);
+            return () => clearInterval(t);
+        }, []);
+
+        const loadData = React.useCallback(async () => {
+            setStatus({ type: 'loading', message: '마스터 데이터 동기화 중...' });
+            try {
+                const [masterRows, allData] = await Promise.all([window.db.getProjects(), window.db.getAllTableData()]);
+                const { land: lRows, dev: dRows, sup: sRows, rec: rRows } = allData;
+                const hasData = {};
+                const mark = (rows, key) => (rows||[]).forEach(r => {
+                    const k = `${r.year}_${r.half}_${r.scenario}`;
+                    if (!hasData[k]) hasData[k] = { land:false, dev:false, sup:false, rec:false };
+                    hasData[k][key] = true;
+                });
+                mark(lRows,'land'); mark(dRows,'dev'); mark(sRows,'sup'); mark(rRows,'rec');
+                const list = (masterRows||[]).map(m => {
+                    const k=`${m.year}_${m.half}_${m.scenario}`; const s=hasData[k]||{};
+                    return { origName:`${m.year}년 ${m.half} ${m.scenario}`, name:`${m.year}년 ${m.half} ${m.scenario}`, year:m.year, half:m.half, scenario:m.scenario, description:m.description, hasLand:!!s.land, hasDev:!!s.dev, hasSup:!!s.sup, hasRec:!!s.rec };
+                });
+                list.sort((a,b) => { if(a.year!==b.year) return a.year-b.year; if(a.half!==b.half) return a.half==='상반기'?-1:1; return a.scenario.localeCompare(b.scenario,'ko'); });
+                setManageList(list);
+                if (list.length>0 && (!projectName || !list.some(x=>x.origName===projectName))) setProjectName(list[0].origName);
+                setStatus(null);
+            } catch (e) { setStatus({ type:'error', message:'데이터 로드 오류: '+e.message }); }
+        }, []);
+
+        React.useEffect(() => { loadData(); }, []);
+
+        const handleSetMode = (mode) => { setAppMode(mode); setStatus(null); };
+        const userEmail = session?.user?.email || '운영자';
+        const pageLabel = PAGE_LABEL[appMode] || { eyebrow: 'System', title: appMode };
+        const displayName = (() => {
+            if (!projectName) return '(없음)';
+            const p = window.parseProjectName(projectName);
+            return p.year ? (p.scenario==='기본안' ? `${p.year}년 ${p.half}` : `${p.year}년 ${p.half} ${p.scenario}`) : projectName;
+        })();
+
+        return (
+            <div className="shell">
+                <Sidebar appMode={appMode} setAppMode={handleSetMode} onLogout={onLogout} userEmail={userEmail} />
+                <div className="main">
+                    <div className="topbar">
+                        <div className="tb-title">
+                            <div className="tb-eyebrow">{pageLabel.eyebrow}</div>
+                            <div className="tb-pagename">{pageLabel.title}</div>
+                        </div>
+                        <div className="tb-meta">
+                            {(appMode==='view'||appMode==='report') && (
+                                <div className="tb-sec" style={{ borderRight:'1px solid var(--border)', paddingRight:'12px', marginRight:'6px' }}>
+                                    <span className="tb-lbl" style={{marginRight:'6px'}}>📂 <b>대상 사업:</b></span>
+                                    <select className="popt-inp" style={{ height:'30px', padding:'3px 8px', fontSize:'12px', minWidth:'180px' }} value={projectName} onChange={e=>setProjectName(e.target.value)}>
+                                        {manageList.map(p => { const label=p.scenario==='기본안'?`${p.year}년 ${p.half}`:`${p.year}년 ${p.half} ${p.scenario}`; return <option key={p.origName} value={p.origName}>{label}</option>; })}
+                                        {manageList.length===0 && <option value="">(등록된 프로젝트 없음)</option>}
+                                    </select>
+                                </div>
+                            )}
+                            {(appMode==='view'||appMode==='report') && <div className="tb-sec"><span className="tb-lbl">선택: <b style={{color:'var(--acc)'}}>{displayName}</b></span></div>}
+                            {appMode==='project_mgr' && <div className="tb-sec"><span className="tb-lbl">프로젝트를 생성하고 관리하는 화면입니다</span></div>}
+                        </div>
+                    </div>
+                    <div className="view-hd">
+                        <div className="vt">{{ project_mgr:'PROJECT MANAGEMENT', view:'PIVOT CONSTRUCTOR', report:'FINANCIAL REPORT' }[appMode] || appMode.toUpperCase()}</div>
+                        <div className="vmeta">
+                            <span>출력 단위</span>
+                            <select className="popt-inp" value={amountUnit} onChange={e=>setAmountUnit(e.target.value)}>
+                                <option value="천원">천원</option><option value="백만원">백만원</option><option value="억원">억원 (기본)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="vbody">
+                        {status && (
+                            <div className={`alert-box alert-${status.type}`}>
+                                <b>{{error:'오류',success:'완료',loading:'진행'}[status.type]||''}</b>
+                                <span>{status.message}</span>
+                            </div>
+                        )}
+                        {appMode==='project_mgr' && <ProjectMgr manageList={manageList} onRefresh={loadData} setStatus={setStatus} />}
+                        {appMode==='view'         && <DataView   projectName={projectName} amountUnit={amountUnit} setStatus={setStatus} />}
+                        {appMode==='report'       && <Report     projectName={projectName} amountUnit={amountUnit} setStatus={setStatus} />}
+                        {STUB_MODES.has(appMode)  && <StubPage mode={appMode} />}
+                    </div>
+                    <div className="stbar">
+                        <div className="sti">탭 <b style={{color:'var(--acc)'}}>{appMode.toUpperCase()}</b></div>
+                        <div className="stsep"></div>
+                        <div className="sti">DB <b>master_project + 4 tables</b></div>
+                        <div className="stsep"></div>
+                        <div className="sti"><b style={{color:'var(--green)'}}>● Auth Active</b></div>
+                        <div style={{flex:1}}></div>
+                        <div className="sti">{nowTime}</div>
+                        <div className="stsep"></div>
+                        <div className="sti">GH · v4.0</div>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    function App() {
+        const [session,  setSession]  = React.useState(null);
+        const [checking, setChecking] = React.useState(true);
+
+        React.useEffect(() => {
+            window.db.auth.getSession().then(({ data: { session: s } }) => { setSession(s); setChecking(false); });
+            const { data: { subscription } } = window.db.auth.onAuthStateChange((event, s) => { setSession(s); });
+            return () => subscription.unsubscribe();
+        }, []);
+
+        const handleLogout = async () => {
+            if (!window.confirm('로그아웃 하시겠습니까?')) return;
+            await window.db.auth.signOut(); setSession(null);
+        };
+
+        if (checking) return <div className="login-bg"><div style={{color:'#cbd5e1',fontSize:'13px',letterSpacing:'.02em'}}>세션 확인 중...</div></div>;
+        if (!session) return <LoginScreen onLoginSuccess={setSession} />;
+        return <MainApp session={session} onLogout={handleLogout} />;
+    }
+
+    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
 </body>
 </html>
