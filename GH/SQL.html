@@ -3,76 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DB 스키마 변경 이력 & SQL 로그 | GH</title>
+    <title>DB 스키마 & SQL 레퍼런스 | GH 재무 의사결정지원 시스템</title>
     <style>
         :root {
-            --bg: #0f172a;
-            --panel: #1e293b;
-            --border: #334155;
-            --text: #f8fafc;
+            --bg:         #0f172a;
+            --panel:      #1e293b;
+            --panel-2:    #162032;
+            --border:     #334155;
+            --text:       #f8fafc;
             --text-muted: #94a3b8;
-            --accent: #0284c7;
-            --accent-hover: #0369a1;
-            --code-bg: #090d16;
-            --green: #10b981;
-            --sans: 'Pretendard Variable', Pretendard, system-ui, sans-serif;
-            --mono: 'JetBrains Mono', monospace;
+            --accent:     #0284c7;
+            --code-bg:    #090d16;
+            --green:      #10b981;
+            --orange:     #f59e0b;
+            --sans:  'Pretendard Variable', Pretendard, system-ui, sans-serif;
+            --mono:  'JetBrains Mono', monospace;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
-            background-color: var(--bg);
+            background: var(--bg);
             color: var(--text);
             font-family: var(--sans);
             font-size: 14px;
             line-height: 1.6;
-            padding: 40px 20px;
+            padding: 40px 20px 80px;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+        .container { max-width: 960px; margin: 0 auto; }
 
+        /* ── HEADER ─────────────────────────── */
         header {
-            margin-bottom: 40px;
+            margin-bottom: 48px;
             border-bottom: 1px solid var(--border);
-            padding-bottom: 20px;
+            padding-bottom: 24px;
         }
 
         .logo {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--accent);
             text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 8px;
-        }
-
-        h1 {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -0.02em;
+            letter-spacing: .1em;
             margin-bottom: 10px;
         }
 
-        .subtitle {
-            color: var(--text-muted);
-            font-size: 15px;
+        h1 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -.02em;
+            margin-bottom: 10px;
         }
 
+        .subtitle { color: var(--text-muted); font-size: 14px; }
+
+        /* ── TOC ────────────────────────────── */
+        .toc {
+            background: var(--panel-2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 18px 22px;
+            margin-bottom: 40px;
+        }
+
+        .toc-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: .08em;
+            margin-bottom: 10px;
+        }
+
+        .toc ol { margin-left: 18px; }
+
+        .toc li { margin-bottom: 5px; }
+
+        .toc a {
+            color: #7dd3fc;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .toc a:hover { color: #fff; }
+
+        /* ── SECTION CARD ───────────────────── */
         .card {
-            background-color: var(--panel);
+            background: var(--panel);
             border: 1px solid var(--border);
             border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            padding: 28px;
+            margin-bottom: 32px;
         }
 
         .card-meta {
@@ -80,55 +102,55 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
-            font-size: 12px;
+            flex-wrap: wrap;
+            gap: 8px;
         }
 
         .badge {
-            background-color: rgba(2, 132, 199, 0.2);
-            color: #38bdf8;
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 4px 10px;
+            padding: 3px 10px;
             border-radius: 999px;
-            font-weight: 600;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .04em;
+            text-transform: uppercase;
         }
 
-        .date {
-            color: var(--text-muted);
-            font-family: var(--mono);
-        }
+        .badge-blue   { background: rgba(2,132,199,.18);  color: #38bdf8; border: 1px solid rgba(56,189,248,.25); }
+        .badge-green  { background: rgba(16,185,129,.15); color: #34d399; border: 1px solid rgba(52,211,153,.25); }
+        .badge-orange { background: rgba(245,158,11,.15); color: #fbbf24; border: 1px solid rgba(251,191,36,.25); }
+        .badge-gray   { background: rgba(148,163,184,.1); color: #94a3b8; border: 1px solid rgba(148,163,184,.2); }
+
+        .date { color: var(--text-muted); font-family: var(--mono); font-size: 12px; }
 
         h2 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: -0.01em;
+            margin-bottom: 10px;
+            letter-spacing: -.01em;
         }
 
-        .description {
+        h3 {
+            font-size: 14px;
+            font-weight: 600;
             color: #cbd5e1;
-            margin-bottom: 20px;
+            margin: 20px 0 8px;
         }
 
-        .description ul {
-            margin-left: 20px;
-            margin-top: 8px;
-        }
+        .desc { color: #94a3b8; font-size: 13px; margin-bottom: 16px; line-height: 1.7; }
+        .desc ul { margin-left: 18px; margin-top: 6px; }
+        .desc li { margin-bottom: 4px; }
 
-        .description li {
-            margin-bottom: 4px;
-        }
-
-        .code-container {
-            position: relative;
-            background-color: var(--code-bg);
+        /* ── CODE BLOCK ─────────────────────── */
+        .code-wrap {
             border-radius: 8px;
             border: 1px solid var(--border);
             overflow: hidden;
+            margin-bottom: 12px;
         }
 
         .code-header {
-            background-color: rgba(255, 255, 255, 0.03);
-            padding: 8px 16px;
+            background: rgba(255,255,255,.03);
+            padding: 7px 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -137,35 +159,29 @@
 
         .code-lang {
             font-family: var(--mono);
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-muted);
             text-transform: uppercase;
+            letter-spacing: .06em;
         }
 
         .copy-btn {
-            background-color: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(255,255,255,.07);
+            border: 1px solid rgba(255,255,255,.1);
             color: #cbd5e1;
-            padding: 4px 10px;
-            font-size: 12px;
+            padding: 3px 10px;
+            font-size: 11px;
             border-radius: 4px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all .15s;
             font-family: var(--sans);
         }
 
-        .copy-btn:hover {
-            background-color: rgba(255, 255, 255, 0.16);
-            color: #fff;
-        }
-
-        .copy-btn.copied {
-            background-color: rgba(16, 185, 129, 0.2);
-            border-color: rgba(16, 185, 129, 0.4);
-            color: #34d399;
-        }
+        .copy-btn:hover { background: rgba(255,255,255,.14); color: #fff; }
+        .copy-btn.copied { background: rgba(16,185,129,.18); border-color: rgba(52,211,153,.3); color: #34d399; }
 
         pre {
+            background: var(--code-bg);
             padding: 18px;
             overflow-x: auto;
             margin: 0;
@@ -173,177 +189,363 @@
 
         code {
             font-family: var(--mono);
-            font-size: 13px;
+            font-size: 12.5px;
             color: #e2e8f0;
             display: block;
+            white-space: pre;
         }
 
-        .alert-info {
-            background-color: rgba(2, 132, 199, 0.08);
-            border-left: 4px solid var(--accent);
-            padding: 12px 16px;
+        /* ── ALERT ──────────────────────────── */
+        .alert {
+            padding: 11px 16px;
             border-radius: 0 6px 6px 0;
-            margin-top: 15px;
+            margin-top: 14px;
             font-size: 13px;
-            color: #bae6fd;
+            line-height: 1.6;
         }
 
-        .alert-info strong {
-            color: #fff;
+        .alert-info    { background: rgba(2,132,199,.07);  border-left: 3px solid #0284c7; color: #bae6fd; }
+        .alert-warn    { background: rgba(245,158,11,.07); border-left: 3px solid #f59e0b; color: #fde68a; }
+        .alert-success { background: rgba(16,185,129,.07); border-left: 3px solid #10b981; color: #a7f3d0; }
+
+        .alert strong { color: #fff; }
+
+        /* ── TABLE ──────────────────────────── */
+        .schema-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12.5px;
+            margin-bottom: 4px;
         }
+
+        .schema-table th {
+            padding: 8px 12px;
+            text-align: left;
+            background: rgba(255,255,255,.04);
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+
+        .schema-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(51,65,85,.6);
+            font-family: var(--mono);
+            font-size: 12px;
+            color: #e2e8f0;
+        }
+
+        .schema-table tr:last-child td { border-bottom: none; }
+        .schema-table tr:hover td { background: rgba(255,255,255,.02); }
+
+        .pk  { color: #fbbf24; font-weight: 700; }
+        .fk  { color: #818cf8; }
+        .idx { color: #34d399; }
+
+        .divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 32px 0;
+        }
+
+        .section-anchor { scroll-margin-top: 20px; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="logo">GH DECISION SUPPORT SYSTEM</div>
-            <h1>DB 초기 생성 및 보안 설정 SQL 스크립트</h1>
-            <div class="subtitle">시스템 구축 시 데이터베이스 테이블 생성, 외래키 CASCADE 관계 설정 및 RLS 보안 정책을 최초 적용하기 위한 최종 SQL 스크립트입니다.</div>
-        </header>
+<div class="container">
 
-        <main>
-            <section class="card">
-                <div class="card-meta">
-                    <span class="badge">INITIAL SCHEMA & SECURITY</span>
-                    <span class="date">2026-06-12 (최종 기준)</span>
-                </div>
-                <h2>전체 데이터베이스 테이블 생성 및 RLS 정책 일괄 적용</h2>
-                <div class="description">
-                    <p>Supabase 데이터베이스에서 처음으로 테이블들을 구축할 때 실행하는 단일 스크립트입니다. 본 스크립트는 아래의 작업을 수행합니다.</p>
-                    <ul>
-                        <li><strong>master_project 테이블 생성</strong>: 연도(2025~2030), 반기(상반기/하반기), 시나리오 구분을 가지는 마스터 프로젝트 테이블</li>
-                        <li><strong>하위 4대 실적 테이블 생성 (land_costs, development_costs, supplies, recoveries)</strong>: 마스터 프로젝트 테이블의 외래키 복합키 참조(ON UPDATE/DELETE CASCADE 적용)</li>
-                        <li><strong>보안 제약 설정 (RLS)</strong>: 모든 테이블에 Row Level Security를 적용하고, 오직 Supabase Auth 로그인 세션(authenticated)을 가진 인증 유저만 조작을 허용하도록 설정</li>
-                    </ul>
-                    <div class="alert-info">
-                        <strong>실행 안내:</strong> Supabase 프로젝트 대시보드의 <strong>SQL Editor</strong> 메뉴에서 새 쿼리창(New Query)을 열고, 아래의 SQL 코드를 붙여넣어 실행(Run)해 주십시오. 기존 테이블이 존재하는 상태에서 초기화 후 재구축하려면 <code>DROP TABLE IF EXISTS ... CASCADE;</code>를 스크립트 최상단에 추가하여 실행해 주시면 됩니다.
-                    </div>
-                </div>
+    <header>
+        <div class="logo">GH · Financial Decision Support System</div>
+        <h1>DB 스키마 & SQL 레퍼런스</h1>
+        <div class="subtitle">현행 데이터베이스 구조와 초기 구축 SQL을 관리하는 문서입니다. 향후 테이블 추가 시 이 파일에 이력을 누적합니다.</div>
+    </header>
 
-                <div class="code-container">
-                    <div class="code-header">
-                        <span class="code-lang">postgresql</span>
-                        <button class="copy-btn" onclick="copyCode(this)">복사하기</button>
-                    </div>
-                    <pre><code>-- =========================================================================
--- 1. 마스터 프로젝트 테이블 생성 (master_project)
+    <nav class="toc">
+        <div class="toc-title">목차</div>
+        <ol>
+            <li><a href="#current-schema">현행 스키마 (v1 · 현재 운영)</a></li>
+            <li><a href="#init-sql">전체 초기 생성 SQL</a></li>
+            <li><a href="#fastapi-note">FastAPI 전환 시 변경 사항</a></li>
+        </ol>
+    </nav>
+
+    <main>
+
+        <!-- ══════════════════════════════════════════════
+             1. 현행 스키마
+        ═══════════════════════════════════════════════ -->
+        <section class="card section-anchor" id="current-schema">
+            <div class="card-meta">
+                <span class="badge badge-green">CURRENT SCHEMA · v1</span>
+                <span class="date">2026-06-12 기준</span>
+            </div>
+            <h2>현행 테이블 구조</h2>
+            <div class="desc">
+                중장기 재무 의사결정 지원에 필요한 최소 구조입니다.
+                마스터 프로젝트 1개 + 하위 실적 테이블 4개로 구성되며, 복합 기본키(year, half, scenario)로 연결됩니다.
+            </div>
+
+            <h3>master_project</h3>
+            <div class="code-wrap" style="margin-bottom:0">
+                <table class="schema-table">
+                    <thead>
+                        <tr><th>컬럼</th><th>타입</th><th>제약</th><th>설명</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="pk">year</td><td>INT</td><td>PK, CHECK 2025~2030</td><td>계획 기준 연도</td></tr>
+                        <tr><td class="pk">half</td><td>VARCHAR(10)</td><td>PK, CHECK 상반기|하반기</td><td>반기 구분</td></tr>
+                        <tr><td class="pk">scenario</td><td>VARCHAR(50)</td><td>PK</td><td>시나리오명 (기본안 · 시나리오1~4 · 직접입력)</td></tr>
+                        <tr><td>description</td><td>TEXT</td><td>NULLABLE</td><td>시나리오 설명 (기본안은 NULL)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>land_costs · development_costs · supplies · recoveries</h3>
+            <div class="desc">4개 테이블 모두 동일 구조. master_project 복합키를 외래키로 참조 (ON DELETE/UPDATE CASCADE).</div>
+            <div class="code-wrap" style="margin-bottom:0">
+                <table class="schema-table">
+                    <thead>
+                        <tr><th>컬럼</th><th>타입</th><th>제약</th><th>설명</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td class="pk">id</td><td>SERIAL</td><td>PK</td><td>자동 증가 식별자</td></tr>
+                        <tr><td class="fk">year</td><td>INT</td><td>FK → master_project</td><td>계획 기준 연도</td></tr>
+                        <tr><td class="fk">half</td><td>VARCHAR(10)</td><td>FK → master_project</td><td>반기 구분</td></tr>
+                        <tr><td class="fk">scenario</td><td>VARCHAR(50)</td><td>FK → master_project</td><td>시나리오명</td></tr>
+                        <tr><td>detail_item</td><td>VARCHAR(200)</td><td>NOT NULL</td><td>세부 항목명 (엑셀 행 레이블)</td></tr>
+                        <tr><td>target_year</td><td>INT</td><td>NOT NULL</td><td>실적/예산 귀속 연도</td></tr>
+                        <tr><td>amount</td><td>NUMERIC</td><td>DEFAULT 0</td><td>금액 (원 단위)</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="alert alert-info" style="margin-top:16px">
+                <strong>인덱스 권장:</strong>
+                조회 성능을 위해 <code>(year, half, scenario)</code> 복합 인덱스를 각 하위 테이블에 추가하는 것을 권장합니다. 아래 초기 생성 SQL에 포함되어 있습니다.
+            </div>
+        </section>
+
+
+        <!-- ══════════════════════════════════════════════
+             2. 초기 생성 SQL
+        ═══════════════════════════════════════════════ -->
+        <section class="card section-anchor" id="init-sql">
+            <div class="card-meta">
+                <span class="badge badge-blue">INIT SQL · PostgreSQL</span>
+                <span class="date">최종 기준 (항상 최신 유지)</span>
+            </div>
+            <h2>전체 초기 생성 SQL</h2>
+            <div class="desc">
+                로컬 PostgreSQL 또는 Supabase에서 처음 구축할 때 실행하는 단일 스크립트입니다.
+                기존 테이블이 있으면 삭제 후 재생성합니다.
+                <div class="alert alert-warn">
+                    <strong>주의:</strong> 첫 번째 블록(<code>DROP TABLE</code>)은 기존 데이터를 완전히 삭제합니다.
+                    운영 중인 환경에서는 실행하지 마십시오.
+                </div>
+            </div>
+
+            <div class="code-wrap">
+                <div class="code-header">
+                    <span class="code-lang">postgresql</span>
+                    <button class="copy-btn" onclick="copyCode(this)">복사하기</button>
+                </div>
+                <pre><code>-- =========================================================================
+-- GH 재무 의사결정지원 시스템 · DB 초기 생성 스크립트
+-- 대상: PostgreSQL 14+ / Supabase
+-- =========================================================================
+
+-- 0. 기존 테이블 정리 (재구축 시 사용)
+DROP TABLE IF EXISTS recoveries        CASCADE;
+DROP TABLE IF EXISTS supplies          CASCADE;
+DROP TABLE IF EXISTS development_costs CASCADE;
+DROP TABLE IF EXISTS land_costs        CASCADE;
+DROP TABLE IF EXISTS master_project    CASCADE;
+
+
+-- =========================================================================
+-- 1. 마스터 프로젝트 (master_project)
 -- =========================================================================
 CREATE TABLE master_project (
-    year INT NOT NULL,
-    half VARCHAR(10) NOT NULL,
-    scenario VARCHAR(50) NOT NULL,
+    year        INT          NOT NULL,
+    half        VARCHAR(10)  NOT NULL,
+    scenario    VARCHAR(50)  NOT NULL,
     description TEXT,
+    created_at  TIMESTAMPTZ  NOT NULL DEFAULT NOW(),
     PRIMARY KEY (year, half, scenario),
-    CONSTRAINT chk_project_year CHECK (year BETWEEN 2025 AND 2030),
-    CONSTRAINT chk_project_half CHECK (half IN ('상반기', '하반기'))
+    CONSTRAINT chk_year CHECK (year BETWEEN 2025 AND 2035),
+    CONSTRAINT chk_half CHECK (half IN ('상반기', '하반기'))
 );
 
+COMMENT ON TABLE  master_project             IS '중장기 계획 마스터 프로젝트 (기준 연도·반기·시나리오)';
+COMMENT ON COLUMN master_project.scenario    IS '기본안 | 시나리오1~4 | 직접입력값';
+COMMENT ON COLUMN master_project.description IS '기본안은 NULL, 시나리오는 자유 기술';
+
+
 -- =========================================================================
--- 2. 하위 4대 실적 및 예산 테이블 생성 (CASCADE 외래키 적용)
+-- 2. 하위 4대 실적/예산 테이블 (공통 구조, CASCADE 외래키)
 -- =========================================================================
 
--- 용지비 (land_costs)
+-- 용지비
 CREATE TABLE land_costs (
-    id SERIAL PRIMARY KEY,
-    year INT NOT NULL,
-    half VARCHAR(10) NOT NULL,
-    scenario VARCHAR(50) NOT NULL,
-    detail_item VARCHAR(200) NOT NULL,
-    target_year INT NOT NULL,
-    amount NUMERIC DEFAULT 0,
-    FOREIGN KEY (year, half, scenario) REFERENCES master_project(year, half, scenario) ON DELETE CASCADE ON UPDATE CASCADE
+    id          SERIAL        PRIMARY KEY,
+    year        INT           NOT NULL,
+    half        VARCHAR(10)   NOT NULL,
+    scenario    VARCHAR(50)   NOT NULL,
+    detail_item VARCHAR(200)  NOT NULL,
+    target_year INT           NOT NULL,
+    amount      NUMERIC       NOT NULL DEFAULT 0,
+    FOREIGN KEY (year, half, scenario)
+        REFERENCES master_project(year, half, scenario)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- 조성비 (development_costs)
+-- 조성비
 CREATE TABLE development_costs (
-    id SERIAL PRIMARY KEY,
-    year INT NOT NULL,
-    half VARCHAR(10) NOT NULL,
-    scenario VARCHAR(50) NOT NULL,
-    detail_item VARCHAR(200) NOT NULL,
-    target_year INT NOT NULL,
-    amount NUMERIC DEFAULT 0,
-    FOREIGN KEY (year, half, scenario) REFERENCES master_project(year, half, scenario) ON DELETE CASCADE ON UPDATE CASCADE
+    id          SERIAL        PRIMARY KEY,
+    year        INT           NOT NULL,
+    half        VARCHAR(10)   NOT NULL,
+    scenario    VARCHAR(50)   NOT NULL,
+    detail_item VARCHAR(200)  NOT NULL,
+    target_year INT           NOT NULL,
+    amount      NUMERIC       NOT NULL DEFAULT 0,
+    FOREIGN KEY (year, half, scenario)
+        REFERENCES master_project(year, half, scenario)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- 분양 수입 (supplies)
+-- 분양 수입
 CREATE TABLE supplies (
-    id SERIAL PRIMARY KEY,
-    year INT NOT NULL,
-    half VARCHAR(10) NOT NULL,
-    scenario VARCHAR(50) NOT NULL,
-    detail_item VARCHAR(200) NOT NULL,
-    target_year INT NOT NULL,
-    amount NUMERIC DEFAULT 0,
-    FOREIGN KEY (year, half, scenario) REFERENCES master_project(year, half, scenario) ON DELETE CASCADE ON UPDATE CASCADE
+    id          SERIAL        PRIMARY KEY,
+    year        INT           NOT NULL,
+    half        VARCHAR(10)   NOT NULL,
+    scenario    VARCHAR(50)   NOT NULL,
+    detail_item VARCHAR(200)  NOT NULL,
+    target_year INT           NOT NULL,
+    amount      NUMERIC       NOT NULL DEFAULT 0,
+    FOREIGN KEY (year, half, scenario)
+        REFERENCES master_project(year, half, scenario)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- 자금 회수액 (recoveries)
+-- 자금 회수
 CREATE TABLE recoveries (
-    id SERIAL PRIMARY KEY,
-    year INT NOT NULL,
-    half VARCHAR(10) NOT NULL,
-    scenario VARCHAR(50) NOT NULL,
-    detail_item VARCHAR(200) NOT NULL,
-    target_year INT NOT NULL,
-    amount NUMERIC DEFAULT 0,
-    FOREIGN KEY (year, half, scenario) REFERENCES master_project(year, half, scenario) ON DELETE CASCADE ON UPDATE CASCADE
+    id          SERIAL        PRIMARY KEY,
+    year        INT           NOT NULL,
+    half        VARCHAR(10)   NOT NULL,
+    scenario    VARCHAR(50)   NOT NULL,
+    detail_item VARCHAR(200)  NOT NULL,
+    target_year INT           NOT NULL,
+    amount      NUMERIC       NOT NULL DEFAULT 0,
+    FOREIGN KEY (year, half, scenario)
+        REFERENCES master_project(year, half, scenario)
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
--- =========================================================================
--- 3. Row Level Security (RLS) 활성화
--- =========================================================================
-ALTER TABLE master_project ENABLE ROW LEVEL SECURITY;
-ALTER TABLE land_costs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE development_costs ENABLE ROW LEVEL SECURITY;
-ALTER TABLE supplies ENABLE ROW LEVEL SECURITY;
-ALTER TABLE recoveries ENABLE ROW LEVEL SECURITY;
 
 -- =========================================================================
--- 4. RLS 정책 생성 (인증된 로그인 사용자에게만 허용)
+-- 3. 인덱스 (조회 성능)
 -- =========================================================================
-DROP POLICY IF EXISTS "Allow authenticated access to master_project" ON master_project;
-CREATE POLICY "Allow authenticated access to master_project" ON master_project
-    FOR ALL TO authenticated USING (true) WITH CHECK (true);
+CREATE INDEX idx_land_costs_proj        ON land_costs        (year, half, scenario);
+CREATE INDEX idx_development_costs_proj ON development_costs (year, half, scenario);
+CREATE INDEX idx_supplies_proj          ON supplies          (year, half, scenario);
+CREATE INDEX idx_recoveries_proj        ON recoveries        (year, half, scenario);</code></pre>
+            </div>
 
-DROP POLICY IF EXISTS "Allow authenticated access to land_costs" ON land_costs;
-CREATE POLICY "Allow authenticated access to land_costs" ON land_costs
-    FOR ALL TO authenticated USING (true) WITH CHECK (true);
+            <div class="alert alert-success">
+                <strong>Supabase 사용 시 추가 실행:</strong>
+                아래 RLS 블록을 SQL Editor에서 추가로 실행하세요 (로컬 PostgreSQL은 불필요).
+            </div>
 
-DROP POLICY IF EXISTS "Allow authenticated access to development_costs" ON development_costs;
-CREATE POLICY "Allow authenticated access to development_costs" ON development_costs
-    FOR ALL TO authenticated USING (true) WITH CHECK (true);
-
-DROP POLICY IF EXISTS "Allow authenticated access to supplies" ON supplies;
-CREATE POLICY "Allow authenticated access to supplies" ON supplies
-    FOR ALL TO authenticated USING (true) WITH CHECK (true);
-
-DROP POLICY IF EXISTS "Allow authenticated access to recoveries" ON recoveries;
-CREATE POLICY "Allow authenticated access to recoveries" ON recoveries
-    FOR ALL TO authenticated USING (true) WITH CHECK (true);</code></pre>
+            <h3>Supabase 전용 — RLS 정책</h3>
+            <div class="code-wrap">
+                <div class="code-header">
+                    <span class="code-lang">postgresql · supabase only</span>
+                    <button class="copy-btn" onclick="copyCode(this)">복사하기</button>
                 </div>
-            </section>
-        </main>
-    </div>
+                <pre><code>-- Supabase RLS: 로그인 세션(authenticated)만 모든 조작 허용
+ALTER TABLE master_project    ENABLE ROW LEVEL SECURITY;
+ALTER TABLE land_costs        ENABLE ROW LEVEL SECURITY;
+ALTER TABLE development_costs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE supplies          ENABLE ROW LEVEL SECURITY;
+ALTER TABLE recoveries        ENABLE ROW LEVEL SECURITY;
 
-    <script>
-        function copyCode(button) {
-            const pre = button.parentElement.nextElementSibling;
-            const code = pre.querySelector('code').innerText;
-            
-            navigator.clipboard.writeText(code).then(() => {
-                button.textContent = '복사 완료!';
-                button.classList.add('copied');
-                
-                setTimeout(() => {
-                    button.textContent = '복사하기';
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(err => {
-                console.error('클립보드 복사 실패:', err);
-                alert('복사하지 못했습니다. 직접 선택해서 복사해 주세요.');
-            });
-        }
-    </script>
+DO $$ DECLARE t TEXT;
+BEGIN FOR t IN VALUES ('master_project'),('land_costs'),('development_costs'),('supplies'),('recoveries')
+LOOP
+    EXECUTE format('DROP POLICY IF EXISTS "auth_all" ON %I', t);
+    EXECUTE format('CREATE POLICY "auth_all" ON %I FOR ALL TO authenticated USING (true) WITH CHECK (true)', t);
+END LOOP; END $$;</code></pre>
+            </div>
+        </section>
+
+
+        <!-- ══════════════════════════════════════════════
+             3. FastAPI 전환 노트
+        ═══════════════════════════════════════════════ -->
+        <section class="card section-anchor" id="fastapi-note">
+            <div class="card-meta">
+                <span class="badge badge-orange">MIGRATION NOTE</span>
+                <span class="date">FastAPI + 로컬 PostgreSQL 전환 시</span>
+            </div>
+            <h2>FastAPI 전환 시 변경 사항</h2>
+            <div class="desc">
+                프론트엔드(<code>js/db.js</code>)와 백엔드(FastAPI) 연동에 필요한 API 엔드포인트 목록입니다.
+                DB 스키마는 동일하게 유지됩니다.
+            </div>
+
+            <h3>필요한 API 엔드포인트</h3>
+            <div class="code-wrap">
+                <div class="code-header">
+                    <span class="code-lang">FastAPI route plan</span>
+                    <button class="copy-btn" onclick="copyCode(this)">복사하기</button>
+                </div>
+                <pre><code>POST   /api/auth/login                                → 로그인 (JWT 발급)
+POST   /api/auth/logout                               → 로그아웃
+
+GET    /api/projects                                  → 전체 마스터 프로젝트 목록
+POST   /api/projects                                  → 프로젝트 생성
+DELETE /api/projects/{year}/{half}/{scenario}          → 프로젝트 삭제 (CASCADE)
+PATCH  /api/projects/{year}/{half}/{scenario}/description → 설명 수정
+
+GET    /api/tables/{table_name}                       → 전체 조회
+GET    /api/tables/{table_name}?year=&half=&scenario= → 프로젝트별 조회
+POST   /api/tables/{table_name}/bulk                  → 벌크 INSERT (엑셀 업로드)
+DELETE /api/tables/{table_name}?year=&half=&scenario= → 프로젝트별 전체 삭제</code></pre>
+            </div>
+
+            <h3>프론트엔드 전환 방법</h3>
+            <div class="code-wrap">
+                <div class="code-header">
+                    <span class="code-lang">js/config.js</span>
+                    <button class="copy-btn" onclick="copyCode(this)">복사하기</button>
+                </div>
+                <pre><code>// 이 두 줄만 수정하면 전환 완료
+DB_BACKEND:   'fastapi',
+API_BASE_URL: 'http://localhost:8000/api',</code></pre>
+            </div>
+
+            <div class="alert alert-info">
+                <strong>참고:</strong> 인증 방식은 Supabase JWT → FastAPI JWT(python-jose 등)로 교체합니다.
+                <code>js/db.js</code>의 <code>auth.signIn</code> 구현만 수정하면 되며, 나머지 메서드 시그니처는 동일합니다.
+            </div>
+        </section>
+
+    </main>
+</div>
+
+<script>
+    function copyCode(btn) {
+        const code = btn.closest('.code-wrap').querySelector('code').innerText;
+        navigator.clipboard.writeText(code).then(() => {
+            btn.textContent = '복사 완료!';
+            btn.classList.add('copied');
+            setTimeout(() => { btn.textContent = '복사하기'; btn.classList.remove('copied'); }, 2000);
+        }).catch(() => {
+            alert('복사하지 못했습니다. 직접 선택해서 복사해 주세요.');
+        });
+    }
+</script>
 </body>
 </html>
