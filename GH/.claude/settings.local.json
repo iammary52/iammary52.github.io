@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git --version)",
+      "Bash(gh --version)",
+      "Bash(cd \"C:\\\\Users\\\\iamma\\\\OneDrive\\\\바탕 화면\\\\업무\\\\1. 개인\\\\GH\\\\26-06 재무의사결정\\\\working\" && git remote -v 2>&1; echo \"---\"; ls \"C:\\\\Users\\\\iamma\" | grep -i github 2>&1; ls \"C:\\\\Users\\\\iamma\\\\Documents\" 2>&1 | grep -i github)",
+      "Bash(git config *)",
+      "Bash(git clone *)",
+      "Bash(rm -rf \"C:\\\\Users\\\\iamma\\\\OneDrive\\\\문서\\\\iammary.github.io\" && git clone https://github.com/iammary52/iammary52.github.io.git \"C:\\\\Users\\\\iamma\\\\OneDrive\\\\문서\\\\iammary52.github.io\" 2>&1)",
+      "Bash(powershell -ExecutionPolicy Bypass -File deploy.ps1 \"GH: 초기 모듈화 구조 배포 \\(v4.0\\)\")",
+      "Bash(powershell -ExecutionPolicy Bypass -File deploy.ps1 \"GH: 초기 모듈화 구조 배포 v4.0\")"
+    ]
+  }
+}
