@@ -1,0 +1,4 @@
+.claude/
+*.xlsx
+*.xlsm
+deploy.ps1
