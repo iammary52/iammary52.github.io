@@ -3379,19 +3379,25 @@
             // =========================================================================
 
             const NAV = [
-                { group: '프로젝트관리', items: [
-                    { id: 'project_mgr', label: '프로젝트 등록 및 관리', icon: 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2' }
+                { group: '관리 및 설정', items: [
+                    { id: 'project_mgr', label: '프로젝트 등록 및 관리', icon: 'M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2M9 5a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2M9 5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2' },
+                    { id: 'biz_master_mgr', label: '사업마스터관리', icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z' },
+                    { id: 'excel_upload', label: '엑셀업로드', icon: 'M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4 M17 8l-5-5-5 5 M12 3v12' },
+                    { id: 'settings_mgr', label: '설정', icon: 'M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.1a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z M12 15a3 3 0 1 1 0-6 3 3 0 0 1 0 6z' }
                 ]}
             ];
 
             const PAGE_LABEL = {
                 project_mgr: { eyebrow: 'Project List', title: '프로젝트 등록 및 관리' },
+                biz_master_mgr: { eyebrow: 'Business Master', title: '사업마스터관리' },
+                excel_upload: { eyebrow: 'Excel Upload', title: '엑셀업로드' },
+                settings_mgr: { eyebrow: 'Settings', title: '설정' },
                 dashboard: { eyebrow: 'Overview', title: '전체 사업 대시보드' },
                 management: { eyebrow: 'Master Data', title: '마스터 프로젝트 제어' },
                 upload: { eyebrow: 'Pipeline', title: '데이터 파싱 / 이관' },
                 view: { eyebrow: 'Project Data', title: '데이터 조회' },
                 report: { eyebrow: 'Project Analysis', title: '현금흐름 리포트' },
-            }[appMode];
+            }[appMode] || { eyebrow: 'System', title: '준비중인 화면' };
 
             return (
                 <div className="shell">
@@ -3721,6 +3727,14 @@
                                                 )}
                                             </div>
                                         </div>
+                                    </div>
+                                )}
+
+                                {['biz_master_mgr', 'excel_upload', 'settings_mgr'].includes(appMode) && (
+                                    <div className="panel" style={{ padding: '60px 40px', textAlign: 'center', background: '#fff', borderRadius: 'var(--r-lg)', border: '1px solid var(--border)' }}>
+                                        <div style={{ fontSize: '48px', marginBottom: '16px' }}>🚧</div>
+                                        <h2 style={{ fontSize: '18px', fontWeight: '700', color: 'var(--text)', marginBottom: '8px' }}>준비중인 화면입니다</h2>
+                                        <p style={{ color: 'var(--text3)', fontSize: '13px' }}>선택하신 메뉴는 현재 개발 준비 중인 기능입니다. 빠른 시일 내에 제공해 드리겠습니다.</p>
                                     </div>
                                 )}
 
