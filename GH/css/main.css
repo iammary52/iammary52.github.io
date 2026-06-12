@@ -221,6 +221,130 @@ button, input, select, textarea { font-family: inherit; }
     letter-spacing: .02em;
 }
 
+/* ── SIDEBAR PROJECT SELECTOR ───────────────── */
+.sb-proj-wrap {
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(180deg, #f8fbfd 0%, #f2f6fb 100%);
+    flex-shrink: 0;
+}
+
+.sb-proj-lbl {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text4);
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sb-proj-lbl::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--acc);
+    box-shadow: 0 0 0 2px var(--acc-soft);
+    display: inline-block;
+    flex-shrink: 0;
+}
+
+.sb-proj-select-wrap {
+    position: relative;
+}
+
+.sb-proj-select {
+    width: 100%;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 8px 30px 8px 11px;
+    font-size: 12.5px;
+    font-weight: 600;
+    font-family: var(--sans);
+    color: var(--text);
+    background: #fff;
+    border: 1.5px solid var(--border2);
+    border-radius: var(--r);
+    cursor: pointer;
+    transition: border-color .15s, box-shadow .15s, background .15s;
+    line-height: 1.35;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.sb-proj-select:focus {
+    outline: none;
+    border-color: var(--acc);
+    box-shadow: 0 0 0 3px var(--acc-soft);
+}
+
+.sb-proj-select:hover {
+    border-color: var(--border3);
+    background: var(--panel-2);
+}
+
+.sb-proj-select.has-value {
+    border-color: var(--acc-soft);
+    background: var(--acc-lt);
+    color: var(--acc);
+}
+
+.sb-proj-select.has-value:hover {
+    border-color: var(--acc);
+    background: #e0f0fb;
+}
+
+.sb-proj-chevron {
+    position: absolute;
+    right: 9px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--text3);
+    display: flex;
+    align-items: center;
+}
+
+.sb-proj-select.has-value ~ .sb-proj-chevron { color: var(--acc); }
+
+.sb-proj-badge {
+    margin-top: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.sb-proj-badge-inner {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10.5px;
+    font-weight: 600;
+    color: var(--acc);
+    background: var(--acc-soft);
+    border: 1px solid rgba(0,74,156,.18);
+    padding: 2px 7px;
+    border-radius: 999px;
+    letter-spacing: .01em;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.sb-proj-none {
+    font-size: 10.5px;
+    color: var(--text4);
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
 /* ── SIDEBAR ────────────────────────────────── */
 .sidebar {
     width: 240px;

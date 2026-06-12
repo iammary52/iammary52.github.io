@@ -494,8 +494,10 @@
         ]},
     ];
 
-    function Sidebar({ appMode, setAppMode, onLogout, userEmail }) {
+    function Sidebar({ appMode, setAppMode, onLogout, userEmail, projectList, selectedProject, setSelectedProject }) {
         const userInitial = userEmail.charAt(0).toUpperCase();
+        const selProj = projectList.find(p => p.origName === selectedProject) || null;
+
         return (
             <aside className="sidebar">
                 <div className="sb-brand">
@@ -505,6 +507,57 @@
                         <div className="sb-brand-sub">Financial Decision Support</div>
                     </div>
                 </div>
+
+                {/* 프로젝트 선택기 */}
+                <div className="sb-proj-wrap">
+                    <div className="sb-proj-lbl">활성 프로젝트</div>
+                    <div className="sb-proj-select-wrap">
+                        <select
+                            className={`sb-proj-select${selectedProject ? ' has-value' : ''}`}
+                            value={selectedProject || ''}
+                            onChange={e => setSelectedProject(e.target.value || null)}
+                        >
+                            <option value="">프로젝트를 선택하세요</option>
+                            {(() => {
+                                const years = [...new Set(projectList.map(p => p.year))].sort((a,b) => a-b);
+                                return years.map(y => (
+                                    <optgroup key={y} label={`${y}년`}>
+                                        {projectList.filter(p => p.year === y).map(p => (
+                                            <option key={p.origName} value={p.origName}>
+                                                {p.half} · {p.scenario}
+                                            </option>
+                                        ))}
+                                    </optgroup>
+                                ));
+                            })()}
+                        </select>
+                        <span className="sb-proj-chevron">
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                                <path d="M2.5 4.5L6 8L9.5 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                        </span>
+                    </div>
+                    {selProj ? (
+                        <div className="sb-proj-badge">
+                            <div className="sb-proj-badge-inner" title={selProj.origName}>
+                                <svg width="9" height="9" viewBox="0 0 12 12" fill="none">
+                                    <circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.5"/>
+                                    <path d="M6 3.5V6.5L7.5 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                                </svg>
+                                {selProj.year}년 {selProj.half} {selProj.scenario}
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="sb-proj-none">
+                            <svg width="10" height="10" viewBox="0 0 12 12" fill="none">
+                                <circle cx="6" cy="6" r="4.5" stroke="currentColor" strokeWidth="1.5"/>
+                                <path d="M6 4V6.5M6 8H6.01" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                            </svg>
+                            선택된 프로젝트 없음
+                        </div>
+                    )}
+                </div>
+
                 <nav className="sb-nav">
                     {NAV.map((g, gi) => (
                         <div key={gi}>
@@ -728,10 +781,11 @@
     };
 
     function MainApp({ session, onLogout }) {
-        const [appMode,    setAppMode]    = React.useState('project_mgr');
-        const [status,     setStatus]     = React.useState(null);
-        const [manageList, setManageList] = React.useState([]);
-        const [nowTime,    setNowTime]    = React.useState('');
+        const [appMode,          setAppMode]          = React.useState('project_mgr');
+        const [status,           setStatus]           = React.useState(null);
+        const [manageList,       setManageList]       = React.useState([]);
+        const [nowTime,          setNowTime]          = React.useState('');
+        const [selectedProject,  setSelectedProject]  = React.useState(null);
 
         React.useEffect(() => {
             const t = setInterval(() => setNowTime(new Date().toLocaleString('ko-KR', { hour12: false })), 1000);
@@ -766,7 +820,7 @@
 
         return (
             <div className="shell">
-                <Sidebar appMode={appMode} setAppMode={(m) => { setAppMode(m); setStatus(null); }} onLogout={onLogout} userEmail={userEmail} />
+                <Sidebar appMode={appMode} setAppMode={(m) => { setAppMode(m); setStatus(null); }} onLogout={onLogout} userEmail={userEmail} projectList={manageList} selectedProject={selectedProject} setSelectedProject={setSelectedProject} />
                 <div className="main">
                     <div className="topbar">
                         <div className="tb-title">
