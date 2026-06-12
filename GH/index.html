@@ -2572,8 +2572,12 @@
                     const projNames = Object.keys(dict).sort();
                     setProjectList(projNames);
 
-                    if (projNames.length > 0 && !projectName) {
-                        setProjectName(projNames[0]);
+                    if (mgList.length > 0) {
+                        if (!projectName || !mgList.some(x => x.name === projectName)) {
+                            setProjectName(mgList[0].name);
+                        }
+                    } else {
+                        setProjectName('');
                     }
 
                     const catDict = {};
@@ -3522,11 +3526,14 @@
                                         value={projectName} 
                                         onChange={e => setProjectName(e.target.value)}
                                     >
-                                        {projectList.map(p => <option key={p} value={p}>{p}</option>)}
-                                        {projectList.length === 0 && <option value="">(등록된 사업 없음)</option>}
+                                        {manageList.map(p => {
+                                             const displayLabel = p.scenario === '기본안' ? `${p.year}년 ${p.half}` : `${p.year}년 ${p.half} ${p.scenario}`;
+                                             return <option key={p.name} value={p.name}>{displayLabel}</option>;
+                                        })}
+                                         {manageList.length === 0 && <option value="">(등록된 프로젝트 없음)</option>}
                                     </select>
                                 </div>
-                                <div className="tb-stat"><span className="tb-stat-dot"></span><b>{projectList.length}</b>개 사업 연동</div>
+                                <div className="tb-stat"><span className="tb-stat-dot"></span><b>{manageList.length}</b>개 사업 연동</div>
                                 <div className="tb-stat" style={{fontVariantNumeric:'tabular-nums'}}><b>{nowTime}</b></div>
                             </div>
                         </div>
@@ -3543,10 +3550,17 @@
                                 </div>
                             ) : (appMode === 'view' || appMode === 'report' || appMode === 'financial_outlook') ? (
                                 <div className="tb-sec">
-                                    <span className="tb-lbl">선택된 대상 사업: <b style={{ color: 'var(--acc)' }}>{projectName || '(없음)'}</b></span>
+                                    <span className="tb-lbl">선택된 대상 사업: <b style={{ color: 'var(--acc)' }}>{(() => {
+                                         if (!projectName) return '(없음)';
+                                         const parsed = parseProjectName(projectName);
+                                         if (parsed.year) {
+                                             return parsed.scenario === '기본안' ? `${parsed.year}년 ${parsed.half}` : `${parsed.year}년 ${parsed.half} ${parsed.scenario}`;
+                                         }
+                                         return projectName;
+                                     })()}</b></span>
                                 </div>
                             ) : (appMode === 'dashboard') ? (
-                                <div className="tb-sec"><span className="tb-lbl">총 <b>{projectList.length}</b>개 사업이 실시간 연동되어 있습니다</span></div>
+                                 <div className="tb-sec"><span className="tb-lbl">총 <b>{manageList.length}</b>개 사업이 실시간 연동되어 있습니다</span></div>
                             ) : (
                                 <div className="tb-sec"><span className="tb-lbl" style={{ color: 'var(--orange)' }}>관리자 모드 · CASCADE 활성</span></div>
                             )}
