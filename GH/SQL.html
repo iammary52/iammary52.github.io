@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DB 스키마 변경 이력 & SQL 로그 | GH</title>
+    <style>
+        :root {
+            --bg: #0f172a;
+            --panel: #1e293b;
+            --border: #334155;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #0284c7;
+            --accent-hover: #0369a1;
+            --code-bg: #090d16;
+            --green: #10b981;
+            --sans: 'Pretendard Variable', Pretendard, system-ui, sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            font-size: 14px;
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 40px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+        }
+
+        .logo {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .card {
+            background-color: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 12px;
+        }
+
+        .badge {
+            background-color: rgba(2, 132, 199, 0.2);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-weight: 600;
+        }
+
+        .date {
+            color: var(--text-muted);
+            font-family: var(--mono);
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .description {
+            color: #cbd5e1;
+            margin-bottom: 20px;
+        }
+
+        .description ul {
+            margin-left: 20px;
+            margin-top: 8px;
+        }
+
+        .description li {
+            margin-bottom: 4px;
+        }
+
+        .code-container {
+            position: relative;
+            background-color: var(--code-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .code-header {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 8px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .code-lang {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .copy-btn {
+            background-color: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            padding: 4px 10px;
+            font-size: 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-family: var(--sans);
+        }
+
+        .copy-btn:hover {
+            background-color: rgba(255, 255, 255, 0.16);
+            color: #fff;
+        }
+
+        .copy-btn.copied {
+            background-color: rgba(16, 185, 129, 0.2);
+            border-color: rgba(16, 185, 129, 0.4);
+            color: #34d399;
+        }
+
+        pre {
+            padding: 18px;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        code {
+            font-family: var(--mono);
+            font-size: 13px;
+            color: #e2e8f0;
+            display: block;
+        }
+
+        .alert-info {
+            background-color: rgba(2, 132, 199, 0.08);
+            border-left: 4px solid var(--accent);
+            padding: 12px 16px;
+            border-radius: 0 6px 6px 0;
+            margin-top: 15px;
+            font-size: 13px;
+            color: #bae6fd;
+        }
+
+        .alert-info strong {
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">GH DECISION SUPPORT SYSTEM</div>
+            <h1>DB 스키마 변경 이력 & SQL 로그</h1>
+            <div class="subtitle">시스템 기능 확장에 따른 데이터베이스 구조 변경 SQL을 누적하여 기록합니다.</div>
+        </header>
+
+        <main>
+            <!-- LOG 1: 2026-06-12 프로젝트 요소 다차원 모델링 -->
+            <section class="card">
+                <div class="card-meta">
+                    <span class="badge">V1.1 SCHEMA</span>
+                    <span class="date">2026-06-12 13:47:00</span>
+                </div>
+                <h2>프로젝트 다차원 관리 속성 컬럼 추가</h2>
+                <div class="description">
+                    <p>기존의 단순 사업 분류체계를 확장하여 프로젝트를 다차원적으로 관리하기 위한 4가지 핵심 속성 컬럼을 <code>project_master</code> 테이블에 추가합니다.</p>
+                    <ul>
+                        <li><strong>연도(year)</strong>: 2025년 ~ 2030년 범위 제약조건 추가</li>
+                        <li><strong>반기(half)</strong>: '상반기' 또는 '하반기' 값만 허용하는 제약조건 추가</li>
+                        <li><strong>시나리오명(scenario)</strong>: 기본안 및 시나리오 명칭 입력</li>
+                        <li><strong>시나리오 설명(description)</strong>: 시나리오에 대한 상세 설명 저장 (기본안일 경우 비어있음)</li>
+                    </ul>
+                    <div class="alert-info">
+                        <strong>실행 안내:</strong> 이 스크립트는 Supabase 대시보드의 <strong>SQL Editor</strong>에서 새 쿼리를 생성하여 실행하면 즉시 반영됩니다. 기존 테이블에 데이터가 있는 상태에서도 안전하게 작동(Column 추가 및 제약조건 등록)하도록 작성되었습니다.
+                    </div>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">postgresql</span>
+                        <button class="copy-btn" onclick="copyCode(this)">복사하기</button>
+                    </div>
+                    <pre><code>-- 1. project_master 테이블에 4가지 핵심 속성 컬럼 추가
+ALTER TABLE project_master ADD COLUMN IF NOT EXISTS year INT;
+ALTER TABLE project_master ADD COLUMN IF NOT EXISTS half VARCHAR(10);
+ALTER TABLE project_master ADD COLUMN IF NOT EXISTS scenario VARCHAR(50);
+ALTER TABLE project_master ADD COLUMN IF NOT EXISTS description TEXT;
+
+-- 2. 연도 범위 제한 제약 조건 설정 (2025년 ~ 2030년)
+ALTER TABLE project_master DROP CONSTRAINT IF EXISTS chk_project_year;
+ALTER TABLE project_master ADD CONSTRAINT chk_project_year CHECK (year BETWEEN 2025 AND 2030);
+
+-- 3. 반기 구분 제약 조건 설정 ('상반기', '하반기')
+ALTER TABLE project_master DROP CONSTRAINT IF EXISTS chk_project_half;
+ALTER TABLE project_master ADD CONSTRAINT chk_project_half CHECK (half IN ('상반기', '하반기'));</code></pre>
+                </div>
+            </section>
+
+            <!-- LOG 2: 2026-06-12 master_project 재구성 및 CASCADE 설정 -->
+            <section class="card">
+                <div class="card-meta">
+                    <span class="badge">V1.2 SCHEMA</span>
+                    <span class="date">2026-06-12 14:10:00</span>
+                </div>
+                <h2>master_project 마스터 테이블 재구성 및 외래키 CASCADE 적용</h2>
+                <div class="description">
+                    <p>기존 <code>project_master</code> 테이블을 <code>master_project</code>로 대체하고, 연도/반기/시나리오/설명의 4대 속성을 테이블의 정식 스키마 컬럼으로 통합합니다. 하위 4대 실적 테이블의 외래키 제약조건도 갱신합니다.</p>
+                    <ul>
+                        <li><strong>테이블명 변경</strong>: <code>master_project</code>로 정형화</li>
+                        <li><strong>CASCADE 설정</strong>: 마스터 변경 시 하위 실적 데이터가 자동 동기화(UPDATE/DELETE CASCADE)되도록 외래키 재조정</li>
+                    </ul>
+                    <div class="alert-info">
+                        <strong>실행 안내:</strong> Supabase의 SQL Editor에서 기존 테이블의 종속성을 제거하고 새 마스터 테이블 구조를 적용하기 위해 아래 스크립트를 차례대로 실행해 주십시오.
+                    </div>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">postgresql</span>
+                        <button class="copy-btn" onclick="copyCode(this)">복사하기</button>
+                    </div>
+                    <pre><code>-- 1. 기존 테이블 및 외래키 정리 (충돌 방지용)
+DROP TABLE IF EXISTS land_costs CASCADE;
+DROP TABLE IF EXISTS development_costs CASCADE;
+DROP TABLE IF EXISTS supplies CASCADE;
+DROP TABLE IF EXISTS recoveries CASCADE;
+DROP TABLE IF EXISTS project_master CASCADE;
+DROP TABLE IF EXISTS master_project CASCADE;
+
+-- 2. 새 master_project 테이블 생성 (PK: year, half, scenario)
+-- project_name과 category 컬럼은 완전히 제외되었습니다.
+CREATE TABLE master_project (
+    year INT NOT NULL,
+    half VARCHAR(10) NOT NULL,
+    scenario VARCHAR(50) NOT NULL,
+    description TEXT,
+    PRIMARY KEY (year, half, scenario),
+    CONSTRAINT chk_project_year CHECK (year BETWEEN 2025 AND 2030),
+    CONSTRAINT chk_project_half CHECK (half IN ('상반기', '하반기'))
+);
+
+-- 3. land_costs 테이블 생성 (외래키 복합 참조 설정)
+CREATE TABLE land_costs (
+    id SERIAL PRIMARY KEY,
+    year INT NOT NULL,
+    half VARCHAR(10) NOT NULL,
+    scenario VARCHAR(50) NOT NULL,
+    detail_item VARCHAR(200) NOT NULL,
+    target_year INT NOT NULL,
+    amount NUMERIC DEFAULT 0,
+    FOREIGN KEY (year, half, scenario) REFERENCES master_project(year, half, scenario) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 4. development_costs 테이블 생성 (외래키 복합 참조 설정)
+CREATE TABLE development_costs (
+    id SERIAL PRIMARY KEY,
+    year INT NOT NULL,
+    half VARCHAR(10) NOT NULL,
+    scenario VARCHAR(50) NOT NULL,
+    detail_item VARCHAR(200) NOT NULL,
+    target_year INT NOT NULL,
+    amount NUMERIC DEFAULT 0,
+    FOREIGN KEY (year, half, scenario) REFERENCES master_project(year, half, scenario) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 5. supplies 테이블 생성 (외래키 복합 참조 설정)
+CREATE TABLE supplies (
+    id SERIAL PRIMARY KEY,
+    year INT NOT NULL,
+    half VARCHAR(10) NOT NULL,
+    scenario VARCHAR(50) NOT NULL,
+    detail_item VARCHAR(200) NOT NULL,
+    target_year INT NOT NULL,
+    amount NUMERIC DEFAULT 0,
+    FOREIGN KEY (year, half, scenario) REFERENCES master_project(year, half, scenario) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- 6. recoveries 테이블 생성 (외래키 복합 참조 설정)
+CREATE TABLE recoveries (
+    id SERIAL PRIMARY KEY,
+    year INT NOT NULL,
+    half VARCHAR(10) NOT NULL,
+    scenario VARCHAR(50) NOT NULL,
+    detail_item VARCHAR(200) NOT NULL,
+    target_year INT NOT NULL,
+    amount NUMERIC DEFAULT 0,
+    FOREIGN KEY (year, half, scenario) REFERENCES master_project(year, half, scenario) ON DELETE CASCADE ON UPDATE CASCADE
+);</code></pre>
+                </div>
+            </section>
+
+            <!-- LOG 3: 2026-06-12 Row Level Security (RLS) 및 권한 제약 설정 -->
+            <section class="card">
+                <div class="card-meta">
+                    <span class="badge">V1.3 SECURITY</span>
+                    <span class="date">2026-06-12 14:15:00</span>
+                </div>
+                <h2>Row Level Security (RLS) 및 로그인 사용자 권한 제한 정책 적용</h2>
+                <div class="description">
+                    <p>데이터 보안을 강화하여 데이터베이스의 직접적인 API 호출을 통제합니다. <strong>오직 로그인에 성공한 사용자(authenticated 역할)</strong>만 데이터를 조회, 삽입, 갱신, 삭제할 수 있도록 RLS 정책을 활성화합니다.</p>
+                    <ul>
+                        <li><strong>RLS 정책 활성화</strong>: 비인가된 무인증(anonymous) 요청은 모든 데이터 조회 및 변경이 차단됩니다.</li>
+                        <li><strong>인증 사용자(authenticated) 권한 부여</strong>: Supabase Auth에 로그인한 세션만 모든 DML(SELECT/INSERT/UPDATE/DELETE)을 허용합니다.</li>
+                    </ul>
+                    <div class="alert-info">
+                        <strong>보안 안내:</strong> 이 SQL을 실행하고 나면, 웹 서비스(index.html)에서 로그인하지 않은 상태에서의 Supabase 데이터 접근이 완벽히 차단됩니다. 반드시 로그인 화면을 통해 인증된 계정으로 진입해야 대시보드 및 프로젝트 관리가 활성화됩니다.
+                    </div>
+                </div>
+
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-lang">postgresql</span>
+                        <button class="copy-btn" onclick="copyCode(this)">복사하기</button>
+                    </div>
+                    <pre><code>-- 1. 모든 테이블에 Row Level Security (RLS) 활성화
+ALTER TABLE master_project ENABLE ROW LEVEL SECURITY;
+ALTER TABLE land_costs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE development_costs ENABLE ROW LEVEL SECURITY;
+ALTER TABLE supplies ENABLE ROW LEVEL SECURITY;
+ALTER TABLE recoveries ENABLE ROW LEVEL SECURITY;
+
+-- 2. master_project 테이블 RLS 정책 설정 (인증된 사용자만 접근 가능)
+DROP POLICY IF EXISTS "Allow authenticated access to master_project" ON master_project;
+CREATE POLICY "Allow authenticated access to master_project" ON master_project
+    FOR ALL
+    TO authenticated
+    USING (true)
+    WITH CHECK (true);
+
+-- 3. land_costs 테이블 RLS 정책 설정 (인증된 사용자만 접근 가능)
+DROP POLICY IF EXISTS "Allow authenticated access to land_costs" ON land_costs;
+CREATE POLICY "Allow authenticated access to land_costs" ON land_costs
+    FOR ALL
+    TO authenticated
+    USING (true)
+    WITH CHECK (true);
+
+-- 4. development_costs 테이블 RLS 정책 설정 (인증된 사용자만 접근 가능)
+DROP POLICY IF EXISTS "Allow authenticated access to development_costs" ON development_costs;
+CREATE POLICY "Allow authenticated access to development_costs" ON development_costs
+    FOR ALL
+    TO authenticated
+    USING (true)
+    WITH CHECK (true);
+
+-- 5. supplies 테이블 RLS 정책 설정 (인증된 사용자만 접근 가능)
+DROP POLICY IF EXISTS "Allow authenticated access to supplies" ON supplies;
+CREATE POLICY "Allow authenticated access to supplies" ON supplies
+    FOR ALL
+    TO authenticated
+    USING (true)
+    WITH CHECK (true);
+
+-- 6. recoveries 테이블 RLS 정책 설정 (인증된 사용자만 접근 가능)
+DROP POLICY IF EXISTS "Allow authenticated access to recoveries" ON recoveries;
+CREATE POLICY "Allow authenticated access to recoveries" ON recoveries
+    FOR ALL
+    TO authenticated
+    USING (true)
+    WITH CHECK (true);</code></pre>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        function copyCode(button) {
+            const pre = button.parentElement.nextElementSibling;
+            const code = pre.querySelector('code').innerText;
+            
+            navigator.clipboard.writeText(code).then(() => {
+                button.textContent = '복사 완료!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = '복사하기';
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('클립보드 복사 실패:', err);
+                alert('복사하지 못했습니다. 직접 선택해서 복사해 주세요.');
+            });
+        }
+    </script>
+</body>
+</html>
