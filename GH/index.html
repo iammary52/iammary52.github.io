@@ -2536,6 +2536,14 @@
                             hasRec: statusData.rec
                         };
                     });
+
+                    // 연도, 반기, 시나리오 순 정렬
+                    mgList.sort((a, b) => {
+                        if (a.year !== b.year) return a.year - b.year;
+                        if (a.half !== b.half) return a.half === '상반기' ? -1 : 1;
+                        return a.scenario.localeCompare(b.scenario, 'ko');
+                    });
+
                     setManageList(mgList);
 
                     const dict = {};
