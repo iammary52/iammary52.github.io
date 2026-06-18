@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GH 재무의사결정지원 시스템 — 사용 안내</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue:   #2563eb;
+    --blue-d: #1e40af;
+    --blue-l: #eff6ff;
+    --slate:  #1e293b;
+    --mid:    #475569;
+    --mute:   #94a3b8;
+    --border: #e2e8f0;
+    --bg:     #f8fafc;
+    --white:  #ffffff;
+  }
+
+  body {
+    font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    background: var(--bg);
+    color: var(--slate);
+    line-height: 1.65;
+    font-size: 14px;
+  }
+
+  /* ── 헤더 ── */
+  .hero {
+    background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);
+    color: #fff;
+    padding: 52px 24px 44px;
+    text-align: center;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,.15);
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    font-size: clamp(22px, 4vw, 32px);
+    font-weight: 800;
+    letter-spacing: -.02em;
+    margin-bottom: 10px;
+  }
+  .hero p {
+    font-size: 14px;
+    color: rgba(255,255,255,.8);
+    max-width: 480px;
+    margin: 0 auto 28px;
+  }
+  .hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    color: var(--blue-d);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 10px 22px;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,.2);
+    transition: opacity .15s;
+  }
+  .hero-cta:hover { opacity: .88; }
+
+  /* ── 레이아웃 ── */
+  .wrap { max-width: 860px; margin: 0 auto; padding: 40px 20px 80px; }
+
+  /* ── 섹션 타이틀 ── */
+  .sec-title {
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--slate);
+    margin-bottom: 6px;
+  }
+  .sec-sub {
+    font-size: 12px;
+    color: var(--mute);
+    margin-bottom: 20px;
+  }
+
+  /* ── 흐름 카드 (시작하기) ── */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .flow-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 18px;
+    position: relative;
+  }
+  .flow-num {
+    width: 26px; height: 26px;
+    background: var(--blue-l);
+    color: var(--blue);
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 10px;
+  }
+  .flow-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 4px; }
+  .flow-card p  { font-size: 12px; color: var(--mid); }
+
+  /* ── 메뉴 카드 목록 ── */
+  .menu-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 48px; }
+  .menu-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+  }
+  .menu-accent { width: 5px; flex-shrink: 0; }
+  .menu-body   { padding: 18px 20px; flex: 1; }
+  .menu-head   { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+  .menu-icon   {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .menu-icon svg { width: 16px; height: 16px; stroke: #fff; stroke-width: 2;
+    fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .menu-label  { font-size: 14px; font-weight: 700; }
+  .menu-desc   { font-size: 12px; color: var(--mid); margin-bottom: 10px; }
+  .chip-row    { display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip {
+    font-size: 11px; font-weight: 600; padding: 3px 9px;
+    border-radius: 20px; border: 1px solid;
+  }
+
+  /* ── 기능 배지 색 ── */
+  .chip-blue   { background: #eff6ff; color: #1d4ed8; border-color: #bfdbfe; }
+  .chip-violet { background: #f5f3ff; color: #6d28d9; border-color: #ddd6fe; }
+  .chip-green  { background: #f0fdf4; color: #15803d; border-color: #bbf7d0; }
+  .chip-amber  { background: #fffbeb; color: #92400e; border-color: #fde68a; }
+  .chip-rose   { background: #fff1f2; color: #9f1239; border-color: #fecdd3; }
+  .chip-slate  { background: #f8fafc; color: #475569; border-color: #e2e8f0; }
+
+  /* ── 공통 기능 ── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 48px;
+  }
+  .feat-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+  .feat-card h4 { font-size: 13px; font-weight: 700; margin-bottom: 4px; display: flex; align-items: center; gap: 6px; }
+  .feat-card p  { font-size: 12px; color: var(--mid); }
+  .feat-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── 엑셀 업로드 ── */
+  .upload-steps {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 24px 20px;
+    margin-bottom: 48px;
+  }
+  .upload-steps ol { padding-left: 18px; }
+  .upload-steps li { font-size: 13px; margin-bottom: 10px; }
+  .upload-steps li strong { color: var(--blue-d); }
+  .sheet-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 12px; }
+  .sheet-table th, .sheet-table td {
+    padding: 7px 12px; text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  .sheet-table th { background: #f8fafc; font-weight: 700; color: var(--mid); }
+  .sheet-table td:first-child { font-weight: 600; color: var(--slate); }
+
+  /* ── 참고 ── */
+  .note-box {
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-left: 4px solid #f59e0b;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 12px;
+    color: #78350f;
+    margin-bottom: 48px;
+  }
+  .note-box b { color: #92400e; }
+
+  /* ── 푸터 ── */
+  .footer {
+    text-align: center;
+    padding: 32px 20px;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--mute);
+  }
+
+  /* ── 구분선 ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 36px 0; }
+
+  @media (max-width: 600px) {
+    .menu-card { flex-direction: column; }
+    .menu-accent { width: 100%; height: 5px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="hero">
+  <div class="hero-badge">User Guide</div>
+  <h1>재무의사결정지원 시스템<br>사용 안내</h1>
+  <p>GH 경기주택도시공사 중장기 재무전망 분석 플랫폼의 주요 기능을 안내합니다.</p>
+  <a class="hero-cta" href="https://iammary52.github.io/GH/" target="_blank">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+    시스템 접속
+  </a>
+</div>
+
+<div class="wrap">
+
+  <!-- 시작하기 -->
+  <div class="sec-title">시작하기</div>
+  <div class="sec-sub">로그인 후 아래 순서로 진행하세요.</div>
+  <div class="flow">
+    <div class="flow-card">
+      <div class="flow-num">1</div>
+      <h3>로그인</h3>
+      <p>발급된 이메일과 비밀번호로 접속합니다.</p>
+    </div>
+    <div class="flow-card">
+      <div class="flow-num">2</div>
+      <h3>프로젝트 선택</h3>
+      <p>왼쪽 사이드바의 <b>활성 프로젝트</b> 드롭다운에서 분석할 프로젝트를 선택합니다.</p>
+    </div>
+    <div class="flow-card">
+      <div class="flow-num">3</div>
+      <h3>메뉴 선택</h3>
+      <p>상단 내비게이션에서 원하는 분석 메뉴를 클릭합니다.</p>
+    </div>
+    <div class="flow-card">
+      <div class="flow-num">4</div>
+      <h3>차트 / 데이터 확인</h3>
+      <p>각 페이지 상단의 <b>차트</b> · <b>데이터</b> 탭으로 전환하며 분석합니다.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 메뉴별 기능 -->
+  <div class="sec-title">메뉴별 기능</div>
+  <div class="sec-sub">사이드바의 재무전망 메뉴 5개를 소개합니다.</div>
+  <div class="menu-list">
+
+    <!-- 중장기재무전망 -->
+    <div class="menu-card">
+      <div class="menu-accent" style="background:#2563eb;"></div>
+      <div class="menu-body">
+        <div class="menu-head">
+          <div class="menu-icon" style="background:#2563eb;">
+            <svg viewBox="0 0 24 24"><path d="M3 3v18h18 M18 17V9 M13 17V5 M8 17v-3"/></svg>
+          </div>
+          <div class="menu-label">중장기재무전망</div>
+        </div>
+        <div class="menu-desc">매출·이익·부채·자본·선수금·금융부채·부채비율 등 핵심 재무 지표를 연도별로 시각화합니다.<br>실적 연도(★)와 전망 연도를 색상으로 구분합니다.</div>
+        <div class="chip-row">
+          <span class="chip chip-blue">매출 / 영업이익 / 순이익</span>
+          <span class="chip chip-blue">부채 / 자본 / 금융부채</span>
+          <span class="chip chip-blue">부채비율 추이</span>
+          <span class="chip chip-slate">단위 변경</span>
+          <span class="chip chip-slate">엑셀 다운로드</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 자금수지전망 -->
+    <div class="menu-card">
+      <div class="menu-accent" style="background:#7c3aed;"></div>
+      <div class="menu-body">
+        <div class="menu-head">
+          <div class="menu-icon" style="background:#7c3aed;">
+            <svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <div class="menu-label">자금수지전망</div>
+        </div>
+        <div class="menu-desc">연도별 수입·지출과 순자금(수입−지출)을 분석합니다. 수입·지출 세부 구성 및 사업수지를 세분화 차트로 확인할 수 있습니다.</div>
+        <div class="chip-row">
+          <span class="chip chip-violet">수입 / 지출 / 순자금</span>
+          <span class="chip chip-violet">수입·지출 세부 구성</span>
+          <span class="chip chip-violet">사업수지</span>
+          <span class="chip chip-slate">단위 변경</span>
+          <span class="chip chip-slate">엑셀 다운로드</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 재무비율전망 -->
+    <div class="menu-card">
+      <div class="menu-accent" style="background:#16a34a;"></div>
+      <div class="menu-body">
+        <div class="menu-head">
+          <div class="menu-icon" style="background:#16a34a;">
+            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z M2 9h4v12H2z M4 6a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+          </div>
+          <div class="menu-label">재무비율전망</div>
+        </div>
+        <div class="menu-desc">부채비율·차입금의존도·이자보상배율 등 주요 재무 비율을 꺾은선 차트로 전망합니다. 위험 기준선(예: 부채비율 200%) 참조선이 표시됩니다.</div>
+        <div class="chip-row">
+          <span class="chip chip-green">부채비율 / 차입금의존도</span>
+          <span class="chip chip-green">이자보상배율 / 영업이익률</span>
+          <span class="chip chip-green">유동비율 등 다수 지표</span>
+          <span class="chip chip-slate">단위 변경</span>
+          <span class="chip chip-slate">엑셀 다운로드</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 부채전망 -->
+    <div class="menu-card">
+      <div class="menu-accent" style="background:#d97706;"></div>
+      <div class="menu-body">
+        <div class="menu-head">
+          <div class="menu-icon" style="background:#d97706;">
+            <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="menu-label">부채전망</div>
+        </div>
+        <div class="menu-desc">금융부채(금융차입·정부기금 등)와 비금융부채(선수금·임대보증금 등) 세부 구성을 분석합니다. 총부채 추이와 최고치 연도를 KPI 카드로 한눈에 파악할 수 있습니다.</div>
+        <div class="chip-row">
+          <span class="chip chip-amber">금융부채 세부 구성</span>
+          <span class="chip chip-amber">비금융부채 세부 구성</span>
+          <span class="chip chip-amber">총부채 추이</span>
+          <span class="chip chip-amber">최고치 KPI 카드</span>
+          <span class="chip chip-slate">단위 변경</span>
+          <span class="chip chip-slate">엑셀 다운로드</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 프로젝트별 비교 -->
+    <div class="menu-card">
+      <div class="menu-accent" style="background:#0891b2;"></div>
+      <div class="menu-body">
+        <div class="menu-head">
+          <div class="menu-icon" style="background:#0891b2;">
+            <svg viewBox="0 0 24 24"><path d="M18 20V10 M12 20V4 M6 20v-6"/></svg>
+          </div>
+          <div class="menu-label">프로젝트별 비교</div>
+        </div>
+        <div class="menu-desc">두 프로젝트(예: 기본안 vs 시나리오1)를 나란히 비교합니다. 매출·순이익·부채비율·자금수지 4개 KPI 차이를 요약하고, 항목별 비교 차트를 제공합니다.</div>
+        <div class="chip-row">
+          <span class="chip chip-rose">A vs B 프로젝트 비교</span>
+          <span class="chip chip-rose">4개 KPI 요약 카드</span>
+          <span class="chip chip-rose">경영성과 / 재무상태 비교</span>
+          <span class="chip chip-slate">엑셀 다운로드</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <!-- 공통 기능 -->
+  <div class="sec-title">공통 기능</div>
+  <div class="sec-sub">모든 분석 메뉴에서 사용할 수 있는 기능입니다.</div>
+  <div class="feature-grid">
+
+    <div class="feat-card">
+      <h4><span class="feat-dot" style="background:#2563eb;"></span>차트 / 데이터 탭</h4>
+      <p>각 메뉴 상단의 탭으로 시각화 차트와 원시 데이터 표를 전환합니다.</p>
+    </div>
+
+    <div class="feat-card">
+      <h4><span class="feat-dot" style="background:#7c3aed;"></span>범례 클릭 토글</h4>
+      <p>차트 범례 항목을 클릭하면 해당 계열을 숨기거나 다시 표시할 수 있습니다.</p>
+    </div>
+
+    <div class="feat-card">
+      <h4><span class="feat-dot" style="background:#16a34a;"></span>단위 변경</h4>
+      <p>데이터 탭에서 <b>억원 / 백만원 / 천원</b> 단위를 즉시 전환합니다. 엑셀 다운로드 시 선택한 단위로 저장됩니다.</p>
+    </div>
+
+    <div class="feat-card">
+      <h4><span class="feat-dot" style="background:#d97706;"></span>실적 / 전망 구분</h4>
+      <p>프로젝트 기준연도 이전은 실적(★), 이후는 전망으로 자동 구분합니다. 차트에서 회색 바로 표시됩니다.</p>
+    </div>
+
+    <div class="feat-card">
+      <h4><span class="feat-dot" style="background:#0891b2;"></span>엑셀 다운로드</h4>
+      <p>각 메뉴의 데이터를 서식이 적용된 .xlsx 파일로 다운로드합니다.</p>
+    </div>
+
+    <div class="feat-card">
+      <h4><span class="feat-dot" style="background:#e11d48;"></span>프로젝트 전환</h4>
+      <p>사이드바 드롭다운에서 프로젝트를 변경하면 모든 메뉴가 즉시 해당 프로젝트 데이터로 전환됩니다.</p>
+    </div>
+
+  </div>
+
+  <hr class="divider">
+
+  <!-- 엑셀 업로드 -->
+  <div class="sec-title">데이터 입력 — 엑셀 업로드</div>
+  <div class="sec-sub">관리자가 분기별 전망 데이터를 업로드하는 방법입니다.</div>
+  <div class="upload-steps">
+    <ol>
+      <li>사이드바 하단 <strong>엑셀 업로드</strong> 메뉴로 이동합니다.</li>
+      <li>사이드바에서 업로드할 <strong>프로젝트를 먼저 선택</strong>합니다.</li>
+      <li>정해진 형식의 엑셀 파일을 드래그하거나 클릭하여 선택합니다.</li>
+      <li>각 시트의 미리보기를 확인한 후 <strong>업로드 실행</strong> 버튼을 누릅니다.</li>
+      <li>업로드 완료 메시지 확인 후 분석 메뉴에서 데이터를 확인합니다.</li>
+    </ol>
+
+    <table class="sheet-table">
+      <thead>
+        <tr>
+          <th>시트명 (포함 문자)</th>
+          <th>업로드 대상 메뉴</th>
+          <th>주요 컬럼 구조</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>재무전망</td>
+          <td>중장기재무전망</td>
+          <td>항목명 | 연도별 금액</td>
+        </tr>
+        <tr>
+          <td>자금수지</td>
+          <td>자금수지전망</td>
+          <td>구분1 | 구분2 | 연도별 금액</td>
+        </tr>
+        <tr>
+          <td>재무비율</td>
+          <td>재무비율전망</td>
+          <td>항목명 | 연도별 비율</td>
+        </tr>
+        <tr>
+          <td>부채전망</td>
+          <td>부채전망</td>
+          <td>구분1 | 구분2 | 연도별 금액</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 참고사항 -->
+  <div class="note-box">
+    <b>참고사항</b><br><br>
+    · 동일 프로젝트에 데이터를 재업로드하면 기존 데이터가 <b>전체 대체</b>됩니다.<br>
+    · 엑셀 파일의 시트명에 위 키워드가 포함되어 있어야 정상 인식됩니다.<br>
+    · 데이터가 표시되지 않을 경우 사이드바에서 프로젝트 선택 여부를 먼저 확인하세요.<br>
+    · 문의사항은 시스템 관리자에게 연락하세요.
+  </div>
+
+</div>
+
+<!-- 푸터 -->
+<div class="footer">
+  GH 경기주택도시공사 재무의사결정지원 시스템 &nbsp;|&nbsp; Financial Decision Support System<br>
+  <span style="margin-top:4px; display:inline-block;">내부 사용 전용 · 무단 배포 금지</span>
+</div>
+
+</body>
+</html>
