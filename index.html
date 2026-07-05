@@ -3,458 +3,309 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0b0b0d" />
-<title>HYPERTYPE — Motion Type Studio</title>
-<meta name="description" content="글자가 살아 움직이는 키네틱 타이포그래피 릴. A kinetic type showreel." />
+<meta name="theme-color" content="#07070c" />
+<title>MARY // WORKSTATION</title>
+<meta name="description" content="A spinning 3D workstation — built with pure CSS 3D. Drag to rotate." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 <style>
 :root{
-  --bg:#0b0b0d;
-  --paper:#f2efe6;
-  --ink:#0b0b0d;
-  --acc:#ff3d1f;   /* vermilion */
-  --acc2:#d8ff2e;  /* acid */
-  --muted:#8a8780;
-  --display:"Anton","Archivo Black","Noto Sans KR",sans-serif;
+  --bg:#07070c;
+  --ink:#eef1ff;
+  --cyan:#38e8ff;
+  --mag:#ff3d9a;
+  --phos:#7dffb0;
+  --muted:#7c81a0;
+  --display:"Anton","Archivo Black",sans-serif;
   --grotesk:"Space Grotesk","Noto Sans KR",sans-serif;
   --mono:"Space Mono",monospace;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;background:var(--bg);color:var(--paper);
-  font-family:var(--grotesk);line-height:1.5;
-  overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
-}
+html,body{margin:0;height:100%}
+body{background:radial-gradient(120% 90% at 50% 0%,#12132a 0%,#07070c 55%,#050509 100%);
+  color:var(--ink);font-family:var(--grotesk);overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-h1,h2,h3{margin:0;font-weight:400}
-::selection{background:var(--acc);color:#fff}
+::selection{background:var(--mag);color:#fff}
 
-/* ---------- film grain ---------- */
-.grain{
-  position:fixed;inset:-150%;z-index:9998;pointer-events:none;
-  opacity:.05;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  animation:grain 6s steps(6) infinite;
-}
-@keyframes grain{
-  0%{transform:translate(0,0)}10%{transform:translate(-4%,-4%)}
-  30%{transform:translate(3%,-2%)}50%{transform:translate(-2%,4%)}
-  70%{transform:translate(4%,2%)}90%{transform:translate(-3%,3%)}
-  100%{transform:translate(0,0)}
-}
+/* ---------- chrome ---------- */
+header{position:fixed;top:0;left:0;width:100%;z-index:40;display:flex;justify-content:space-between;
+  align-items:center;padding:18px 24px}
+.brand{font-family:var(--display);font-size:20px;letter-spacing:.03em}
+.brand b{color:var(--cyan)}
+.status{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  display:flex;gap:9px;align-items:center}
+.status .led{width:8px;height:8px;border-radius:50%;background:var(--phos);box-shadow:0 0 10px var(--phos);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.3}}
 
-/* ---------- scroll progress ---------- */
-.progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--acc);z-index:9997}
+/* ---------- stage ---------- */
+.stage{position:relative;height:100vh;min-height:620px;overflow:hidden;
+  perspective:1200px;perspective-origin:50% 42%}
 
-/* ---------- custom cursor ---------- */
-.cursor,.cursor-ring{position:fixed;top:0;left:0;z-index:9999;pointer-events:none;transform:translate(-50%,-50%);mix-blend-mode:difference}
-.cursor{width:9px;height:9px;border-radius:50%;background:#fff}
-.cursor-ring{width:44px;height:44px;border:1px solid #fff;border-radius:50%;transition:width .25s,height .25s,background .25s}
-.cursor-ring.grow{width:96px;height:96px;background:#fff}
-.cursor-ring .lbl{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--mono);font-size:10px;color:#000;opacity:0;transition:opacity .2s;letter-spacing:.1em}
-.cursor-ring.grow .lbl{opacity:1}
-@media (hover:none){.cursor,.cursor-ring{display:none}}
-
-/* ---------- preloader ---------- */
-#pre{position:fixed;inset:0;z-index:10000;background:var(--bg);display:grid;place-items:center}
-#pre .num{font-family:var(--display);font-size:clamp(80px,22vw,260px);line-height:.8;color:var(--paper)}
-#pre .bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--acc)}
-#pre.done .panel{transform:translateY(-101%)}
-.pre-panels{position:fixed;inset:0;z-index:9999;pointer-events:none;display:flex}
-.pre-panels .panel{flex:1;background:var(--bg);transform:translateY(0);transition:transform 1s cubic-bezier(.76,0,.24,1)}
-.pre-panels .panel:nth-child(2){transition-delay:.08s}
-.pre-panels .panel:nth-child(3){transition-delay:.16s}
-.pre-panels .panel:nth-child(4){transition-delay:.24s}
-.pre-panels .panel:nth-child(5){transition-delay:.32s}
-
-/* ---------- nav ---------- */
-header{position:fixed;top:0;left:0;width:100%;z-index:9000;display:flex;justify-content:space-between;align-items:center;padding:20px 26px;mix-blend-mode:difference}
-.brand{font-family:var(--display);font-size:22px;letter-spacing:.02em}
-.brand span{color:var(--acc)}
-.nav-right{display:flex;gap:22px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase}
-.nav-right a{position:relative}
-.nav-right a::after{content:"";position:absolute;left:0;bottom:-4px;width:0;height:1px;background:#fff;transition:width .3s}
-.nav-right a:hover::after{width:100%}
-@media(max-width:640px){.nav-right a:not(.tag){display:none}}
-
-/* ---------- section shell ---------- */
-section{position:relative;padding:0 26px}
-.kicker{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--acc2)}
-
-/* ---------- hero ---------- */
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding-top:80px;padding-bottom:60px}
-.hero .eyebrow{display:flex;gap:14px;align-items:center;margin-bottom:20px}
-.hero .eyebrow .dot{width:9px;height:9px;border-radius:50%;background:var(--acc);animation:pulse 1.4s infinite}
-@keyframes pulse{50%{opacity:.25;transform:scale(.7)}}
-.hline{font-family:var(--display);line-height:.86;letter-spacing:-.01em;
-  font-size:clamp(56px,15.5vw,240px);text-transform:uppercase}
-.hline .row{display:block;overflow:hidden}
-.hline .row .inner{display:inline-block;transform:translateY(110%);}
-.hline .ol{color:transparent;-webkit-text-stroke:2px var(--paper)}
-.hline em{font-style:normal;color:var(--acc)}
-.hero-sub{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;margin-top:34px;max-width:1500px}
-.hero-sub p{max-width:420px;font-size:clamp(14px,1.5vw,17px);color:#cfccc4}
-.scrollcue{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--muted);display:flex;align-items:center;gap:10px}
-.scrollcue .line{width:60px;height:1px;background:var(--muted);position:relative;overflow:hidden}
-.scrollcue .line::after{content:"";position:absolute;inset:0;background:var(--acc);transform:translateX(-100%);animation:cue 1.8s infinite}
-@keyframes cue{50%{transform:translateX(0)}100%{transform:translateX(100%)}}
-
-.reveal-up .inner{transition:transform 1s cubic-bezier(.16,1,.3,1)}
-.reveal-up.in .inner{transform:translateY(0)}
-
-/* ---------- kinetic ticker rows ---------- */
-.ticker-wrap{padding:90px 0;border-top:1px solid #1e1e22;border-bottom:1px solid #1e1e22;overflow:hidden}
-.trow{display:flex;white-space:nowrap;font-family:var(--display);text-transform:uppercase;
-  font-size:clamp(44px,9vw,140px);line-height:1.02;will-change:transform}
-.trow span{padding:0 .18em;display:inline-flex;align-items:center;gap:.2em}
-.trow.a{color:var(--paper)}
-.trow.b{color:transparent;-webkit-text-stroke:1.5px var(--acc2)}
-.trow.c{color:var(--acc)}
-.trow .star{font-family:var(--grotesk)}
-
-/* ---------- manifesto (light, blend-difference) ---------- */
-.manifesto{background:var(--paper);color:var(--ink);padding:140px 26px;overflow:hidden}
-.blob{position:absolute;border-radius:50%;filter:blur(30px);opacity:.9;will-change:transform}
-.blob.b1{width:38vw;height:38vw;background:var(--acc);top:-6vw;left:-4vw}
-.blob.b2{width:30vw;height:30vw;background:var(--acc2);bottom:-8vw;right:4vw}
-.blob.b3{width:22vw;height:22vw;background:#4b5dff;top:30%;left:40%}
-.manifesto .inner-wrap{position:relative;z-index:2;max-width:1400px;margin:0 auto}
-.mani-big{font-family:var(--display);text-transform:uppercase;line-height:.92;
-  font-size:clamp(40px,8vw,132px);color:#fff;mix-blend-mode:difference;letter-spacing:-.01em}
-.mani-big em{font-style:normal;-webkit-text-stroke:2px #fff;color:transparent}
-.mani-meta{display:flex;gap:40px;flex-wrap:wrap;margin-top:44px;position:relative;z-index:3;color:var(--ink);mix-blend-mode:difference}
-.mani-meta .col{max-width:280px}
-.mani-meta .n{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:#fff;mix-blend-mode:difference}
-.mani-meta .col p{margin:.4em 0 0;font-size:15px;color:#fff;mix-blend-mode:difference}
-
-/* ---------- work grid (3D tilt) ---------- */
-.work{padding:130px 26px 120px}
-.work-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:16px;margin-bottom:46px}
-.work-head h2{font-family:var(--display);text-transform:uppercase;font-size:clamp(38px,7vw,104px);line-height:.9}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;perspective:1200px}
-@media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:560px){.grid{grid-template-columns:1fr}}
-.tile{position:relative;aspect-ratio:4/5;border-radius:16px;overflow:hidden;
-  transform-style:preserve-3d;transition:transform .3s ease,box-shadow .3s ease;will-change:transform;
-  background:#141416;border:1px solid #202024}
-.tile .fill{position:absolute;inset:0;transform:translateZ(0)}
-.tile .idx{position:absolute;top:14px;left:16px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:#fff;transform:translateZ(40px);z-index:3;mix-blend-mode:difference}
-.tile .name{position:absolute;left:16px;bottom:16px;right:16px;transform:translateZ(60px);z-index:3}
-.tile .name b{display:block;font-family:var(--display);text-transform:uppercase;font-size:clamp(20px,2.4vw,30px);line-height:.95;color:#fff;mix-blend-mode:difference}
-.tile .name small{font-family:var(--mono);font-size:10px;letter-spacing:.16em;color:#fff;mix-blend-mode:difference;opacity:.85}
-.tile .glow{position:absolute;inset:0;opacity:0;transition:opacity .3s;background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.18),transparent 60%);z-index:2}
-.tile:hover .glow{opacity:1}
-.tile:hover{box-shadow:0 30px 60px rgba(0,0,0,.5)}
-.g1{background:linear-gradient(135deg,#ff3d1f,#7f1d1d)}
-.g2{background:linear-gradient(135deg,#d8ff2e,#0f766e)}
-.g3{background:linear-gradient(135deg,#4b5dff,#0b0b0d)}
-.g4{background:linear-gradient(135deg,#ff6ea8,#4b5dff)}
-.g5{background:linear-gradient(135deg,#0ea5e9,#d8ff2e)}
-.g6{background:linear-gradient(135deg,#ffe86b,#ff3d1f)}
-
-/* reveal for tiles / rows */
-.rise{opacity:0;transform:translateY(40px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
-.rise.in{opacity:1;transform:none}
-
-/* ---------- big CTA / footer ---------- */
-.cta{padding:120px 0 0;overflow:hidden;text-align:center}
-.cta .lead{font-family:var(--mono);font-size:12px;letter-spacing:.24em;color:var(--acc2);text-transform:uppercase}
-.cta .huge{font-family:var(--display);text-transform:uppercase;font-size:clamp(64px,20vw,300px);line-height:.82;margin:18px 0 8px;letter-spacing:-.01em}
-.cta .huge a{background:linear-gradient(180deg,var(--paper) 60%,var(--acc));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;transition:transform .3s;display:inline-block}
-.cta .huge a:hover{transform:skewX(-6deg)}
-.foot-marquee{margin-top:80px;border-top:1px solid #1e1e22;border-bottom:1px solid #1e1e22;overflow:hidden;padding:20px 0}
-.foot-marquee .m{display:flex;white-space:nowrap;font-family:var(--display);text-transform:uppercase;font-size:34px;color:var(--acc);animation:slide 18s linear infinite}
-.foot-marquee .m span{padding:0 .4em}
-@keyframes slide{to{transform:translateX(-50%)}}
-footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;padding:36px 26px 44px;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-footer a:hover{color:var(--paper)}
-
-/* ---------- 3D infinite grid (synthwave) ---------- */
-.grid3d{position:relative;height:100vh;min-height:600px;overflow:hidden;background:#050506;
-  perspective:320px;perspective-origin:50% 50%}
-.grid3d .scene{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .25s ease-out}
-.plane{position:absolute;left:-100%;width:300%;height:220%;
+/* synthwave floor */
+.floor{position:absolute;left:-100%;top:64%;width:300%;height:150%;
   background-image:
-    linear-gradient(var(--gl) 2px,transparent 2px),
-    linear-gradient(90deg,var(--gl) 2px,transparent 2px);
-  background-size:64px 64px;will-change:background-position}
-.plane.floor{top:48%;transform-origin:top center;transform:rotateX(84deg);
-  --gl:rgba(216,255,46,.55);animation:flow 1.1s linear infinite}
-.plane.ceil{bottom:48%;transform-origin:bottom center;transform:rotateX(-84deg);
-  --gl:rgba(255,61,31,.5);animation:flow 1.1s linear infinite}
-@keyframes flow{to{background-position:0 64px}}
-.grid3d .horizon{position:absolute;top:50%;left:0;right:0;height:200px;transform:translateY(-50%);
-  background:radial-gradient(60% 120px at 50% 50%,rgba(216,255,46,.5),transparent 70%);
-  filter:blur(6px);pointer-events:none}
-.grid3d .vignette{position:absolute;inset:0;pointer-events:none;
+    linear-gradient(rgba(56,232,255,.28) 2px,transparent 2px),
+    linear-gradient(90deg,rgba(255,61,154,.22) 2px,transparent 2px);
+  background-size:70px 70px;transform:rotateX(85deg);transform-origin:top center;
+  animation:floorflow 1.6s linear infinite;will-change:background-position}
+@keyframes floorflow{to{background-position:0 70px}}
+.floorglow{position:absolute;left:0;right:0;top:64%;height:180px;transform:translateY(-50%);
+  background:radial-gradient(60% 130px at 50% 50%,rgba(56,232,255,.35),transparent 70%);filter:blur(8px);pointer-events:none}
+.vign{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(85% 85% at 50% 42%,transparent 45%,rgba(5,5,9,.85) 100%)}
+
+/* big background word */
+.bgword{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);z-index:1;
+  font-family:var(--display);text-transform:uppercase;white-space:nowrap;
+  font-size:clamp(90px,26vw,420px);line-height:.8;color:transparent;
+  -webkit-text-stroke:2px rgba(238,241,255,.08);pointer-events:none;user-select:none}
+
+/* ---------- 3D world ---------- */
+.world{position:absolute;left:50%;top:46%;z-index:2;transform-style:preserve-3d;
+  transform:translate(-50%,-50%) rotateX(-14deg)}
+.rig{position:relative;transform-style:preserve-3d;will-change:transform;cursor:grab}
+.rig.drag{cursor:grabbing}
+.rig.floaty{animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-14px)}}
+
+.cuboid{position:absolute;left:50%;top:50%;transform-style:preserve-3d;
+  transform:translate3d(var(--x,0px),var(--y,0px),var(--z,0px)) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+.face{position:absolute;left:50%;top:50%;background:var(--body,#20222c);
+  border:1px solid rgba(255,255,255,.05)}
+.ft{width:var(--w);height:var(--h);transform:translate(-50%,-50%) translateZ(calc(var(--d)/2))}
+.bk{width:var(--w);height:var(--h);transform:translate(-50%,-50%) rotateY(180deg) translateZ(calc(var(--d)/2));background:var(--back,#111219)}
+.rt{width:var(--d);height:var(--h);transform:translate(-50%,-50%) rotateY(90deg) translateZ(calc(var(--w)/2));background:var(--side,#171923)}
+.lf{width:var(--d);height:var(--h);transform:translate(-50%,-50%) rotateY(-90deg) translateZ(calc(var(--w)/2));background:var(--side,#171923)}
+.tp{width:var(--w);height:var(--d);transform:translate(-50%,-50%) rotateX(90deg) translateZ(calc(var(--h)/2));background:var(--top,#2a2d3a)}
+.bm{width:var(--w);height:var(--d);transform:translate(-50%,-50%) rotateX(-90deg) translateZ(calc(var(--h)/2));background:var(--bot,#0c0d12)}
+
+/* monitor */
+.monitor{--w:340px;--h:260px;--d:120px;--body:#22242f;--top:#2b2e3c;--side:#181a24;--bot:#0c0d12;--back:#111219}
+.monitor .ft{border-radius:16px;box-shadow:inset 0 0 0 2px rgba(56,232,255,.12)}
+.monitor .tp{box-shadow:inset 0 6px 16px rgba(56,232,255,.08)}
+.screen{position:absolute;inset:26px;border-radius:8px;background:#03150c;overflow:hidden;
+  box-shadow:inset 0 0 26px rgba(0,0,0,.9),0 0 22px rgba(125,255,176,.25);border:2px solid #05271a}
+.screen .glass{position:absolute;inset:0;background:
+    repeating-linear-gradient(0deg,rgba(125,255,176,.10) 0 1px,transparent 1px 3px);
+  mix-blend-mode:screen;pointer-events:none;animation:scan 6s linear infinite;opacity:.7}
+@keyframes scan{to{background-position:0 120px}}
+.screen .crt{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 120% at 50% 50%,transparent 60%,rgba(0,0,0,.55) 100%)}
+.term{position:absolute;inset:14px 16px 34px;color:var(--phos);font-family:var(--mono);font-size:12px;
+  line-height:1.5;text-shadow:0 0 6px rgba(125,255,176,.7);overflow:hidden}
+.term .line{white-space:nowrap}
+.term .cursor{display:inline-block;width:8px;height:14px;background:var(--phos);vertical-align:-2px;
+  box-shadow:0 0 8px var(--phos);animation:blink 1s steps(1) infinite}
+.brandscreen{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-family:var(--display);
+  font-size:26px;color:var(--phos);text-shadow:0 0 12px rgba(125,255,176,.8);letter-spacing:.04em}
+
+/* stand + base */
+.neck{--w:70px;--h:70px;--d:56px;--body:#1c1e28;--top:#262935;--side:#141620;--bot:#0b0c11;--back:#101119}
+.base{--w:220px;--h:24px;--d:170px;--body:#1e202b;--top:#2a2d3a;--side:#151722;--bot:#0a0b10;--back:#101119}
+.base .tp{box-shadow:inset 0 0 40px rgba(56,232,255,.08)}
+
+/* keyboard */
+.keyboard{--w:320px;--h:22px;--d:130px;--body:#1b1d27;--side:#141620;--bot:#0a0b10;--back:#101119;
+  --top:#242734}
+.keyboard .tp{
   background:
-    linear-gradient(#050506 2%,transparent 26%,transparent 74%,#050506 98%),
-    radial-gradient(80% 80% at 50% 50%,transparent 40%,#050506 100%)}
-.grid3d .caption{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;text-align:center;pointer-events:none;padding:0 20px}
-.grid3d .caption .kicker{margin-bottom:14px}
-.grid3d .caption h2{font-family:var(--display);text-transform:uppercase;
-  font-size:clamp(48px,12vw,180px);line-height:.86;letter-spacing:-.01em;color:#fff;
-  text-shadow:0 0 24px rgba(216,255,46,.45),0 0 60px rgba(255,61,31,.35)}
-.grid3d .caption h2 em{font-style:normal;color:transparent;-webkit-text-stroke:2px var(--acc2);text-shadow:none}
-.grid3d .caption p{font-family:var(--mono);font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#cfccc4;margin-top:16px}
+    repeating-linear-gradient(90deg,rgba(0,0,0,.5) 0 2px,transparent 2px 26px),
+    repeating-linear-gradient(0deg,rgba(0,0,0,.5) 0 2px,transparent 2px 22px),
+    #242734;
+  box-shadow:inset 0 0 30px rgba(56,232,255,.06)}
+
+/* tower */
+.tower{--w:96px;--h:230px;--d:210px;--body:#1d1f2a;--top:#282b39;--side:#141620;--bot:#0a0b10;--back:#101119}
+.tower .ft{background:
+    repeating-linear-gradient(0deg,transparent 0 16px,rgba(0,0,0,.55) 16px 20px),
+    linear-gradient(#20222e,#1a1c26)}
+.tower .ft::after{content:"";position:absolute;top:16px;right:14px;width:10px;height:10px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:blink 1.8s infinite}
+
+/* floating labels */
+.tag3d{position:absolute;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--bg);background:var(--cyan);padding:5px 9px;border-radius:6px;white-space:nowrap;
+  box-shadow:0 8px 20px rgba(0,0,0,.4)}
+.tag3d.b{background:var(--mag)}
+
+/* ---------- foreground copy ---------- */
+.hud{position:absolute;inset:0;z-index:20;pointer-events:none;display:flex;flex-direction:column;
+  justify-content:space-between;padding:96px 26px 30px}
+.hud .top-copy{max-width:520px}
+.hud .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
+.hud h1{font-family:var(--display);text-transform:uppercase;line-height:.86;
+  font-size:clamp(44px,7vw,104px);margin:0;letter-spacing:-.01em}
+.hud h1 em{font-style:normal;color:transparent;-webkit-text-stroke:2px var(--mag)}
+.hud .bottom-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.hud p{max-width:360px;color:#c7cbe6;font-size:14px;margin:0}
+.hint{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:10px}
+.hint .grab{width:22px;height:22px;border:1px solid var(--muted);border-radius:50%;position:relative}
+.hint .grab::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--cyan);
+  animation:orbit 2.4s ease-in-out infinite}
+@keyframes orbit{50%{transform:translateX(5px)}}
+
+/* ---------- lower strip ---------- */
+.strip{position:relative;z-index:5;border-top:1px solid #191a28;background:#070710;overflow:hidden;padding:26px 0}
+.strip .m{display:flex;white-space:nowrap;font-family:var(--display);text-transform:uppercase;font-size:40px;
+  color:transparent;-webkit-text-stroke:1.4px var(--cyan);animation:slide 20s linear infinite}
+.strip .m span{padding:0 .4em}
+.strip .m .fill{color:var(--mag);-webkit-text-stroke:0}
+@keyframes slide{to{transform:translateX(-50%)}}
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:30px 26px 40px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:#070710}
+footer a:hover{color:var(--ink)}
+
+@media(max-width:720px){
+  .world{transform:translate(-50%,-50%) rotateX(-14deg) scale(.62)}
+  .hud{padding-top:84px}
+}
+@media(max-width:420px){ .world{transform:translate(-50%,-50%) rotateX(-14deg) scale(.5)} }
 
 @media (prefers-reduced-motion:reduce){
-  *{animation:none!important;transition:none!important}
-  .hline .row .inner{transform:none!important}
-  .rise{opacity:1;transform:none}
+  *{animation:none!important}
 }
 </style>
 </head>
 <body>
 
-<div class="grain" aria-hidden="true"></div>
-<div class="progress" id="progress" aria-hidden="true"></div>
-<div class="cursor" id="cur" aria-hidden="true"></div>
-<div class="cursor-ring" id="ring" aria-hidden="true"><span class="lbl">VIEW</span></div>
-
-<!-- PRELOADER -->
-<div id="pre">
-  <div class="num" id="preNum">00</div>
-  <div class="bar" id="preBar"></div>
-</div>
-<div class="pre-panels" id="prePanels" aria-hidden="true">
-  <div class="panel"></div><div class="panel"></div><div class="panel"></div>
-  <div class="panel"></div><div class="panel"></div>
-</div>
-
 <header>
-  <div class="brand">HYPER<span>/</span>TYPE</div>
-  <nav class="nav-right">
-    <a href="#work">Work</a>
-    <a href="#studio">Studio</a>
-    <a href="#contact">Contact</a>
-  </nav>
+  <div class="brand">MARY<b>//</b>OS</div>
+  <div class="status"><span class="led"></span> SYSTEM ONLINE · v3.0</div>
 </header>
 
-<!-- HERO -->
-<section class="hero" id="top">
-  <div class="eyebrow">
-    <span class="dot"></span>
-    <span class="kicker">Kinetic Type Studio — Seoul ↔ Everywhere</span>
-  </div>
-  <h1 class="hline" id="hero">
-    <span class="row reveal-up"><span class="inner">Type</span></span>
-    <span class="row reveal-up"><span class="inner"><em>in</em> Motion</span></span>
-    <span class="row reveal-up"><span class="inner ol">글자놀이</span></span>
-  </h1>
-  <div class="hero-sub">
-    <p>목적은 없습니다. 오직 움직임과 대비, 그리고 스크롤이 만들어내는 리듬. 광고회사가 밤새 만든 릴처럼, 글자가 화면을 지배합니다.</p>
-    <div class="scrollcue"><span class="line"></span> SCROLL TO PLAY</div>
-  </div>
-</section>
+<section class="stage" id="stage">
+  <div class="floor"></div>
+  <div class="floorglow"></div>
+  <div class="bgword">WORKSTATION</div>
 
-<!-- KINETIC TICKERS -->
-<section class="ticker-wrap" aria-hidden="true">
-  <div class="trow a" data-speed="-0.12">
-    <span>DESIGN THAT MOVES</span><span class="star">✦</span><span>MAKE IT LOUD</span><span class="star">✦</span><span>DESIGN THAT MOVES</span><span class="star">✦</span><span>MAKE IT LOUD</span><span class="star">✦</span>
-  </div>
-  <div class="trow b" data-speed="0.16">
-    <span>KINETIC · KINETIC · KINETIC · KINETIC · KINETIC · KINETIC ·</span>
-  </div>
-  <div class="trow c" data-speed="-0.2">
-    <span>글자가 살아 움직인다</span><span class="star">/</span><span>글자가 살아 움직인다</span><span class="star">/</span><span>글자가 살아 움직인다</span><span class="star">/</span>
-  </div>
-</section>
+  <div class="world">
+    <div class="rig floaty" id="rig">
+      <!-- tower -->
+      <div class="cuboid tower" style="--x:-300px;--y:-6px;--z:-10px">
+        <div class="face ft"></div><div class="face bk"></div><div class="face rt"></div>
+        <div class="face lf"></div><div class="face tp"></div><div class="face bm"></div>
+      </div>
+      <!-- monitor -->
+      <div class="cuboid monitor" style="--x:0px;--y:-150px;--z:0px">
+        <div class="face bk"></div><div class="face rt"></div><div class="face lf"></div>
+        <div class="face tp"></div><div class="face bm"></div>
+        <div class="face ft">
+          <div class="screen">
+            <div class="term" id="term"></div>
+            <div class="brandscreen">MARY // OS</div>
+            <div class="glass"></div>
+            <div class="crt"></div>
+          </div>
+        </div>
+      </div>
+      <!-- neck -->
+      <div class="cuboid neck" style="--x:0px;--y:-8px;--z:-6px">
+        <div class="face ft"></div><div class="face bk"></div><div class="face rt"></div>
+        <div class="face lf"></div><div class="face tp"></div><div class="face bm"></div>
+      </div>
+      <!-- base -->
+      <div class="cuboid base" style="--x:0px;--y:34px;--z:0px">
+        <div class="face ft"></div><div class="face bk"></div><div class="face rt"></div>
+        <div class="face lf"></div><div class="face tp"></div><div class="face bm"></div>
+      </div>
+      <!-- keyboard -->
+      <div class="cuboid keyboard" style="--x:0px;--y:40px;--z:180px;--rx:-4deg">
+        <div class="face ft"></div><div class="face bk"></div><div class="face rt"></div>
+        <div class="face lf"></div><div class="face tp"></div><div class="face bm"></div>
+      </div>
 
-<!-- MANIFESTO -->
-<section class="manifesto" id="studio">
-  <div class="blob b1" data-depth="0.05"></div>
-  <div class="blob b2" data-depth="0.09"></div>
-  <div class="blob b3" data-depth="0.14"></div>
-  <div class="inner-wrap">
-    <p class="kicker" style="color:#111">( 01 — Manifesto )</p>
-    <h2 class="mani-big rise">
-      We bend letters<br><em>until they</em> scream,<br>then we call it<br>a masterpiece.
-    </h2>
-    <div class="mani-meta">
-      <div class="col"><span class="n">/ Approach</span><p>타이포그래피를 그래픽이 아니라 안무로 봅니다. 모든 글자는 등장·이동·퇴장의 타이밍을 갖습니다.</p></div>
-      <div class="col"><span class="n">/ Tools</span><p>HTML · CSS · 한 줄의 JavaScript. 프레임워크 없이, 브라우저의 날것으로만.</p></div>
-      <div class="col"><span class="n">/ Result</span><p>스크롤이 곧 재생 버튼이 되는, 멈출 수 없는 한 페이지.</p></div>
+      <div class="tag3d" style="transform:translate3d(150px,-230px,120px)">RENDER: CSS 3D</div>
+      <div class="tag3d b" style="transform:translate3d(-360px,150px,140px)">DRAG ME</div>
+    </div>
+  </div>
+
+  <div class="vign"></div>
+
+  <div class="hud">
+    <div class="top-copy">
+      <p class="eyebrow">( Personal build · no frameworks )</p>
+      <h1>SPIN<br><em>the</em> MACHINE</h1>
+    </div>
+    <div class="bottom-row">
+      <p>순수 HTML·CSS·JS로 조립한 3D 워크스테이션. 마우스로 붙잡고 빙글빙글 돌려보세요. 라이브러리 0개.</p>
+      <div class="hint"><span class="grab"></span> DRAG TO ROTATE · 자동 회전 중</div>
     </div>
   </div>
 </section>
 
-<!-- WORK GRID -->
-<section class="work" id="work">
-  <div class="work-head">
-    <div>
-      <p class="kicker">( 02 — Selected Noise )</p>
-      <h2 class="rise">The Reel</h2>
-    </div>
-    <p style="max-width:320px;color:#cfccc4">존재하지 않는 여섯 개의 프로젝트. 순전히 보기 위한 것들. 마우스를 올려 기울여 보세요.</p>
+<div class="strip" aria-hidden="true">
+  <div class="m">
+    <span class="fill">HELLO WORLD ✦</span><span>PURE CSS 3D ✦</span><span class="fill">MARY // OS ✦</span><span>NO LIBRARIES ✦</span>
+    <span class="fill">HELLO WORLD ✦</span><span>PURE CSS 3D ✦</span><span class="fill">MARY // OS ✦</span><span>NO LIBRARIES ✦</span>
   </div>
-  <div class="grid" id="grid">
-    <a class="tile rise" href="#"><div class="fill g1"></div><div class="glow"></div><span class="idx">001</span><div class="name"><b>Chromatic Howl</b><small>IDENTITY / MOTION</small></div></a>
-    <a class="tile rise" href="#"><div class="fill g2"></div><div class="glow"></div><span class="idx">002</span><div class="name"><b>Acid Grotesk</b><small>TYPEFACE</small></div></a>
-    <a class="tile rise" href="#"><div class="fill g3"></div><div class="glow"></div><span class="idx">003</span><div class="name"><b>Nightfold</b><small>WEB / WEBGL</small></div></a>
-    <a class="tile rise" href="#"><div class="fill g4"></div><div class="glow"></div><span class="idx">004</span><div class="name"><b>Bubblegum Riot</b><small>CAMPAIGN</small></div></a>
-    <a class="tile rise" href="#"><div class="fill g5"></div><div class="glow"></div><span class="idx">005</span><div class="name"><b>Voltage</b><small>TITLE SEQUENCE</small></div></a>
-    <a class="tile rise" href="#"><div class="fill g6"></div><div class="glow"></div><span class="idx">006</span><div class="name"><b>Solar Scream</b><small>ART DIRECTION</small></div></a>
-  </div>
-</section>
-
-<!-- 3D GRID -->
-<section class="grid3d" id="grid3d" aria-label="3D grid">
-  <div class="scene" id="gridScene">
-    <div class="plane floor"></div>
-    <div class="plane ceil"></div>
-  </div>
-  <div class="horizon"></div>
-  <div class="vignette"></div>
-  <div class="caption">
-    <p class="kicker">( 03 — Enter the void )</p>
-    <h2>INTO<br><em>the</em> GRID</h2>
-    <p>무한히 밀려오는 격자 · move your mouse</p>
-  </div>
-</section>
-
-<!-- CTA / FOOTER -->
-<section class="cta" id="contact">
-  <p class="lead">( 04 — Say hi, or don't )</p>
-  <div class="huge"><a href="#top">LET'S<br>MOVE</a></div>
-  <div class="foot-marquee" aria-hidden="true">
-    <div class="m">
-      <span>MADE FOR THE EYES ✦</span><span>NO PURPOSE, ALL VIBE ✦</span><span>HYPER/TYPE ✦</span>
-      <span>MADE FOR THE EYES ✦</span><span>NO PURPOSE, ALL VIBE ✦</span><span>HYPER/TYPE ✦</span>
-    </div>
-  </div>
-</section>
+</div>
 <footer>
-  <span>© HYPER/TYPE — A visual toy</span>
+  <span>© MARY // OS — a spinning toy</span>
   <span>Built with HTML · CSS · JS</span>
-  <a href="#top">Back to top ↑</a>
+  <a href="#stage">Reboot ↑</a>
 </footer>
 
 <script>
-const RM = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ---------- preloader ---------- */
+/* ---------- terminal typing ---------- */
 (function(){
-  const pre=document.getElementById("pre"),num=document.getElementById("preNum"),
-        bar=document.getElementById("preBar"),panels=document.getElementById("prePanels");
-  let p=0;
-  const dur=RM?0:1500, start=performance.now();
-  function step(t){
-    const k=Math.min(1,(t-start)/(dur||1));
-    p=Math.round(k*100);
-    num.textContent=String(p).padStart(2,"0");
-    bar.style.width=(k*100)+"%";
-    if(k<1){requestAnimationFrame(step);}
-    else{ finish(); }
-  }
-  function finish(){
-    pre.style.transition="opacity .4s"; pre.style.opacity="0";
-    setTimeout(()=>pre.style.display="none",420);
-    panels.querySelectorAll(".panel").forEach(pn=>pn.style.transform="translateY(-101%)");
-    revealHero();
-  }
-  if(RM){ num.textContent="100"; finish(); } else requestAnimationFrame(step);
-})();
-
-function revealHero(){
-  document.querySelectorAll(".hline .reveal-up").forEach((r,i)=>{
-    setTimeout(()=>r.classList.add("in"), 120*i);
-  });
-}
-
-/* ---------- custom cursor ---------- */
-(function(){
-  if(window.matchMedia("(hover:none)").matches) return;
-  const cur=document.getElementById("cur"),ring=document.getElementById("ring");
-  let mx=innerWidth/2,my=innerHeight/2,rx=mx,ry=my;
-  addEventListener("mousemove",e=>{mx=e.clientX;my=e.clientY;
-    cur.style.left=mx+"px";cur.style.top=my+"px";});
-  (function loop(){ rx+=(mx-rx)*.18; ry+=(my-ry)*.18;
-    ring.style.left=rx+"px"; ring.style.top=ry+"px"; requestAnimationFrame(loop);})();
-  document.querySelectorAll("a,.tile,.huge a").forEach(el=>{
-    el.addEventListener("mouseenter",()=>ring.classList.add("grow"));
-    el.addEventListener("mouseleave",()=>ring.classList.remove("grow"));
-  });
-})();
-
-/* ---------- scroll progress + kinetic tickers + parallax blobs ---------- */
-(function(){
-  const prog=document.getElementById("progress");
-  const rows=[...document.querySelectorAll(".trow")];
-  const blobs=[...document.querySelectorAll(".blob")];
-  let sy=window.scrollY, target=sy;
-  addEventListener("scroll",()=>{ target=window.scrollY; },{passive:true});
-  function raf(){
-    sy+=(target-sy)*0.12;
-    const h=document.documentElement.scrollHeight-innerHeight;
-    prog.style.width=(h>0?(sy/h*100):0)+"%";
-    if(!RM){
-      const vel=Math.min(30,Math.abs(target-sy));
-      rows.forEach(r=>{
-        const sp=parseFloat(r.dataset.speed||"0.1");
-        r.style.transform=`translateX(${(-sy*sp)%1200}px) skewX(${(target-sy)*sp*0.6}deg)`;
-      });
-      blobs.forEach(b=>{
-        const d=parseFloat(b.dataset.depth||"0.05");
-        b.style.transform=`translateY(${sy*d - 200*d}px)`;
-      });
+  const term=document.getElementById("term");
+  if(!term) return;
+  const lines=[
+    "> boot mary//os ...",
+    "> loading modules  [OK]",
+    "> render: css-3d   [OK]",
+    "> input: mouse     [OK]",
+    "> status: online",
+    "> hello, world_",
+  ];
+  let li=0,ci=0,cur=null;
+  function type(){
+    if(li>=lines.length){ return; }
+    if(ci===0){ cur=document.createElement("div"); cur.className="line"; term.appendChild(cur);
+      while(term.children.length>8) term.removeChild(term.firstChild);
     }
-    requestAnimationFrame(raf);
+    const txt=lines[li];
+    if(ci<=txt.length){
+      cur.innerHTML=txt.slice(0,ci)+'<span class="cursor"></span>';
+      ci++;
+      setTimeout(type, 34+Math.random()*40);
+    }else{
+      cur.textContent=txt;
+      li++; ci=0;
+      if(li>=lines.length){ setTimeout(()=>{ term.innerHTML=""; li=0; type(); }, 2600); }
+      else setTimeout(type, 360);
+    }
   }
-  requestAnimationFrame(raf);
+  if(!RM) type(); else term.innerHTML=lines.map(l=>`<div class="line">${l}</div>`).join("");
 })();
 
-/* ---------- reveal on scroll ---------- */
+/* ---------- rotate: auto-spin + drag ---------- */
 (function(){
-  const io=new IntersectionObserver((ents)=>{
-    ents.forEach((e,i)=>{ if(e.isIntersecting){
-      const els=e.target.parentElement.querySelectorAll(".rise");
-      e.target.classList.add("in"); io.unobserve(e.target);
-    }});
-  },{threshold:.2});
-  document.querySelectorAll(".rise").forEach((el,i)=>{
-    el.style.transitionDelay=(el.closest(".grid")? (i%6)*0.07 : 0)+"s";
-    io.observe(el);
-  });
-})();
+  const rig=document.getElementById("rig");
+  if(!rig) return;
+  let ry=-24, rx=0;
+  let vy=RM?0:0.28;
+  let dragging=false, lastX=0, lastY=0;
+  function apply(){ rig.style.transform=`rotateY(${ry}deg) rotateX(${rx}deg)`; }
 
-/* ---------- 3D tilt tiles ---------- */
-(function(){
-  if(RM) return;
-  document.querySelectorAll(".tile").forEach(tile=>{
-    tile.addEventListener("mousemove",e=>{
-      const r=tile.getBoundingClientRect();
-      const px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
-      const rotY=(px-.5)*18, rotX=(.5-py)*18;
-      tile.style.transform=`rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(6px)`;
-      tile.style.setProperty("--mx",(px*100)+"%");
-      tile.style.setProperty("--my",(py*100)+"%");
-    });
-    tile.addEventListener("mouseleave",()=>{ tile.style.transform=""; });
-  });
-})();
+  function down(x,y){ dragging=true; lastX=x; lastY=y; rig.classList.add("drag"); rig.classList.remove("floaty"); }
+  function move(x,y){ if(!dragging) return; ry+=(x-lastX)*0.4; rx=Math.max(-40,Math.min(40,rx-(y-lastY)*0.3)); lastX=x; lastY=y; }
+  function up(){ dragging=false; rig.classList.remove("drag"); }
 
-/* ---------- 3D grid mouse tilt ---------- */
-(function(){
-  if(RM) return;
-  const sec=document.getElementById("grid3d"),scene=document.getElementById("gridScene");
-  if(!sec||!scene) return;
-  let tx=0,ty=0,cx=0,cy=0,active=false;
-  sec.addEventListener("mousemove",e=>{
-    const r=sec.getBoundingClientRect();
-    tx=((e.clientX-r.left)/r.width-.5)*2;   // -1..1
-    ty=((e.clientY-r.top)/r.height-.5)*2;
-    active=true;
-  });
-  sec.addEventListener("mouseleave",()=>{ tx=0;ty=0; });
+  rig.addEventListener("mousedown",e=>{e.preventDefault();down(e.clientX,e.clientY);});
+  addEventListener("mousemove",e=>move(e.clientX,e.clientY));
+  addEventListener("mouseup",up);
+  rig.addEventListener("touchstart",e=>{const t=e.touches[0];down(t.clientX,t.clientY);},{passive:true});
+  addEventListener("touchmove",e=>{const t=e.touches[0];move(t.clientX,t.clientY);},{passive:true});
+  addEventListener("touchend",up);
+
   (function loop(){
-    cx+=(tx-cx)*.06; cy+=(ty-cy)*.06;
-    scene.style.transform=`rotateY(${cx*10}deg) rotateX(${ -cy*6}deg)`;
+    if(!dragging){ rx+=(0-rx)*0.02; ry+=vy; }
+    apply();
     requestAnimationFrame(loop);
   })();
 })();
