@@ -3,174 +3,311 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#0b1526" />
-<title>재무 의사결정 지원 시스템 | 경기주택도시공사 GH</title>
-<meta name="description" content="경기주택도시공사(GH) 재무 의사결정 지원 시스템" />
+<meta name="theme-color" content="#07070c" />
+<title>MARY // WORKSTATION</title>
+<meta name="description" content="A spinning 3D workstation — built with pure CSS 3D. Drag to rotate." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 <style>
 :root{
-  --navy0:#0a1424;
-  --navy1:#0f2038;
-  --blue:#4f86d6;
-  --blue-l:#7fb0f0;
-  --blue-d:#284d86;
-  --ink:#eaf1fb;
-  --sub:#9fb2cc;
-  --line:rgba(159,178,204,.18);
-  --sans:"Noto Sans KR",sans-serif;
+  --bg:#07070c;
+  --ink:#eef1ff;
+  --cyan:#38e8ff;
+  --mag:#ff3d9a;
+  --phos:#7dffb0;
+  --muted:#7c81a0;
+  --display:"Anton","Archivo Black",sans-serif;
   --grotesk:"Space Grotesk","Noto Sans KR",sans-serif;
+  --mono:"Space Mono",monospace;
 }
 *{box-sizing:border-box}
 html,body{margin:0;height:100%}
-body{background:var(--navy0);color:var(--ink);font-family:var(--sans);overflow:hidden}
+body{background:radial-gradient(120% 90% at 50% 0%,#12132a 0%,#07070c 55%,#050509 100%);
+  color:var(--ink);font-family:var(--grotesk);overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-::selection{background:var(--blue);color:#fff}
+::selection{background:var(--mag);color:#fff}
 
-.hero{position:relative;height:100vh;min-height:600px;overflow:hidden;isolation:isolate}
+/* ---------- chrome ---------- */
+header{position:fixed;top:0;left:0;width:100%;z-index:40;display:flex;justify-content:space-between;
+  align-items:center;padding:18px 24px}
+.brand{font-family:var(--display);font-size:20px;letter-spacing:.03em}
+.brand b{color:var(--cyan)}
+.status{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+  display:flex;gap:9px;align-items:center}
+.status .led{width:8px;height:8px;border-radius:50%;background:var(--phos);box-shadow:0 0 10px var(--phos);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.3}}
 
-/* ---- cinematic background ---- */
-.bg{position:absolute;inset:0;z-index:0;
+/* ---------- stage ---------- */
+.stage{position:relative;height:100vh;min-height:620px;overflow:hidden;
+  perspective:1200px;perspective-origin:50% 42%}
+
+/* synthwave floor */
+.floor{position:absolute;left:-100%;top:64%;width:300%;height:150%;
+  background-image:
+    linear-gradient(rgba(56,232,255,.28) 2px,transparent 2px),
+    linear-gradient(90deg,rgba(255,61,154,.22) 2px,transparent 2px);
+  background-size:70px 70px;transform:rotateX(85deg);transform-origin:top center;
+  animation:floorflow 1.6s linear infinite;will-change:background-position}
+@keyframes floorflow{to{background-position:0 70px}}
+.floorglow{position:absolute;left:0;right:0;top:64%;height:180px;transform:translateY(-50%);
+  background:radial-gradient(60% 130px at 50% 50%,rgba(56,232,255,.35),transparent 70%);filter:blur(8px);pointer-events:none}
+.vign{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(85% 85% at 50% 42%,transparent 45%,rgba(5,5,9,.85) 100%)}
+
+/* big background word */
+.bgword{position:absolute;top:50%;left:50%;transform:translate(-50%,-58%);z-index:1;
+  font-family:var(--display);text-transform:uppercase;white-space:nowrap;
+  font-size:clamp(90px,26vw,420px);line-height:.8;color:transparent;
+  -webkit-text-stroke:2px rgba(238,241,255,.08);pointer-events:none;user-select:none}
+
+/* ---------- 3D world ---------- */
+.world{position:absolute;left:50%;top:46%;z-index:2;transform-style:preserve-3d;
+  transform:translate(-50%,-50%) rotateX(-14deg)}
+.rig{position:relative;transform-style:preserve-3d;will-change:transform;cursor:grab}
+.rig.drag{cursor:grabbing}
+.rig.floaty{animation:bob 5s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-14px)}}
+
+.cuboid{position:absolute;left:50%;top:50%;transform-style:preserve-3d;
+  transform:translate3d(var(--x,0px),var(--y,0px),var(--z,0px)) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg))}
+.face{position:absolute;left:50%;top:50%;background:var(--body,#20222c);
+  border:1px solid rgba(255,255,255,.05)}
+.ft{width:var(--w);height:var(--h);transform:translate(-50%,-50%) translateZ(calc(var(--d)/2))}
+.bk{width:var(--w);height:var(--h);transform:translate(-50%,-50%) rotateY(180deg) translateZ(calc(var(--d)/2));background:var(--back,#111219)}
+.rt{width:var(--d);height:var(--h);transform:translate(-50%,-50%) rotateY(90deg) translateZ(calc(var(--w)/2));background:var(--side,#171923)}
+.lf{width:var(--d);height:var(--h);transform:translate(-50%,-50%) rotateY(-90deg) translateZ(calc(var(--w)/2));background:var(--side,#171923)}
+.tp{width:var(--w);height:var(--d);transform:translate(-50%,-50%) rotateX(90deg) translateZ(calc(var(--h)/2));background:var(--top,#2a2d3a)}
+.bm{width:var(--w);height:var(--d);transform:translate(-50%,-50%) rotateX(-90deg) translateZ(calc(var(--h)/2));background:var(--bot,#0c0d12)}
+
+/* monitor */
+.monitor{--w:340px;--h:260px;--d:120px;--body:#22242f;--top:#2b2e3c;--side:#181a24;--bot:#0c0d12;--back:#111219}
+.monitor .ft{border-radius:16px;box-shadow:inset 0 0 0 2px rgba(56,232,255,.12)}
+.monitor .tp{box-shadow:inset 0 6px 16px rgba(56,232,255,.08)}
+.screen{position:absolute;inset:26px;border-radius:8px;background:#03150c;overflow:hidden;
+  box-shadow:inset 0 0 26px rgba(0,0,0,.9),0 0 22px rgba(125,255,176,.25);border:2px solid #05271a}
+.screen .glass{position:absolute;inset:0;background:
+    repeating-linear-gradient(0deg,rgba(125,255,176,.10) 0 1px,transparent 1px 3px);
+  mix-blend-mode:screen;pointer-events:none;animation:scan 6s linear infinite;opacity:.7}
+@keyframes scan{to{background-position:0 120px}}
+.screen .crt{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 120% at 50% 50%,transparent 60%,rgba(0,0,0,.55) 100%)}
+.term{position:absolute;inset:14px 16px 34px;color:var(--phos);font-family:var(--mono);font-size:12px;
+  line-height:1.5;text-shadow:0 0 6px rgba(125,255,176,.7);overflow:hidden}
+.term .line{white-space:nowrap}
+.term .cursor{display:inline-block;width:8px;height:14px;background:var(--phos);vertical-align:-2px;
+  box-shadow:0 0 8px var(--phos);animation:blink 1s steps(1) infinite}
+.brandscreen{position:absolute;left:0;right:0;bottom:12px;text-align:center;font-family:var(--display);
+  font-size:26px;color:var(--phos);text-shadow:0 0 12px rgba(125,255,176,.8);letter-spacing:.04em}
+
+/* stand + base */
+.neck{--w:70px;--h:70px;--d:56px;--body:#1c1e28;--top:#262935;--side:#141620;--bot:#0b0c11;--back:#101119}
+.base{--w:220px;--h:24px;--d:170px;--body:#1e202b;--top:#2a2d3a;--side:#151722;--bot:#0a0b10;--back:#101119}
+.base .tp{box-shadow:inset 0 0 40px rgba(56,232,255,.08)}
+
+/* keyboard */
+.keyboard{--w:320px;--h:22px;--d:130px;--body:#1b1d27;--side:#141620;--bot:#0a0b10;--back:#101119;
+  --top:#242734}
+.keyboard .tp{
   background:
-    radial-gradient(90% 60% at 78% 8%,rgba(79,134,214,.28),transparent 60%),
-    radial-gradient(70% 50% at 20% 100%,rgba(40,77,134,.35),transparent 60%),
-    linear-gradient(180deg,#0c1a30 0%,#0a1424 60%,#080f1c 100%)}
-.grid{position:absolute;inset:0;z-index:1;opacity:.5;pointer-events:none;
-  background-image:linear-gradient(rgba(127,176,240,.06) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(127,176,240,.06) 1px,transparent 1px);
-  background-size:64px 64px;
-  -webkit-mask-image:linear-gradient(180deg,transparent,#000 40%,#000 70%,transparent);
-          mask-image:linear-gradient(180deg,transparent,#000 40%,#000 70%,transparent)}
-.skyline{position:absolute;left:0;right:0;bottom:0;height:38%;z-index:1;opacity:.9;
-  background:bottom center/cover no-repeat url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1440' height='300' preserveAspectRatio='xMidYMax slice'%3E%3Cg fill='%23081120'%3E%3Crect x='0' y='170' width='90' height='130'/%3E%3Crect x='96' y='120' width='60' height='180'/%3E%3Crect x='162' y='200' width='80' height='100'/%3E%3Crect x='250' y='150' width='54' height='150'/%3E%3Crect x='312' y='90' width='70' height='210'/%3E%3Crect x='392' y='185' width='96' height='115'/%3E%3Crect x='498' y='140' width='58' height='160'/%3E%3Crect x='566' y='60' width='64' height='240'/%3E%3Crect x='640' y='175' width='90' height='125'/%3E%3Crect x='740' y='110' width='66' height='190'/%3E%3Crect x='816' y='195' width='84' height='105'/%3E%3Crect x='910' y='135' width='60' height='165'/%3E%3Crect x='980' y='70' width='74' height='230'/%3E%3Crect x='1064' y='180' width='92' height='120'/%3E%3Crect x='1166' y='130' width='58' height='170'/%3E%3Crect x='1234' y='100' width='72' height='200'/%3E%3Crect x='1316' y='190' width='124' height='110'/%3E%3C/g%3E%3Cg fill='%237fb0f0' opacity='0.5'%3E%3Crect x='120' y='150' width='4' height='6'/%3E%3Crect x='134' y='170' width='4' height='6'/%3E%3Crect x='340' y='130' width='4' height='6'/%3E%3Crect x='356' y='160' width='4' height='6'/%3E%3Crect x='588' y='110' width='4' height='6'/%3E%3Crect x='604' y='150' width='4' height='6'/%3E%3Crect x='1000' y='120' width='4' height='6'/%3E%3Crect x='1018' y='160' width='4' height='6'/%3E%3Crect x='1258' y='140' width='4' height='6'/%3E%3C/g%3E%3C/svg%3E")}
-.vign{position:absolute;inset:0;z-index:2;pointer-events:none;
-  background:radial-gradient(120% 90% at 50% 40%,transparent 40%,rgba(6,12,22,.7) 100%)}
+    repeating-linear-gradient(90deg,rgba(0,0,0,.5) 0 2px,transparent 2px 26px),
+    repeating-linear-gradient(0deg,rgba(0,0,0,.5) 0 2px,transparent 2px 22px),
+    #242734;
+  box-shadow:inset 0 0 30px rgba(56,232,255,.06)}
 
-/* ---- rotating 3D GH cube (ambient centerpiece) ---- */
-.cubewrap{position:absolute;z-index:2;top:46%;left:59%;transform:translate(-50%,-50%);
-  perspective:1000px;pointer-events:none;filter:drop-shadow(0 30px 60px rgba(20,50,100,.5))}
-.cube{position:relative;width:230px;height:230px;transform-style:preserve-3d;
-  animation:spin 20s linear infinite}
-@keyframes spin{to{transform:rotateX(-18deg) rotateY(360deg)}}
-.cube .cf{position:absolute;inset:0;display:grid;place-items:center;border:1px solid rgba(127,176,240,.45);
-  background:linear-gradient(150deg,rgba(79,134,214,.34),rgba(40,77,134,.22));
-  box-shadow:inset 0 0 40px rgba(127,176,240,.18);backdrop-filter:blur(2px)}
-.cube .cf b{font-family:var(--grotesk);font-weight:600;font-size:64px;color:rgba(234,241,251,.92);
-  letter-spacing:.02em;text-shadow:0 0 22px rgba(127,176,240,.6)}
-.s1{transform:translateZ(115px)} .s2{transform:rotateY(180deg) translateZ(115px)}
-.s3{transform:rotateY(90deg) translateZ(115px)} .s4{transform:rotateY(-90deg) translateZ(115px)}
-.s5{transform:rotateX(90deg) translateZ(115px)} .s6{transform:rotateX(-90deg) translateZ(115px)}
+/* tower */
+.tower{--w:96px;--h:230px;--d:210px;--body:#1d1f2a;--top:#282b39;--side:#141620;--bot:#0a0b10;--back:#101119}
+.tower .ft{background:
+    repeating-linear-gradient(0deg,transparent 0 16px,rgba(0,0,0,.55) 16px 20px),
+    linear-gradient(#20222e,#1a1c26)}
+.tower .ft::after{content:"";position:absolute;top:16px;right:14px;width:10px;height:10px;border-radius:50%;
+  background:var(--cyan);box-shadow:0 0 12px var(--cyan);animation:blink 1.8s infinite}
 
-/* ---- header ---- */
-header{position:absolute;top:0;left:0;width:100%;z-index:20;display:flex;justify-content:space-between;
-  align-items:center;padding:22px 40px}
-.brand{display:flex;align-items:center;gap:12px}
-.brand svg{width:38px;height:38px;display:block}
-.brand .nm{font-weight:700;font-size:17px;letter-spacing:.01em}
-.clock{font-family:var(--grotesk);font-size:12px;letter-spacing:.14em;color:var(--sub)}
+/* floating labels */
+.tag3d{position:absolute;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--bg);background:var(--cyan);padding:5px 9px;border-radius:6px;white-space:nowrap;
+  box-shadow:0 8px 20px rgba(0,0,0,.4)}
+.tag3d.b{background:var(--mag)}
 
-/* ---- hero content ---- */
-.inner{position:relative;z-index:10;height:100%;display:flex;align-items:center;
-  justify-content:space-between;gap:40px;padding:0 40px;max-width:1440px;margin:0 auto}
-.copy{max-width:620px}
-.eyebrow{display:inline-block;font-family:var(--grotesk);font-size:12px;letter-spacing:.24em;
-  text-transform:uppercase;color:var(--blue-l);border:1px solid var(--line);border-radius:100px;
-  padding:8px 16px;background:rgba(127,176,240,.06)}
-h1{font-size:clamp(34px,5.2vw,60px);line-height:1.2;font-weight:900;margin:24px 0 16px;letter-spacing:-.01em}
-h1 em{font-style:normal;color:var(--blue-l)}
-.copy .sub{color:var(--sub);font-size:16px;margin:0}
+/* ---------- foreground copy ---------- */
+.hud{position:absolute;inset:0;z-index:20;pointer-events:none;display:flex;flex-direction:column;
+  justify-content:space-between;padding:96px 26px 30px}
+.hud .top-copy{max-width:520px}
+.hud .eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px}
+.hud h1{font-family:var(--display);text-transform:uppercase;line-height:.86;
+  font-size:clamp(44px,7vw,104px);margin:0;letter-spacing:-.01em}
+.hud h1 em{font-style:normal;color:transparent;-webkit-text-stroke:2px var(--mag)}
+.hud .bottom-row{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap}
+.hud p{max-width:360px;color:#c7cbe6;font-size:14px;margin:0}
+.hint{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:10px}
+.hint .grab{width:22px;height:22px;border:1px solid var(--muted);border-radius:50%;position:relative}
+.hint .grab::after{content:"";position:absolute;inset:6px;border-radius:50%;background:var(--cyan);
+  animation:orbit 2.4s ease-in-out infinite}
+@keyframes orbit{50%{transform:translateX(5px)}}
 
-/* glass card */
-.card{width:min(380px,42vw);background:rgba(16,32,56,.5);border:1px solid var(--line);
-  border-radius:18px;padding:28px 26px;backdrop-filter:blur(14px);
-  box-shadow:0 30px 70px rgba(5,12,24,.5)}
-.card h2{font-size:20px;font-weight:700;margin:0}
-.card .en{font-family:var(--grotesk);font-size:12px;letter-spacing:.1em;color:var(--sub);margin:4px 0 18px}
-.card p{color:var(--sub);font-size:14px;line-height:1.6;margin:0 0 22px}
-.enter{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;
-  border:1px solid var(--line);border-radius:12px;padding:14px 18px;color:var(--ink);
-  font-family:var(--sans);font-weight:700;font-size:15px;background:rgba(79,134,214,.14);
-  transition:background .2s,transform .2s,border-color .2s;cursor:pointer}
-.enter:hover{background:rgba(79,134,214,.3);border-color:var(--blue-l);transform:translateY(-2px)}
-.enter .arw{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--blue),var(--blue-d));font-family:var(--grotesk)}
+/* ---------- lower strip ---------- */
+.strip{position:relative;z-index:5;border-top:1px solid #191a28;background:#070710;overflow:hidden;padding:26px 0}
+.strip .m{display:flex;white-space:nowrap;font-family:var(--display);text-transform:uppercase;font-size:40px;
+  color:transparent;-webkit-text-stroke:1.4px var(--cyan);animation:slide 20s linear infinite}
+.strip .m span{padding:0 .4em}
+.strip .m .fill{color:var(--mag);-webkit-text-stroke:0}
+@keyframes slide{to{transform:translateX(-50%)}}
+footer{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding:30px 26px 40px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);background:#070710}
+footer a:hover{color:var(--ink)}
 
-@media(max-width:860px){
-  .cubewrap{top:30%;left:50%}.cube{width:170px;height:170px}
-  .s1,.s2,.s3,.s4,.s5,.s6{}
-  .inner{flex-direction:column;align-items:flex-start;justify-content:flex-end;padding-bottom:44px}
-  .card{width:100%}
-  header{padding:18px 22px}.inner{padding-left:22px;padding-right:22px}
-  .clock{display:none}
+@media(max-width:720px){
+  .world{transform:translate(-50%,-50%) rotateX(-14deg) scale(.62)}
+  .hud{padding-top:84px}
 }
-@media(max-width:860px){.s1{transform:translateZ(85px)}.s2{transform:rotateY(180deg) translateZ(85px)}
-  .s3{transform:rotateY(90deg) translateZ(85px)}.s4{transform:rotateY(-90deg) translateZ(85px)}
-  .s5{transform:rotateX(90deg) translateZ(85px)}.s6{transform:rotateX(-90deg) translateZ(85px)}
-  .cube .cf b{font-size:46px}}
+@media(max-width:420px){ .world{transform:translate(-50%,-50%) rotateX(-14deg) scale(.5)} }
 
-@media (prefers-reduced-motion:reduce){.cube{animation:none;transform:rotateX(-18deg) rotateY(-32deg)}}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important}
+}
 </style>
 </head>
 <body>
-<section class="hero">
-  <div class="bg"></div>
-  <div class="grid"></div>
-  <div class="skyline"></div>
 
-  <div class="cubewrap" aria-hidden="true">
-    <div class="cube">
-      <div class="cf s1"><b>GH</b></div>
-      <div class="cf s2"></div>
-      <div class="cf s3"></div>
-      <div class="cf s4"></div>
-      <div class="cf s5"><b>GH</b></div>
-      <div class="cf s6"></div>
+<header>
+  <div class="brand">MARY<b>//</b>OS</div>
+  <div class="status"><span class="led"></span> SYSTEM ONLINE · v3.0</div>
+</header>
+
+<section class="stage" id="stage">
+  <div class="floor"></div>
+  <div class="floorglow"></div>
+  <div class="bgword">WORKSTATION</div>
+
+  <div class="world">
+    <div class="rig floaty" id="rig">
+      <!-- tower -->
+      <div class="cuboid tower" style="--x:-300px;--y:-6px;--z:-10px">
+        <div class="face ft"></div><div class="face bk"></div><div class="face rt"></div>
+        <div class="face lf"></div><div class="face tp"></div><div class="face bm"></div>
+      </div>
+      <!-- monitor -->
+      <div class="cuboid monitor" style="--x:0px;--y:-150px;--z:0px">
+        <div class="face bk"></div><div class="face rt"></div><div class="face lf"></div>
+        <div class="face tp"></div><div class="face bm"></div>
+        <div class="face ft">
+          <div class="screen">
+            <div class="term" id="term"></div>
+            <div class="brandscreen">MARY // OS</div>
+            <div class="glass"></div>
+            <div class="crt"></div>
+          </div>
+        </div>
+      </div>
+      <!-- neck -->
+      <div class="cuboid neck" style="--x:0px;--y:-8px;--z:-6px">
+        <div class="face ft"></div><div class="face bk"></div><div class="face rt"></div>
+        <div class="face lf"></div><div class="face tp"></div><div class="face bm"></div>
+      </div>
+      <!-- base -->
+      <div class="cuboid base" style="--x:0px;--y:34px;--z:0px">
+        <div class="face ft"></div><div class="face bk"></div><div class="face rt"></div>
+        <div class="face lf"></div><div class="face tp"></div><div class="face bm"></div>
+      </div>
+      <!-- keyboard -->
+      <div class="cuboid keyboard" style="--x:0px;--y:40px;--z:180px;--rx:-4deg">
+        <div class="face ft"></div><div class="face bk"></div><div class="face rt"></div>
+        <div class="face lf"></div><div class="face tp"></div><div class="face bm"></div>
+      </div>
+
+      <div class="tag3d" style="transform:translate3d(150px,-230px,120px)">RENDER: CSS 3D</div>
+      <div class="tag3d b" style="transform:translate3d(-360px,150px,140px)">DRAG ME</div>
     </div>
   </div>
 
   <div class="vign"></div>
 
-  <header>
-    <div class="brand">
-      <svg viewBox="0 0 100 100" aria-label="GH">
-        <polygon points="50,12 84,31 50,50 16,31" fill="#6fa8dc"/>
-        <polygon points="16,31 50,50 50,88 16,69" fill="#3d6cb0"/>
-        <polygon points="50,50 84,31 84,69 50,88" fill="#274d86"/>
-        <polygon points="50,12 84,31 50,50 16,31" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="1.2"/>
-      </svg>
-      <span class="nm">경기주택도시공사</span>
+  <div class="hud">
+    <div class="top-copy">
+      <p class="eyebrow">( Personal build · no frameworks )</p>
+      <h1>SPIN<br><em>the</em> MACHINE</h1>
     </div>
-    <div class="clock" id="clock">v5.1 · —</div>
-  </header>
-
-  <div class="inner">
-    <div class="copy">
-      <span class="eyebrow">Financial Decision Support System</span>
-      <h1>대한민국 도시주택의<br>미래를 만들어가는 <em>GH</em></h1>
-      <p class="sub">재무 의사결정 지원 시스템</p>
+    <div class="bottom-row">
+      <p>순수 HTML·CSS·JS로 조립한 3D 워크스테이션. 마우스로 붙잡고 빙글빙글 돌려보세요. 라이브러리 0개.</p>
+      <div class="hint"><span class="grab"></span> DRAG TO ROTATE · 자동 회전 중</div>
     </div>
-
-    <aside class="card">
-      <h2>재무 의사결정 지원 시스템</h2>
-      <p class="en">Financial Decision Support System</p>
-      <p>중장기 사업계획 기반<br>통합 의사결정 지원 시스템</p>
-      <a class="enter" href="#">시스템 입장하기 <span class="arw" aria-hidden="true">→</span></a>
-    </aside>
   </div>
 </section>
 
+<div class="strip" aria-hidden="true">
+  <div class="m">
+    <span class="fill">HELLO WORLD ✦</span><span>PURE CSS 3D ✦</span><span class="fill">MARY // OS ✦</span><span>NO LIBRARIES ✦</span>
+    <span class="fill">HELLO WORLD ✦</span><span>PURE CSS 3D ✦</span><span class="fill">MARY // OS ✦</span><span>NO LIBRARIES ✦</span>
+  </div>
+</div>
+<footer>
+  <span>© MARY // OS — a spinning toy</span>
+  <span>Built with HTML · CSS · JS</span>
+  <a href="#stage">Reboot ↑</a>
+</footer>
+
 <script>
-/* live clock in header (v5.1 · YYYY. MM. DD  HH:MM) */
+const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- terminal typing ---------- */
 (function(){
-  const el=document.getElementById("clock");
-  if(!el) return;
-  function pad(n){return String(n).padStart(2,"0");}
-  function tick(){
-    const d=new Date();
-    el.textContent=`v5.1 · ${d.getFullYear()}. ${pad(d.getMonth()+1)}. ${pad(d.getDate())}  ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const term=document.getElementById("term");
+  if(!term) return;
+  const lines=[
+    "> boot mary//os ...",
+    "> loading modules  [OK]",
+    "> render: css-3d   [OK]",
+    "> input: mouse     [OK]",
+    "> status: online",
+    "> hello, world_",
+  ];
+  let li=0,ci=0,cur=null;
+  function type(){
+    if(li>=lines.length){ return; }
+    if(ci===0){ cur=document.createElement("div"); cur.className="line"; term.appendChild(cur);
+      while(term.children.length>8) term.removeChild(term.firstChild);
+    }
+    const txt=lines[li];
+    if(ci<=txt.length){
+      cur.innerHTML=txt.slice(0,ci)+'<span class="cursor"></span>';
+      ci++;
+      setTimeout(type, 34+Math.random()*40);
+    }else{
+      cur.textContent=txt;
+      li++; ci=0;
+      if(li>=lines.length){ setTimeout(()=>{ term.innerHTML=""; li=0; type(); }, 2600); }
+      else setTimeout(type, 360);
+    }
   }
-  tick(); setInterval(tick,30000);
+  if(!RM) type(); else term.innerHTML=lines.map(l=>`<div class="line">${l}</div>`).join("");
+})();
+
+/* ---------- rotate: auto-spin + drag ---------- */
+(function(){
+  const rig=document.getElementById("rig");
+  if(!rig) return;
+  let ry=-24, rx=0;
+  let vy=RM?0:0.28;
+  let dragging=false, lastX=0, lastY=0;
+  function apply(){ rig.style.transform=`rotateY(${ry}deg) rotateX(${rx}deg)`; }
+
+  function down(x,y){ dragging=true; lastX=x; lastY=y; rig.classList.add("drag"); rig.classList.remove("floaty"); }
+  function move(x,y){ if(!dragging) return; ry+=(x-lastX)*0.4; rx=Math.max(-40,Math.min(40,rx-(y-lastY)*0.3)); lastX=x; lastY=y; }
+  function up(){ dragging=false; rig.classList.remove("drag"); }
+
+  rig.addEventListener("mousedown",e=>{e.preventDefault();down(e.clientX,e.clientY);});
+  addEventListener("mousemove",e=>move(e.clientX,e.clientY));
+  addEventListener("mouseup",up);
+  rig.addEventListener("touchstart",e=>{const t=e.touches[0];down(t.clientX,t.clientY);},{passive:true});
+  addEventListener("touchmove",e=>{const t=e.touches[0];move(t.clientX,t.clientY);},{passive:true});
+  addEventListener("touchend",up);
+
+  (function loop(){
+    if(!dragging){ rx+=(0-rx)*0.02; ry+=vy; }
+    apply();
+    requestAnimationFrame(loop);
+  })();
 })();
 </script>
 </body>
