@@ -1,0 +1,48 @@
+{
+  "trip": {
+    "title": "홋카이도 토마무 가족여행",
+    "subtitle": "삿포로 · 신치토세 · 토마무",
+    "startDate": "2026-09-30",
+    "endDate": "2026-10-05",
+    "status": "계획 중"
+  },
+  "flights": [
+    {
+      "type": "가는 편",
+      "date": "2026-09-30",
+      "flightNo": "KE765",
+      "aircraft": "B787-9",
+      "departure": {"code":"ICN","time":"10:35","terminal":"인천공항 제2터미널"},
+      "arrival": {"code":"CTS","time":"13:25","terminal":"신치토세공항 국제선"},
+      "duration": "2시간 50분",
+      "fare": "일반석 스탠다드",
+      "bookingClass": "U"
+    },
+    {
+      "type": "오는 편",
+      "date": "2026-10-05",
+      "flightNo": "KE766",
+      "aircraft": "B787-9",
+      "departure": {"code":"CTS","time":"14:50","terminal":"신치토세공항 국제선"},
+      "arrival": {"code":"ICN","time":"17:55","terminal":"인천공항 제2터미널"},
+      "duration": "3시간 5분",
+      "fare": "일반석 플렉스",
+      "bookingClass": "M"
+    }
+  ],
+  "schedule": [
+    {"date":"2026-09-30","dayTitle":"출국 · 홋카이도 도착","items":[{"time":"10:35","title":"인천 출발","detail":"대한항공 KE765 · 제2터미널"},{"time":"13:25","title":"신치토세 도착","detail":"입국 수속 후 렌터카 수령 예정"},{"time":"미정","title":"사전 1박 숙소 이동","detail":"호수 인근 숙소 후보 검토 중"}]},
+    {"date":"2026-10-01","dayTitle":"토마무 이동 · 체크인","items":[{"time":"오전","title":"숙소 출발","detail":"렌터카로 토마무 이동"},{"time":"오후","title":"클럽메드 토마무 체크인","detail":"10월 1일~5일 숙박"}]},
+    {"date":"2026-10-02","dayTitle":"토마무 자유일정","items":[{"time":"미정","title":"일정 추가 예정","detail":"액티비티·식사·운영시간 확인"}]},
+    {"date":"2026-10-03","dayTitle":"토마무 자유일정","items":[{"time":"미정","title":"일정 추가 예정","detail":"운카이 테라스 등 후보"}]},
+    {"date":"2026-10-04","dayTitle":"토마무 자유일정","items":[{"time":"미정","title":"일정 추가 예정","detail":"마지막 전일 일정"}]},
+    {"date":"2026-10-05","dayTitle":"체크아웃 · 귀국","items":[{"time":"오전","title":"클럽메드 체크아웃","detail":"신치토세공항 이동"},{"time":"14:50","title":"신치토세 출발","detail":"대한항공 KE766"},{"time":"17:55","title":"인천 도착","detail":"제2터미널"}]}
+  ],
+  "bookings": [
+    {"category":"항공","name":"대한항공 왕복","status":"예약 완료","detail":"KE765 / KE766"},
+    {"category":"숙박","name":"클럽메드 토마무","status":"예약 완료","detail":"2026.10.01 ~ 10.05"},
+    {"category":"숙박","name":"9월 30일 사전 1박","status":"검토 중","detail":"호수 인근 후보"},
+    {"category":"교통","name":"렌터카","status":"검토 중","detail":"신치토세공항 수령 예정"}
+  ],
+  "checklist": ["여권 유효기간 확인","국제운전면허증 준비","렌터카 예약","9월 30일 숙소 확정","클럽메드 공항/역 셔틀 확인","여행자보험 가입","좌석 지정"]
+}
