@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#12306f">
+  <title>홋카이도 토마무 여행 관리</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <span class="eyebrow">TRIP MANAGER</span>
+        <h1 id="tripTitle">홋카이도 토마무 가족여행</h1>
+        <p id="tripSubtitle"></p>
+      </div>
+      <div class="date-card">
+        <strong id="tripDates"></strong>
+        <span id="countdown"></span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <nav class="tabs" aria-label="페이지 메뉴">
+      <button class="tab active" data-target="overview">요약</button>
+      <button class="tab" data-target="schedule">일정</button>
+      <button class="tab" data-target="bookings">예약</button>
+      <button class="tab" data-target="checklist">체크리스트</button>
+      <button class="tab" data-target="notes">메모</button>
+    </nav>
+
+    <section id="overview" class="panel active">
+      <div class="section-title">
+        <div><span class="kicker">FLIGHTS</span><h2>항공 일정</h2></div>
+      </div>
+      <div id="flightCards" class="flight-grid"></div>
+
+      <div class="section-title spaced">
+        <div><span class="kicker">AT A GLANCE</span><h2>여행 현황</h2></div>
+      </div>
+      <div class="summary-grid">
+        <article class="summary-card"><span>여행 기간</span><strong>5박 6일</strong><small>2026.09.30 ~ 10.05</small></article>
+        <article class="summary-card"><span>주요 숙소</span><strong>클럽메드 토마무</strong><small>10.01 ~ 10.05</small></article>
+        <article class="summary-card"><span>이동</span><strong>렌터카 예정</strong><small>신치토세공항 수령 검토</small></article>
+      </div>
+    </section>
+
+    <section id="schedule" class="panel">
+      <div class="section-title"><div><span class="kicker">ITINERARY</span><h2>일자별 일정</h2></div></div>
+      <div id="scheduleList" class="schedule-list"></div>
+    </section>
+
+    <section id="bookings" class="panel">
+      <div class="section-title"><div><span class="kicker">RESERVATIONS</span><h2>예약 현황</h2></div></div>
+      <div id="bookingList" class="booking-list"></div>
+    </section>
+
+    <section id="checklist" class="panel">
+      <div class="section-title"><div><span class="kicker">TO DO</span><h2>준비 체크리스트</h2></div></div>
+      <div id="checklistItems" class="checklist"></div>
+      <form id="checkForm" class="add-form">
+        <input id="checkInput" type="text" placeholder="새 준비 항목 추가" aria-label="새 준비 항목">
+        <button type="submit">추가</button>
+      </form>
+      <p class="save-note">체크 상태와 추가 항목은 현재 기기에 저장됩니다.</p>
+    </section>
+
+    <section id="notes" class="panel">
+      <div class="section-title"><div><span class="kicker">NOTES</span><h2>여행 메모</h2></div></div>
+      <textarea id="notesArea" placeholder="맛집, 준비물, 확인할 내용 등을 적어두세요."></textarea>
+      <div class="note-actions">
+        <button id="saveNotes">메모 저장</button>
+        <span id="saveStatus"></span>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Hokkaido Trip Manager · Updated July 2026</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
