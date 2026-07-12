@@ -63,7 +63,7 @@
         <input id="checkInput" type="text" placeholder="새 준비 항목 추가" aria-label="새 준비 항목">
         <button type="submit">추가</button>
       </form>
-      <p class="save-note">체크 상태와 추가 항목은 현재 기기에 저장됩니다.</p>
+      <p id="checkStatus" class="save-note">Supabase에서 체크리스트를 불러오는 중입니다.</p>
     </section>
   </main>
 
@@ -71,6 +71,7 @@
     <p>Hokkaido Trip Manager · Updated July 2026</p>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>
