@@ -27,10 +27,12 @@
       <button class="tab active" data-target="overview">요약</button>
       <button class="tab" data-target="schedule">일정</button>
       <button class="tab" data-target="bookings">예약</button>
+      <button class="tab" data-target="planning">후보</button>
       <button class="tab" data-target="checklist">체크리스트</button>
     </nav>
 
     <section id="overview" class="panel active">
+      <div id="eventBanner"></div>
       <div class="section-title">
         <div><span class="kicker">FLIGHTS</span><h2>항공 일정</h2></div>
       </div>
@@ -56,6 +58,16 @@
       <div id="bookingList" class="booking-list"></div>
     </section>
 
+    <section id="planning" class="panel">
+      <div class="section-title"><div><span class="kicker">RENTAL CAR</span><h2>렌터카 후보</h2></div></div>
+      <p class="section-note">신치토세공항 수령·반납 기준. NOC 면책과 면책보상 포함 여부를 예약 전에 확인하세요.</p>
+      <div id="rentalList" class="candidate-grid"></div>
+
+      <div class="section-title spaced"><div><span class="kicker">BIRTHDAY CAKE</span><h2>9월 30일 생일 케이크 후보</h2></div></div>
+      <p class="section-note">와이프 생일 이벤트용. 홀케이크 예약 가능 여부와 당일 영업시간을 사전에 확인하세요.</p>
+      <div id="cakeList" class="candidate-grid"></div>
+    </section>
+
     <section id="checklist" class="panel">
       <div class="section-title"><div><span class="kicker">TO DO</span><h2>준비 체크리스트</h2></div></div>
       <div id="checklistItems" class="checklist"></div>
@@ -67,10 +79,7 @@
     </section>
   </main>
 
-  <footer>
-    <p>Hokkaido Trip Manager · Updated July 2026</p>
-  </footer>
-
+  <footer><p>Hokkaido Trip Manager · Updated July 2026</p></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
