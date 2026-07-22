@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#05020d" />
+  <title>SPECTACLE — Beyond the Screen</title>
+  <style>
+    :root {
+      --x: 50%;
+      --y: 50%;
+      --violet: #8b5cf6;
+      --pink: #ff3dce;
+      --cyan: #22d3ee;
+      --gold: #ffd166;
+      --bg: #05020d;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: #fff;
+      background: var(--bg);
+      font-family: Inter, Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 50;
+      background:
+        radial-gradient(500px circle at var(--x) var(--y), rgba(139,92,246,.14), transparent 42%),
+        linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: auto, 48px 48px, 48px 48px;
+      mask-image: linear-gradient(to bottom, #000, transparent 96%);
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+      opacity: .055;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+    }
+
+    .cursor, .cursor-ring {
+      position: fixed;
+      left: 0;
+      top: 0;
+      pointer-events: none;
+      z-index: 9999;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+    .cursor { width: 8px; height: 8px; background: #fff; mix-blend-mode: difference; }
+    .cursor-ring { width: 42px; height: 42px; border: 1px solid rgba(255,255,255,.5); transition: width .2s, height .2s, border-color .2s; }
+
+    canvas#stars {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -3;
+    }
+
+    .aurora {
+      position: fixed;
+      inset: -20%;
+      z-index: -2;
+      filter: blur(70px) saturate(140%);
+      opacity: .55;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,61,206,.42), transparent 24%),
+        radial-gradient(circle at 82% 24%, rgba(34,211,238,.38), transparent 24%),
+        radial-gradient(circle at 55% 78%, rgba(139,92,246,.48), transparent 25%);
+      animation: breathe 10s ease-in-out infinite alternate;
+    }
+    @keyframes breathe { to { transform: scale(1.15) rotate(7deg); filter: blur(95px) saturate(170%); } }
+
+    nav {
+      position: fixed;
+      inset: 0 0 auto 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 5vw;
+      mix-blend-mode: difference;
+    }
+    .logo { font-weight: 900; letter-spacing: .22em; font-size: 14px; }
+    .nav-pill {
+      display: flex;
+      gap: 26px;
+      font-size: 12px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .nav-pill a { color: white; text-decoration: none; opacity: .7; transition: .25s; }
+    .nav-pill a:hover { opacity: 1; transform: translateY(-2px); }
+
+    section { position: relative; min-height: 100vh; }
+
+    .hero {
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      padding: 120px 5vw 70px;
+      perspective: 1200px;
+    }
+
+    .orbital {
+      position: absolute;
+      width: min(72vw, 850px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.12);
+      transform: rotateX(68deg) rotateZ(-18deg);
+      animation: spin 18s linear infinite;
+      box-shadow: 0 0 100px rgba(139,92,246,.16), inset 0 0 80px rgba(34,211,238,.08);
+    }
+    .orbital::before, .orbital::after {
+      content: "";
+      position: absolute;
+      inset: 14%;
+      border-radius: inherit;
+      border: 1px dashed rgba(255,255,255,.16);
+    }
+    .orbital::after { inset: 31%; border-style: solid; border-color: rgba(255,61,206,.2); }
+    @keyframes spin { to { transform: rotateX(68deg) rotateZ(342deg); } }
+
+    .hero-core {
+      position: relative;
+      z-index: 3;
+      text-align: center;
+      transform-style: preserve-3d;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      padding: 10px 16px;
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      backdrop-filter: blur(16px);
+      font-size: 11px;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+      box-shadow: 0 12px 50px rgba(0,0,0,.25);
+    }
+    .eyebrow i { width: 7px; height: 7px; border-radius: 50%; background: var(--cyan); box-shadow: 0 0 16px var(--cyan); }
+
+    h1 {
+      margin: 34px auto 10px;
+      font-size: clamp(76px, 15vw, 210px);
+      line-height: .72;
+      letter-spacing: -.08em;
+      font-weight: 950;
+      text-transform: uppercase;
+      background: linear-gradient(115deg, #fff 12%, #c8b5ff 38%, #ff70dc 58%, #64e8ff 78%, #fff 94%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 0 40px rgba(139,92,246,.34));
+      animation: shine 5s linear infinite;
+    }
+    @keyframes shine { to { background-position: 200% center; } }
+
+    .hero h2 {
+      margin: 20px 0 0;
+      font-weight: 300;
+      font-size: clamp(19px, 2.2vw, 34px);
+      letter-spacing: .28em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.72);
+    }
+
+    .hero-copy {
+      max-width: 620px;
+      margin: 30px auto 0;
+      color: rgba(255,255,255,.58);
+      line-height: 1.8;
+      font-size: 15px;
+    }
+
+    .cta-wrap { margin-top: 38px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 24px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.16);
+      color: #fff;
+      text-decoration: none;
+      background: rgba(255,255,255,.06);
+      backdrop-filter: blur(18px);
+      overflow: hidden;
+      transition: transform .3s, border-color .3s;
+    }
+    .btn.primary { background: linear-gradient(120deg, rgba(139,92,246,.9), rgba(255,61,206,.78)); box-shadow: 0 18px 60px rgba(139,92,246,.35); }
+    .btn:hover { transform: translateY(-4px) scale(1.03); border-color: rgba(255,255,255,.5); }
+    .btn::after { content: ""; position: absolute; inset: -80% auto -80% -30%; width: 30%; background: rgba(255,255,255,.3); transform: rotate(20deg); transition: .6s; }
+    .btn:hover::after { left: 120%; }
+
+    .scroll-note {
+      position: absolute;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 10px;
+      letter-spacing: .3em;
+      color: rgba(255,255,255,.45);
+    }
+    .scroll-note::after { content: ""; display: block; width: 1px; height: 54px; margin: 12px auto 0; background: linear-gradient(#fff, transparent); animation: drop 1.8s infinite; }
+    @keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 45% { transform: scaleY(1); transform-origin: top; } 55% { transform: scaleY(1); transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+    .marquee {
+      min-height: auto;
+      padding: 24px 0;
+      border-block: 1px solid rgba(255,255,255,.09);
+      overflow: hidden;
+      transform: rotate(-2deg) scale(1.03);
+      background: rgba(255,255,255,.025);
+      backdrop-filter: blur(10px);
+    }
+    .track { display: flex; width: max-content; animation: marquee 22s linear infinite; }
+    .track span { font-size: clamp(32px, 5vw, 78px); font-weight: 900; letter-spacing: -.04em; white-space: nowrap; padding-right: 40px; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.3); }
+    .track b { color: #fff; -webkit-text-stroke: 0; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+
+    .showcase { padding: 150px 6vw; }
+    .section-head { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: end; margin-bottom: 72px; }
+    .kicker { color: var(--cyan); letter-spacing: .24em; font-size: 11px; text-transform: uppercase; }
+    .section-head h3 { margin: 14px 0 0; font-size: clamp(48px, 8vw, 118px); line-height: .84; letter-spacing: -.07em; }
+    .section-head p { margin: 0; color: rgba(255,255,255,.5); line-height: 1.8; max-width: 470px; justify-self: end; }
+
+    .cards { display: grid; grid-template-columns: repeat(12, 1fr); gap: 22px; }
+    .card {
+      position: relative;
+      min-height: 430px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 32px;
+      overflow: hidden;
+      background: linear-gradient(150deg, rgba(255,255,255,.1), rgba(255,255,255,.025));
+      backdrop-filter: blur(22px);
+      transform-style: preserve-3d;
+      transition: border-color .3s;
+    }
+    .card:hover { border-color: rgba(255,255,255,.4); }
+    .card.one { grid-column: span 7; }
+    .card.two { grid-column: span 5; }
+    .card.three { grid-column: span 5; }
+    .card.four { grid-column: span 7; }
+    .card-content { position: absolute; inset: auto 28px 28px; z-index: 5; transform: translateZ(45px); }
+    .card h4 { margin: 0 0 10px; font-size: clamp(26px, 3vw, 44px); }
+    .card p { margin: 0; color: rgba(255,255,255,.55); line-height: 1.6; max-width: 440px; }
+    .tag { display: inline-flex; margin-bottom: 15px; padding: 8px 12px; border-radius: 999px; background: rgba(0,0,0,.25); border: 1px solid rgba(255,255,255,.12); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; }
+
+    .planet {
+      position: absolute;
+      width: 290px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      top: 36px;
+      right: 42px;
+      background: radial-gradient(circle at 28% 28%, #fff, #8b5cf6 12%, #2d105d 45%, #09020f 72%);
+      box-shadow: inset -45px -45px 90px #000, 0 0 80px rgba(139,92,246,.55), 0 0 180px rgba(255,61,206,.23);
+      animation: float 5s ease-in-out infinite alternate;
+    }
+    .planet::after { content: ""; position: absolute; width: 140%; height: 38%; border: 9px solid rgba(34,211,238,.5); border-radius: 50%; left: -20%; top: 31%; transform: rotate(-13deg); box-shadow: 0 0 35px rgba(34,211,238,.35); }
+    @keyframes float { to { transform: translateY(-18px) rotate(5deg); } }
+
+    .wave { position: absolute; inset: 0; background: radial-gradient(circle at 70% 25%, rgba(34,211,238,.4), transparent 24%), linear-gradient(135deg, transparent 20%, rgba(34,211,238,.14), rgba(255,61,206,.22)); }
+    .wave::before, .wave::after { content: ""; position: absolute; width: 420px; height: 420px; border: 1px solid rgba(255,255,255,.14); border-radius: 44% 56% 61% 39% / 35% 42% 58% 65%; right: -80px; top: -80px; animation: morph 9s linear infinite; }
+    .wave::after { width: 300px; height: 300px; right: -20px; top: 10px; animation-duration: 6s; animation-direction: reverse; }
+    @keyframes morph { to { transform: rotate(360deg); border-radius: 61% 39% 42% 58% / 55% 65% 35% 45%; } }
+
+    .prism { position: absolute; width: 230px; height: 230px; left: 50%; top: 42%; transform: translate(-50%,-50%) rotate(45deg); background: linear-gradient(135deg, rgba(255,255,255,.65), rgba(255,255,255,.04)); border: 1px solid rgba(255,255,255,.45); box-shadow: 0 0 100px rgba(255,61,206,.38); backdrop-filter: blur(8px); animation: prism 7s ease-in-out infinite alternate; }
+    .prism::before { content: ""; position: absolute; inset: 24px; border: 1px solid rgba(255,255,255,.35); box-shadow: inset 0 0 35px rgba(34,211,238,.25); }
+    @keyframes prism { to { transform: translate(-50%,-56%) rotate(135deg) scale(.9); } }
+
+    .portal { position: absolute; width: 360px; aspect-ratio: 1; border-radius: 50%; right: 7%; top: 4%; background: repeating-radial-gradient(circle, transparent 0 12px, rgba(255,255,255,.08) 13px 14px), conic-gradient(from 20deg, var(--violet), var(--cyan), var(--pink), var(--gold), var(--violet)); filter: saturate(130%); animation: spin2 9s linear infinite; box-shadow: 0 0 90px rgba(139,92,246,.5); }
+    .portal::after { content: ""; position: absolute; inset: 22%; border-radius: 50%; background: #05020d; box-shadow: inset 0 0 55px #000, 0 0 45px rgba(255,255,255,.2); }
+    @keyframes spin2 { to { transform: rotate(360deg); } }
+
+    .finale { display: grid; place-items: center; text-align: center; padding: 120px 5vw; overflow: hidden; }
+    .finale h3 { position: relative; z-index: 3; margin: 0; font-size: clamp(60px, 12vw, 180px); line-height: .78; letter-spacing: -.08em; text-transform: uppercase; }
+    .finale h3 span { display: block; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,.65); }
+    .finale p { position: relative; z-index: 3; color: rgba(255,255,255,.55); max-width: 540px; line-height: 1.8; margin: 34px auto; }
+    .halo { position: absolute; width: min(74vw, 900px); aspect-ratio: 1; border-radius: 50%; border: 1px solid rgba(255,255,255,.15); box-shadow: 0 0 140px rgba(255,61,206,.3), inset 0 0 120px rgba(34,211,238,.15); animation: pulse 4s ease-in-out infinite alternate; }
+    .halo::before, .halo::after { content: ""; position: absolute; inset: 12%; border-radius: inherit; border: 1px dashed rgba(255,255,255,.14); animation: spin2 14s linear infinite; }
+    .halo::after { inset: 26%; animation-direction: reverse; animation-duration: 9s; }
+    @keyframes pulse { to { transform: scale(1.08); filter: hue-rotate(35deg); } }
+
+    footer { padding: 30px 5vw 45px; display: flex; justify-content: space-between; gap: 20px; color: rgba(255,255,255,.35); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; border-top: 1px solid rgba(255,255,255,.08); }
+
+    .reveal { opacity: 0; transform: translateY(55px); transition: 1s cubic-bezier(.2,.8,.2,1); }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 760px) {
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+      nav { padding: 20px; }
+      .nav-pill a:not(:last-child) { display: none; }
+      .hero { padding-inline: 20px; }
+      h1 { font-size: clamp(64px, 22vw, 120px); }
+      .hero h2 { letter-spacing: .12em; }
+      .section-head { grid-template-columns: 1fr; }
+      .section-head p { justify-self: start; }
+      .showcase { padding: 110px 20px; }
+      .card.one, .card.two, .card.three, .card.four { grid-column: 1 / -1; }
+      .card { min-height: 420px; }
+      .planet { width: 220px; right: 10px; }
+      .portal { width: 290px; right: -70px; }
+      footer { flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .001ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="cursor"></div>
+  <div class="cursor-ring"></div>
+  <canvas id="stars"></canvas>
+  <div class="aurora"></div>
+
+  <nav>
+    <div class="logo">SPECTACLE®</div>
+    <div class="nav-pill">
+      <a href="#vision">Vision</a>
+      <a href="#worlds">Worlds</a>
+      <a href="#enter">Enter ↗</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero" id="vision">
+      <div class="orbital"></div>
+      <div class="hero-core" id="heroCore">
+        <div class="eyebrow"><i></i> An interactive visual experiment</div>
+        <h1>Spectacle</h1>
+        <h2>Beyond the screen</h2>
+        <p class="hero-copy">빛, 깊이, 움직임이 하나의 디지털 우주로 결합됩니다. 스크롤하고, 움직이고, 화면 속 세계를 직접 깨워보세요.</p>
+        <div class="cta-wrap">
+          <a class="btn primary" href="#worlds">Explore the worlds <span>→</span></a>
+          <a class="btn" href="#enter">Feel the finale <span>↘</span></a>
+        </div>
+      </div>
+      <div class="scroll-note">SCROLL TO DESCEND</div>
+    </section>
+
+    <section class="marquee" aria-label="moving statement">
+      <div class="track">
+        <span>DESIGN THE IMPOSSIBLE ✦ <b>BREAK THE ORDINARY</b> ✦ FEEL THE FUTURE ✦ </span>
+        <span>DESIGN THE IMPOSSIBLE ✦ <b>BREAK THE ORDINARY</b> ✦ FEEL THE FUTURE ✦ </span>
+      </div>
+    </section>
+
+    <section class="showcase" id="worlds">
+      <div class="section-head reveal">
+        <div><div class="kicker">Four impossible worlds</div><h3>Reality,<br>remixed.</h3></div>
+        <p>각 카드는 순수 CSS와 JavaScript만으로 만든 작은 우주입니다. 마우스를 올려 공간의 깊이와 반응을 느껴보세요.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card one tilt reveal">
+          <div class="planet"></div>
+          <div class="card-content"><span class="tag">01 / Celestial</span><h4>Gravity Bloom</h4><p>빛나는 행성과 궤도가 유리 표면 위에서 떠오르는 초현실적 장면.</p></div>
+        </article>
+        <article class="card two tilt reveal">
+          <div class="wave"></div>
+          <div class="card-content"><span class="tag">02 / Fluid</span><h4>Liquid Signal</h4><p>유동적인 형태와 네온 파동이 끊임없이 새로운 균형을 만듭니다.</p></div>
+        </article>
+        <article class="card three tilt reveal">
+          <div class="prism"></div>
+          <div class="card-content"><span class="tag">03 / Refraction</span><h4>Glass Engine</h4><p>회전하는 투명 프리즘 안에서 색과 빛이 분해되고 다시 태어납니다.</p></div>
+        </article>
+        <article class="card four tilt reveal">
+          <div class="portal"></div>
+          <div class="card-content"><span class="tag">04 / Infinite</span><h4>Chromatic Gate</h4><p>끝없이 회전하는 색채의 문. 시선이 빨려 들어가는 디지털 포털.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="finale" id="enter">
+      <div class="halo"></div>
+      <div class="reveal">
+        <div class="kicker">The screen is only the beginning</div>
+        <h3>Enter<span>the unreal.</span></h3>
+        <p>평범한 웹페이지가 아니라, 보는 순간 기억에 남는 하나의 경험.</p>
+        <a class="btn primary" href="#vision">Replay the journey <span>↑</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer><span>© 2026 SPECTACLE LAB</span><span>Crafted with HTML · CSS · JS</span></footer>
+
+  <script>
+    const root = document.documentElement;
+    const dot = document.querySelector('.cursor');
+    const ring = document.querySelector('.cursor-ring');
+    let mx = innerWidth / 2, my = innerHeight / 2, rx = mx, ry = my;
+
+    addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      root.style.setProperty('--x', mx + 'px');
+      root.style.setProperty('--y', my + 'px');
+      dot.style.transform = `translate(${mx}px, ${my}px) translate(-50%, -50%)`;
+      const core = document.getElementById('heroCore');
+      const nx = (mx / innerWidth - .5) * 12;
+      const ny = (my / innerHeight - .5) * -12;
+      core.style.transform = `rotateY(${nx}deg) rotateX(${ny}deg)`;
+    });
+
+    function animateCursor(){
+      rx += (mx-rx)*.12; ry += (my-ry)*.12;
+      ring.style.transform = `translate(${rx}px, ${ry}px) translate(-50%, -50%)`;
+      requestAnimationFrame(animateCursor);
+    }
+    animateCursor();
+
+    document.querySelectorAll('a, .card').forEach(el => {
+      el.addEventListener('mouseenter', () => { ring.style.width='68px'; ring.style.height='68px'; ring.style.borderColor='rgba(255,255,255,.9)'; });
+      el.addEventListener('mouseleave', () => { ring.style.width='42px'; ring.style.height='42px'; ring.style.borderColor='rgba(255,255,255,.5)'; });
+    });
+
+    document.querySelectorAll('.tilt').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX-r.left)/r.width-.5;
+        const y = (e.clientY-r.top)/r.height-.5;
+        card.style.transform = `perspective(900px) rotateY(${x*9}deg) rotateX(${-y*9}deg) translateY(-6px)`;
+      });
+      card.addEventListener('mouseleave', () => card.style.transform = '');
+    });
+
+    const io = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('visible')), {threshold:.15});
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    let stars = [];
+    function resize(){
+      const dpr = Math.min(devicePixelRatio, 2);
+      canvas.width = innerWidth*dpr; canvas.height = innerHeight*dpr;
+      canvas.style.width = innerWidth+'px'; canvas.style.height = innerHeight+'px';
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+      stars = Array.from({length: Math.min(220, Math.floor(innerWidth/5))}, () => ({x:Math.random()*innerWidth,y:Math.random()*innerHeight,z:Math.random()*1.8+.2,s:Math.random()*1.5+.3}));
+    }
+    function draw(){
+      ctx.clearRect(0,0,innerWidth,innerHeight);
+      for(const p of stars){
+        p.y += .08*p.z;
+        if(p.y>innerHeight+4){p.y=-4;p.x=Math.random()*innerWidth;}
+        const dx=(mx-innerWidth/2)*.006*p.z;
+        const dy=(my-innerHeight/2)*.006*p.z;
+        ctx.beginPath(); ctx.arc(p.x-dx,p.y-dy,p.s*p.z,0,Math.PI*2);
+        ctx.fillStyle=`rgba(255,255,255,${.18+p.z*.25})`; ctx.fill();
+      }
+      requestAnimationFrame(draw);
+    }
+    addEventListener('resize', resize); resize(); draw();
+  </script>
+</body>
+</html>
