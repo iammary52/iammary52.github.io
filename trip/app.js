@@ -7,10 +7,14 @@ const koDate = (d) => new Intl.DateTimeFormat('ko-KR', {
 const SUPABASE_URL = 'https://gftydfeqpuavajjzaeun.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_35lefXRrUU4MFrAATfghjQ_2EPkUgGy';
 const TRIP_ID = 'hokkaido-2026';
+const DATA_VERSION = '20260829-3';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-fetch('trip-data.json')
-  .then((r) => r.json())
+fetch(`trip-data.json?v=${DATA_VERSION}`, { cache: 'no-store' })
+  .then((r) => {
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    return r.json();
+  })
   .then((data) => render(data))
   .catch(() => document.body.insertAdjacentHTML('beforeend', '<p style="text-align:center">여행 데이터를 불러오지 못했습니다.</p>'));
 
@@ -49,7 +53,7 @@ function render(data) {
       <h3>${b.name}</h3><p>${b.detail}</p>
     </article>`).join('');
 
-  $('#rentalList').innerHTML = data.rentalCandidates.map((x) => candidateCard(x, '예약 페이지')) .join('');
+  $('#rentalList').innerHTML = data.rentalCandidates.map((x) => candidateCard(x, '예약 페이지')).join('');
   $('#cakeList').innerHTML = data.cakeCandidates.map((x) => candidateCard(x, '공식 페이지')).join('');
   initChecklist(data.checklist);
 }
