@@ -6,7 +6,16 @@
     {"type":"오는 편","date":"2026-10-05","flightNo":"KE766","aircraft":"B787-9","departure":{"code":"CTS","time":"14:50","terminal":"신치토세공항 국제선"},"arrival":{"code":"ICN","time":"17:55","terminal":"인천공항 제2터미널"},"duration":"3시간 5분","fare":"일반석 플렉스","bookingClass":"M"}
   ],
   "schedule": [
-    {"date":"2026-09-30","dayTitle":"출국 · 삿포로 이동 · 생일","items":[{"time":"06:00","title":"인천공항 제2터미널 예약주차장 입차","detail":"예약 완료 · 차량 50소4041 · 예약번호 4041HH0019 · 보증금 10,000원"},{"time":"10:35","title":"인천 출발","detail":"대한항공 KE765 · 제2터미널"},{"time":"13:25","title":"신치토세 도착","detail":"입국 수속 및 수하물 수령 후 ZenWay에 SNS 또는 전화 연락"},{"time":"14:00","title":"렌터카 픽업","detail":"Klook / ZenWay · Nissan X-Trail 또는 동급 SUV · 예약 VJA163952 · 국제선 터미널 98번 승강장에서 셔틀 픽업 요청 · 연락 후 약 15분 예상 · 셔틀 차량번호 6122"},{"time":"오후","title":"베셀 호텔 캄파나 스스키노 체크인","detail":"예약 완료 · 2026년 9월 30일 1박"},{"time":"오후","title":"생일 케이크 픽업","detail":"후보: KINOTOYA · LeTAO · DONGURI COCONO SUSUKINO"},{"time":"저녁","title":"스스키노 야키니쿠 저녁 후보","detail":"고민 중: 아키니쿠 카이야 · 토쿠쥬 스스키노점 · 야키니쿠 츠바메"},{"time":"저녁","title":"호텔에서 생일 축하","detail":"케이크와 함께 간단한 생일 이벤트 예정"}]},
+    {"date":"2026-09-30","dayTitle":"출국 · 삿포로 이동 · 생일","items":[
+      {"time":"06:00","title":"인천공항 제2터미널 예약주차장 입차","detail":"예약 완료 · 차량 50소4041 · 예약번호 4041HH0019 · 보증금 10,000원"},
+      {"time":"10:35","title":"인천 출발","detail":"대한항공 KE765 · 제2터미널"},
+      {"time":"13:25","title":"신치토세 도착","detail":"입국 수속 및 수하물 수령 후 ZenWay에 SNS 또는 전화 연락"},
+      {"time":"14:00","title":"렌터카 픽업","detail":"Klook / ZenWay · Nissan X-Trail 또는 동급 SUV · 예약 VJA163952 · 국제선 터미널 98번 승강장에서 셔틀 픽업 요청 · 연락 후 약 15분 예상 · 셔틀 차량번호 6122"},
+      {"time":"오후","title":"베셀 호텔 캄파나 스스키노 체크인","detail":"예약 완료 · 2026년 9월 30일 1박"},
+      {"time":"오후","title":"생일 케이크 픽업","detail":"공항 또는 삿포로 시내 홀케이크 후보 검토"},
+      {"time":"저녁","title":"호텔 근처 야키니쿠","detail":"1순위 토토리 본점(南5条西7) · 호텔 바로 옆 블록 수준. 대안: 야키니쿠 퐁가 삿포로 스스키노"},
+      {"time":"저녁","title":"호텔에서 생일 축하","detail":"케이크와 함께 간단한 생일 이벤트 예정"}
+    ]},
     {"date":"2026-10-01","dayTitle":"토마무 이동 · 체크인","items":[{"time":"오전","title":"베셀 호텔 캄파나 스스키노 체크아웃","detail":"삿포로에서 토마무로 이동"},{"time":"오후","title":"클럽메드 토마무 체크인","detail":"10월 1일~5일 숙박"}]},
     {"date":"2026-10-02","dayTitle":"토마무 자유일정","items":[{"time":"미정","title":"일정 추가 예정","detail":"액티비티·식사·운영시간 확인"}]},
     {"date":"2026-10-03","dayTitle":"토마무 자유일정","items":[{"time":"미정","title":"일정 추가 예정","detail":"운카이 테라스 등 후보"}]},
@@ -19,20 +28,16 @@
     {"category":"숙박","name":"베셀 호텔 캄파나 스스키노","status":"예약 완료","detail":"2026.09.30 · 1박 · 슈페리어룸"},
     {"category":"주차","name":"인천공항 제2터미널 예약주차장","status":"예약 완료","detail":"입차 2026.09.30 06:00 · 출차 2026.10.05 20:00 · 차량 50소4041 · 예약번호 4041HH0019 · 보증금 10,000원"},
     {"category":"교통","name":"Klook · ZenWay Rent A Car","status":"예약 완료","detail":"Nissan X-Trail 또는 동급 SUV · 5인승 · 수하물 3개 · 오토 · 에어컨 · 운전자 MR KYUMIN KIM · 9/30 14:00 픽업 → 10/5 13:00 반납 · 예약/확정번호 VJA163952 · SIPP CFAV · 주소 199-7 Uenae, Tomakomai, Hokkaido · 연락 +81-70-9086-7662 · 영업 09:00~19:00 · 공항 외부 영업소로 셔틀 이동"},
-    {"category":"식사","name":"첫날 저녁 야키니쿠","status":"검토 중","detail":"카이야 · 토쿠쥬 스스키노점 · 츠바메"},
-    {"category":"이벤트","name":"9월 30일 생일 케이크","status":"검토 중","detail":"KINOTOYA · LeTAO · DONGURI 후보"}
+    {"category":"식사","name":"첫날 저녁 야키니쿠","status":"검토 중","detail":"호텔 최인접 1순위: 토토리 본점 · 대안: 야키니쿠 퐁가 삿포로 스스키노"},
+    {"category":"이벤트","name":"9월 30일 생일 케이크","status":"검토 중","detail":"공항 또는 삿포로 시내 홀케이크 후보 검토"}
   ],
-  "rentalCandidates": [
-    {"category":"예약 확정","name":"Klook · ZenWay Rent A Car","recommendation":"예약 완료 ✅","detail":"Nissan X-Trail 또는 동급 SUV. 운전자 MR KYUMIN KIM. 9/30 14:00 픽업 / 10/5 13:00 반납. 예약번호 VJA163952, SIPP CFAV. 영업소는 공항 밖에 있으며 수하물 수령 후 SNS(LINE·WeChat·WhatsApp·KakaoTalk) 또는 +81-70-9086-7662로 연락. 연락 후 약 15분 내 픽업 안내. 국제선 터미널은 98번 승강장, 국내선 터미널은 30번 승차장. 셔틀 차량번호 6122. 영업시간 09:00~19:00, 운영시간 외 이용 시 최대 10,000엔 추가 수수료 안내.","cars":["Nissan X-Trail 또는 동급 SUV"],"price":"Klook 예약 완료","url":"https://www.klook.com/ko/car-rentals/"},
-    {"category":"기존 후보","name":"Toyota Rent a Car","recommendation":"후보","detail":"서비스와 지점망이 안정적. 현재 Klook/ZenWay 예약 완료로 비교용 후보로 유지.","cars":["Corolla Cross","Yaris Cross","Sienta"],"price":"5박 6일 예상 ¥55,000~80,000","url":"https://rent.toyota.co.jp/eng/"},
-    {"category":"기존 후보","name":"Nippon Rent-A-Car","recommendation":"후보","detail":"현재 Klook/ZenWay 예약 완료로 비교용 후보로 유지.","cars":["Corolla Touring","Yaris Cross","Sienta"],"price":"5박 6일 예상 ¥55,000~85,000","url":"https://www.nipponrentacar.co.jp/en/"},
-    {"category":"기존 후보","name":"Times Car Rental","recommendation":"후보","detail":"현재 Klook/ZenWay 예약 완료로 비교용 후보로 유지.","cars":["Yaris Cross","Roomy","Sienta"],"price":"5박 6일 예상 ¥45,000~70,000","url":"https://www.timescar-rental.com/en/"},
-    {"category":"기존 후보","name":"ORIX Rent a Car","recommendation":"후보","detail":"현재 Klook/ZenWay 예약 완료로 비교용 후보로 유지.","cars":["Corolla Cross","Raize","Sienta"],"price":"5박 6일 예상 ¥50,000~75,000","url":"https://car.orix.co.jp/eng/"}
+  "dinnerCandidates": [
+    {"category":"호텔 최인접 · 1순위","name":"토토리 본점 (Totori)","recommendation":"추천 ★★★★★","detail":"베셀 호텔 캄파나 스스키노가 南5条西6, 토토리가 南5条西7이라 사실상 바로 옆 블록. 정통 야키니쿠·호르몬·한국요리. 예약 가능, 12:00~24:00. 첫날 이동 피로를 생각하면 가장 실용적인 선택.","price":"저녁 대략 ¥6,000~7,999/인","url":"https://tabelog.com/en/hokkaido/A0101/A010103/1000023/"},
+    {"category":"고기 퀄리티 · 대안","name":"Yakiniku Ponga Sapporo Susukino","recommendation":"추천 ★★★★☆","detail":"스스키노 중심의 인기 야키니쿠. 리뷰가 많고 고기 퀄리티 평가가 좋은 편. 토토리보다 조금 더 걸어야 하지만 생일 저녁 분위기를 중시하면 대안으로 좋음.","price":"¥10,000+/인 수준","url":"https://www.google.com/maps/search/?api=1&query=Yakiniku+Ponga+Sapporo+Susukino"}
   ],
   "cakeCandidates": [
-    {"category":"홀케이크 우선 후보","name":"KINOTOYA","recommendation":"추천 ★★★★★","detail":"홋카이도의 대표적인 디저트 브랜드. 생크림 홀케이크 예약 가능 여부와 수령 지점을 사전에 확인하는 것을 권장.","price":"작은 홀케이크 후보","url":"https://www.kinotoya.com/"},
-    {"category":"치즈케이크 후보","name":"LeTAO","recommendation":"추천 ★★★★☆","detail":"치즈케이크로 유명한 브랜드. 삿포로 시내 판매점의 재고와 홀 사이즈 상품 여부를 확인.","price":"치즈케이크·선물용 후보","url":"https://www.letao-brand.jp/"},
-    {"category":"호텔 인근 편의 후보","name":"DONGURI COCONO SUSUKINO","recommendation":"접근성 ★★★★☆","detail":"스스키노 중심부에서 접근하기 쉬운 베이커리 후보. 조각 케이크나 간단한 디저트를 당일 구매할 때 유용.","price":"당일 디저트 구매 후보","url":"https://www.donguri-bake.co.jp/"}
+    {"category":"공항 수령 우선 후보","name":"KINOTOYA","recommendation":"추천 ★★★★★","detail":"신치토세공항 도착 직후 수령 가능 여부를 우선 확인할 후보. 시내에서 케이크를 다시 찾으러 갈 필요가 없어 첫날 동선이 가장 편함.","price":"홀케이크 사전예약 확인","url":"https://www.kinotoya.com/"},
+    {"category":"치즈케이크 후보","name":"LeTAO","recommendation":"추천 ★★★★☆","detail":"치즈케이크로 유명한 홋카이도 브랜드. 공항점 상품과 홀 사이즈 여부 확인.","price":"치즈케이크·선물용 후보","url":"https://www.letao-brand.jp/"}
   ],
   "checklist": ["여권 유효기간 확인","국제운전면허증 준비","렌터카 예약 완료","베셀 호텔 캄파나 스스키노 예약","인천공항 제2터미널 예약주차장 예약","첫날 야키니쿠 식당 확정 및 예약","생일 케이크 매장 확정 및 예약","클럽메드 공항/역 셔틀 확인","여행자보험 가입","좌석 지정"]
 }
