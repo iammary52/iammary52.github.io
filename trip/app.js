@@ -7,14 +7,11 @@ const koDate = (d) => new Intl.DateTimeFormat('ko-KR', {
 const SUPABASE_URL = 'https://gftydfeqpuavajjzaeun.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_35lefXRrUU4MFrAATfghjQ_2EPkUgGy';
 const TRIP_ID = 'hokkaido-2026';
-const DATA_VERSION = '20260829-3';
+const DATA_VERSION = '20260830-1';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 fetch(`trip-data.json?v=${DATA_VERSION}`, { cache: 'no-store' })
-  .then((r) => {
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return r.json();
-  })
+  .then((r) => { if (!r.ok) throw new Error(`HTTP ${r.status}`); return r.json(); })
   .then((data) => render(data))
   .catch(() => document.body.insertAdjacentHTML('beforeend', '<p style="text-align:center">여행 데이터를 불러오지 못했습니다.</p>'));
 
@@ -25,48 +22,24 @@ function render(data) {
   updateCountdown(data.trip.startDate);
 
   $('#eventBanner').innerHTML = data.event ? `
-    <article class="event-banner">
-      <span class="event-icon">🎂</span>
-      <div><small>${koDate(data.event.date)}</small><strong>${escapeHtml(data.event.title)}</strong><p>${escapeHtml(data.event.detail)}</p></div>
-    </article>` : '';
+    <article class="event-banner"><span class="event-icon">🎂</span><div><small>${koDate(data.event.date)}</small><strong>${escapeHtml(data.event.title)}</strong><p>${escapeHtml(data.event.detail)}</p></div></article>` : '';
 
   $('#flightCards').innerHTML = data.flights.map((f) => `
-    <article class="flight-card">
-      <div class="flight-top"><span class="flight-type">${f.type}</span><span class="flight-date">${koDate(f.date)}</span></div>
-      <div class="route">
-        <div class="airport"><strong>${f.departure.code}</strong><span>${f.departure.time}</span><small>${f.departure.terminal}</small></div>
-        <div class="route-line">${f.duration}</div>
-        <div class="airport"><strong>${f.arrival.code}</strong><span>${f.arrival.time}</span><small>${f.arrival.terminal}</small></div>
-      </div>
-      <div class="flight-meta"><span class="pill">${f.flightNo}</span><span class="pill">${f.aircraft}</span><span class="pill">${f.fare}</span><span class="pill">예약 클래스 ${f.bookingClass}</span></div>
-    </article>`).join('');
+    <article class="flight-card"><div class="flight-top"><span class="flight-type">${f.type}</span><span class="flight-date">${koDate(f.date)}</span></div><div class="route"><div class="airport"><strong>${f.departure.code}</strong><span>${f.departure.time}</span><small>${f.departure.terminal}</small></div><div class="route-line">${f.duration}</div><div class="airport"><strong>${f.arrival.code}</strong><span>${f.arrival.time}</span><small>${f.arrival.terminal}</small></div></div><div class="flight-meta"><span class="pill">${f.flightNo}</span><span class="pill">${f.aircraft}</span><span class="pill">${f.fare}</span><span class="pill">예약 클래스 ${f.bookingClass}</span></div></article>`).join('');
 
   $('#scheduleList').innerHTML = data.schedule.map((d, i) => `
-    <article class="day-card">
-      <div class="day-head"><strong>DAY ${i + 1} · ${d.dayTitle}</strong><span>${koDate(d.date)}</span></div>
-      ${d.items.map((x) => `<div class="timeline-item"><div class="timeline-time">${x.time}</div><div><div class="timeline-title">${x.title}</div><div class="timeline-detail">${x.detail}</div></div></div>`).join('')}
-    </article>`).join('');
+    <article class="day-card"><div class="day-head"><strong>DAY ${i + 1} · ${d.dayTitle}</strong><span>${koDate(d.date)}</span></div>${d.items.map((x) => `<div class="timeline-item"><div class="timeline-time">${x.time}</div><div><div class="timeline-title">${x.title}</div><div class="timeline-detail">${x.detail}</div></div></div>`).join('')}</article>`).join('');
 
   $('#bookingList').innerHTML = data.bookings.map((b) => `
-    <article class="booking-card">
-      <div class="booking-head"><span class="booking-cat">${b.category}</span><span class="status ${b.status.includes('검토') || b.status.includes('예정') ? 'pending' : ''}">${b.status}</span></div>
-      <h3>${b.name}</h3><p>${b.detail}</p>
-    </article>`).join('');
+    <article class="booking-card"><div class="booking-head"><span class="booking-cat">${b.category}</span><span class="status ${b.status.includes('검토') || b.status.includes('예정') ? 'pending' : ''}">${b.status}</span></div><h3>${b.name}</h3><p>${b.detail}</p></article>`).join('');
 
-  $('#rentalList').innerHTML = data.rentalCandidates.map((x) => candidateCard(x, '예약 페이지')).join('');
+  $('#dinnerList').innerHTML = (data.dinnerCandidates || []).map((x) => candidateCard(x, '상세 보기')).join('');
   $('#cakeList').innerHTML = data.cakeCandidates.map((x) => candidateCard(x, '공식 페이지')).join('');
   initChecklist(data.checklist);
 }
 
 function candidateCard(x, linkText) {
-  return `<article class="candidate-card">
-    <div class="candidate-head"><span>${escapeHtml(x.category || '후보')}</span><span class="rating">${escapeHtml(x.recommendation || '후보')}</span></div>
-    <h3>${escapeHtml(x.name)}</h3>
-    <p>${escapeHtml(x.detail)}</p>
-    ${x.cars ? `<div class="car-tags">${x.cars.map((car) => `<span>${escapeHtml(car)}</span>`).join('')}</div>` : ''}
-    ${x.price ? `<strong class="candidate-price">${escapeHtml(x.price)}</strong>` : ''}
-    <a class="link-button" href="${x.url}" target="_blank" rel="noopener noreferrer">${linkText} ↗</a>
-  </article>`;
+  return `<article class="candidate-card"><div class="candidate-head"><span>${escapeHtml(x.category || '후보')}</span><span class="rating">${escapeHtml(x.recommendation || '후보')}</span></div><h3>${escapeHtml(x.name)}</h3><p>${escapeHtml(x.detail)}</p>${x.price ? `<strong class="candidate-price">${escapeHtml(x.price)}</strong>` : ''}<a class="link-button" href="${x.url}" target="_blank" rel="noopener noreferrer">${linkText} ↗</a></article>`;
 }
 
 function updateCountdown(start) {
