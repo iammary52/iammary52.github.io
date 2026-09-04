@@ -13,7 +13,7 @@
       {"time":"14:00","title":"렌터카 픽업","detail":"Klook / ZenWay · Nissan X-Trail 또는 동급 SUV · 예약 VJA163952 · 국제선 터미널 98번 승강장에서 셔틀 픽업 요청 · 연락 후 약 15분 예상 · 셔틀 차량번호 6122"},
       {"time":"오후","title":"베셀 호텔 캄파나 스스키노 체크인","detail":"예약 완료 · 2026년 9월 30일 1박"},
       {"time":"오후","title":"생일 케이크 픽업","detail":"공항 또는 삿포로 시내 홀케이크 후보 검토"},
-      {"time":"저녁","title":"호텔 근처 야키니쿠","detail":"1순위 토토리 본점(南5条西7) · 호텔 바로 옆 블록 수준. 대안: 야키니쿠 퐁가 삿포로 스스키노"},
+      {"time":"저녁","title":"호텔 근처 가성비 야키니쿠","detail":"가까움·가격 우선: 토토리 본점 유지, 저렴한 대안은 우각 스스키노점·칠륜야키니쿠 안안 삿포로 미나미3조점으로 검토"},
       {"time":"저녁","title":"호텔에서 생일 축하","detail":"케이크와 함께 간단한 생일 이벤트 예정"}
     ]},
     {"date":"2026-10-01","dayTitle":"토마무 이동 · 체크인","items":[{"time":"오전","title":"베셀 호텔 캄파나 스스키노 체크아웃","detail":"삿포로에서 토마무로 이동"},{"time":"오후","title":"클럽메드 토마무 체크인","detail":"10월 1일~5일 숙박"}]},
@@ -28,12 +28,14 @@
     {"category":"숙박","name":"베셀 호텔 캄파나 스스키노","status":"예약 완료","detail":"2026.09.30 · 1박 · 슈페리어룸"},
     {"category":"주차","name":"인천공항 제2터미널 예약주차장","status":"예약 완료","detail":"입차 2026.09.30 06:00 · 출차 2026.10.05 20:00 · 차량 50소4041 · 예약번호 4041HH0019 · 보증금 10,000원"},
     {"category":"교통","name":"Klook · ZenWay Rent A Car","status":"예약 완료","detail":"Nissan X-Trail 또는 동급 SUV · 5인승 · 수하물 3개 · 오토 · 에어컨 · 운전자 MR KYUMIN KIM · 9/30 14:00 픽업 → 10/5 13:00 반납 · 예약/확정번호 VJA163952 · SIPP CFAV · 주소 199-7 Uenae, Tomakomai, Hokkaido · 연락 +81-70-9086-7662 · 영업 09:00~19:00 · 공항 외부 영업소로 셔틀 이동"},
-    {"category":"식사","name":"첫날 저녁 야키니쿠","status":"검토 중","detail":"호텔 최인접 1순위: 토토리 본점 · 대안: 야키니쿠 퐁가 삿포로 스스키노"},
+    {"category":"식사","name":"첫날 저녁 야키니쿠","status":"검토 중","detail":"가격·거리 우선 후보: 토토리 본점 / 우각 스스키노점 / 칠륜야키니쿠 안안 삿포로 미나미3조점"},
     {"category":"이벤트","name":"9월 30일 생일 케이크","status":"검토 중","detail":"공항 또는 삿포로 시내 홀케이크 후보 검토"}
   ],
   "dinnerCandidates": [
-    {"category":"호텔 최인접 · 1순위","name":"토토리 본점 (Totori)","recommendation":"추천 ★★★★★","detail":"베셀 호텔 캄파나 스스키노가 南5条西6, 토토리가 南5条西7이라 사실상 바로 옆 블록. 정통 야키니쿠·호르몬·한국요리. 예약 가능, 12:00~24:00. 첫날 이동 피로를 생각하면 가장 실용적인 선택.","price":"저녁 대략 ¥6,000~7,999/인","url":"https://tabelog.com/en/hokkaido/A0101/A010103/1000023/"},
-    {"category":"고기 퀄리티 · 대안","name":"Yakiniku Ponga Sapporo Susukino","recommendation":"추천 ★★★★☆","detail":"스스키노 중심의 인기 야키니쿠. 리뷰가 많고 고기 퀄리티 평가가 좋은 편. 토토리보다 조금 더 걸어야 하지만 생일 저녁 분위기를 중시하면 대안으로 좋음.","price":"¥10,000+/인 수준","url":"https://www.google.com/maps/search/?api=1&query=Yakiniku+Ponga+Sapporo+Susukino"}
+    {"category":"가까움 우선 · 1순위","name":"토토리 본점 (Totori)","recommendation":"추천 ★★★★☆","detail":"베셀 호텔 캄파나 스스키노가 南5条西6, 토토리가 南5条西7이라 사실상 바로 옆 블록. 아주 저렴하진 않지만 이동 피로와 아이 동반을 생각하면 가장 안정적. 코스보다 단품 위주로 주문하면 예산 조절 가능.","price":"저녁 예산은 높게 잡힘 · 단품 주문으로 조절","url":"https://tabelog.com/en/hokkaido/A0101/A010103/1000023/"},
+    {"category":"저렴한 체인 · 가족 대안","name":"牛角 すすきの店 (Gyukaku Susukino)","recommendation":"추천 ★★★★☆","detail":"스스키노역 쪽 체인 야키니쿠. 아이 동반 가능, 반개인실 느낌 좌석 후기 있음. 식べ放題/코스 선택지가 있어 두 가족 6명이 예산 맞추기 가장 쉬운 편.","price":"일반 평균 약 ¥3,800 · 식べ放題 ¥3,718~","url":"https://www.hotpepper.jp/strJ000027106/"},
+    {"category":"최저가 우선 · 식べ放題","name":"七輪焼肉 安安 札幌南3条店","recommendation":"추천 ★★★☆☆","detail":"가격을 제일 낮추고 싶을 때 후보. 아이 동반·초등학생 가능, 베비카 입점 가능으로 표시. 호텔에서는 토토리/우각보다 더 걸어야 하지만 120분 식べ放題 코스가 저렴함.","price":"식べ放題 약 ¥2,860~¥3,630","url":"https://tabelog.com/hokkaido/A0101/A010103/1060046/"},
+    {"category":"저렴하지만 보류","name":"焼肉ライク 札幌狸小路店","recommendation":"보류 ★★☆☆☆","detail":"가격은 가장 싸지만 1인 1로스터 콘셉트라 두 가족 생일 저녁 분위기에는 덜 맞음. 정말 간단히 먹는 대안으로만 기록.","price":"대략 ¥1,000~¥1,999","url":"https://www.yakiniku-like.com/access-sapporo-tanukikoji.html"}
   ],
   "cakeCandidates": [
     {"category":"공항 수령 우선 후보","name":"KINOTOYA","recommendation":"추천 ★★★★★","detail":"신치토세공항 도착 직후 수령 가능 여부를 우선 확인할 후보. 시내에서 케이크를 다시 찾으러 갈 필요가 없어 첫날 동선이 가장 편함.","price":"홀케이크 사전예약 확인","url":"https://www.kinotoya.com/"},
