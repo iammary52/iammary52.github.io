@@ -7,7 +7,7 @@ const koDate = (d) => new Intl.DateTimeFormat('ko-KR', {
 const SUPABASE_URL = 'https://gftydfeqpuavajjzaeun.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_35lefXRrUU4MFrAATfghjQ_2EPkUgGy';
 const TRIP_ID = 'hokkaido-2026';
-const DATA_VERSION = '20260904-2';
+const DATA_VERSION = '20260907-1';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 fetch(`trip-data.json?v=${DATA_VERSION}`, { cache: 'no-store' })
@@ -24,8 +24,9 @@ function render(data) {
   $('#eventBanner').innerHTML = data.event ? `
     <article class="event-banner"><span class="event-icon">🎂</span><div><small>${koDate(data.event.date)}</small><strong>${escapeHtml(data.event.title)}</strong><p>${escapeHtml(data.event.detail)}</p></div></article>` : '';
 
-  $('#flightCards').innerHTML = data.flights.map((f) => `
-    <article class="flight-card"><div class="flight-top"><span class="flight-type">${f.type}</span><span class="flight-date">${koDate(f.date)}</span></div><div class="route"><div class="airport"><strong>${f.departure.code}</strong><span>${f.departure.time}</span><small>${f.departure.terminal}</small></div><div class="route-line">${f.duration}</div><div class="airport"><strong>${f.arrival.code}</strong><span>${f.arrival.time}</span><small>${f.arrival.terminal}</small></div></div><div class="flight-meta"><span class="pill">${f.flightNo}</span><span class="pill">${f.aircraft}</span><span class="pill">${f.fare}</span><span class="pill">예약 클래스 ${f.bookingClass}</span></div></article>`).join('');
+  $('#flightCards').innerHTML = data.flights.map((f) => flightCard(f)).join('');
+  const companion = $('#companionFlightCards');
+  if (companion) companion.innerHTML = (data.companionFlights || []).map((f) => flightCard(f)).join('');
 
   $('#scheduleList').innerHTML = data.schedule.map((d, i) => `
     <article class="day-card"><div class="day-head"><strong>DAY ${i + 1} · ${d.dayTitle}</strong><span>${koDate(d.date)}</span></div>${d.items.map((x) => `<div class="timeline-item"><div class="timeline-time">${x.time}</div><div><div class="timeline-title">${x.title}</div><div class="timeline-detail">${x.detail}</div></div></div>`).join('')}</article>`).join('');
@@ -36,6 +37,11 @@ function render(data) {
   $('#dinnerList').innerHTML = (data.dinnerCandidates || []).map((x) => candidateCard(x, '예약/상세 링크')).join('');
   $('#cakeList').innerHTML = data.cakeCandidates.map((x) => candidateCard(x, '공식 페이지')).join('');
   initChecklist(data.checklist);
+}
+
+function flightCard(f) {
+  const meta = [f.flightNo, f.aircraft, f.fare, f.bookingClass ? `예약 클래스 ${f.bookingClass}` : '', f.note || ''].filter(Boolean);
+  return `<article class="flight-card"><div class="flight-top"><span class="flight-type">${escapeHtml(f.type)}</span><span class="flight-date">${koDate(f.date)}</span></div><div class="route"><div class="airport"><strong>${escapeHtml(f.departure.code)}</strong><span>${escapeHtml(f.departure.time)}</span><small>${escapeHtml(f.departure.terminal)}</small></div><div class="route-line">${escapeHtml(f.duration)}</div><div class="airport"><strong>${escapeHtml(f.arrival.code)}</strong><span>${escapeHtml(f.arrival.time)}</span><small>${escapeHtml(f.arrival.terminal)}</small></div></div><div class="flight-meta">${meta.map((m) => `<span class="pill">${escapeHtml(m)}</span>`).join('')}</div></article>`;
 }
 
 function candidateCard(x, linkText) {
