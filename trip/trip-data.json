@@ -1,9 +1,9 @@
 {
   "trip": {"title":"홋카이도 토마무 가족여행","subtitle":"삿포로 · 신치토세 · 토마무","startDate":"2026-09-30","endDate":"2026-10-05","status":"계획 중"},
-  "event": {"date":"2026-09-30","title":"정미님 생일 🎉","detail":"삿포로 도착 첫날 · 케이크 픽업과 야키니쿠 저녁을 준비할 예정"},
+  "event": {"date":"2026-09-30","title":"정미님 생일 🎉","detail":"삿포로 도착 첫날 · SAPPORO NIKUAZABU 20:00 야키니쿠 예약 완료"},
   "flights": [
     {"type":"가는 편","date":"2026-09-30","flightNo":"KE765","aircraft":"B787-9","departure":{"code":"ICN","time":"10:35","terminal":"인천공항 제2터미널"},"arrival":{"code":"CTS","time":"13:25","terminal":"신치토세공항 국제선"},"duration":"2시간 50분","fare":"일반석 스탠다드","bookingClass":"U"},
-    {"type":"오는 편","date":"2026-10-05","flightNo":"KE766","aircraft":"B787-9","departure":{"code":"CTS","time":"14:50","terminal":"신치토세공항 국제선"},"arrival":{"code":"ICN","time":"17:55","terminal":"신치토세공항 국제선"},"duration":"3시간 5분","fare":"일반석 플렉스","bookingClass":"M"}
+    {"type":"오는 편","date":"2026-10-05","flightNo":"KE766","aircraft":"B787-9","departure":{"code":"CTS","time":"14:50","terminal":"신치토세공항 국제선"},"arrival":{"code":"ICN","time":"17:55","terminal":"인천공항 제2터미널"},"duration":"3시간 5분","fare":"일반석 플렉스","bookingClass":"M"}
   ],
   "companionFlights": [
     {"type":"동행팀 가는 편","date":"2026-09-30","flightNo":"LJ0311","aircraft":"진에어","departure":{"code":"PUS","time":"14:05","terminal":"김해국제공항 터미널 I"},"arrival":{"code":"CTS","time":"16:25","terminal":"신치토세공항 터미널 I"},"duration":"2시간 20분","fare":"일반석","bookingClass":"O","note":"항공사예약번호 AP8BXM · 위탁수하물 15kg 포함"}
@@ -18,7 +18,7 @@
       {"time":"16:25","title":"동행팀 신치토세 도착","detail":"진에어 LJ0311 · 부산 김해공항 14:05 출발 → 신치토세 16:25 도착 · 예약번호 AP8BXM · 위탁수하물 15kg 포함"},
       {"time":"18:15~18:45","title":"동행팀 호텔 도착 예상","detail":"입국심사·수하물 40~60분 + 공항→스스키노 이동 약 60분을 잡은 예상. 교통상황과 수속 속도에 따라 19시 전후까지 늦어질 수 있음"},
       {"time":"오후","title":"생일 케이크 픽업","detail":"공항 또는 삿포로 시내 홀케이크 후보 검토"},
-      {"time":"저녁","title":"호텔 근처 가성비 야키니쿠","detail":"가까움·가격 우선: 토토리 본점 유지, 저렴한 대안은 우각 스스키노점·칠륜야키니쿠 안안 삿포로 미나미3조점으로 검토. 후보 카드 하단에 예약/상세 링크 추가."},
+      {"time":"20:00","title":"SAPPORO NIKUAZABU 야키니쿠 예약","detail":"예약 완료 · 예약번호 LTEGATYXQE · 6명(성인 4명, 어린이 2명) · 테이블석 금연 · 체류 가능 2시간 · 코스 지정 없음 · 결제는 당일"},
       {"time":"저녁","title":"호텔에서 생일 축하","detail":"케이크와 함께 간단한 생일 이벤트 예정"}
     ]},
     {"date":"2026-10-01","dayTitle":"토마무 이동 · 체크인","items":[{"time":"오전","title":"베셀 호텔 캄파나 스스키노 체크아웃","detail":"삿포로에서 토마무로 이동"},{"time":"오후","title":"클럽메드 토마무 체크인","detail":"10월 1일~5일 숙박"}]},
@@ -34,18 +34,18 @@
     {"category":"숙박","name":"베셀 호텔 캄파나 스스키노","status":"예약 완료","detail":"2026.09.30 · 1박 · 슈페리어룸"},
     {"category":"주차","name":"인천공항 제2터미널 예약주차장","status":"예약 완료","detail":"입차 2026.09.30 06:00 · 출차 2026.10.05 20:00 · 차량 50소4041 · 예약번호 4041HH0019 · 보증금 10,000원"},
     {"category":"교통","name":"Klook · ZenWay Rent A Car","status":"예약 완료","detail":"Nissan X-Trail 또는 동급 SUV · 5인승 · 수하물 3개 · 오토 · 에어컨 · 운전자 MR KYUMIN KIM · 9/30 14:00 픽업 → 10/5 13:00 반납 · 예약/확정번호 VJA163952 · SIPP CFAV · 주소 199-7 Uenae, Tomakomai, Hokkaido · 연락 +81-70-9086-7662 · 영업 09:00~19:00 · 공항 외부 영업소로 셔틀 이동"},
-    {"category":"식사","name":"첫날 저녁 야키니쿠","status":"검토 중","detail":"가격·거리 우선 후보: 토토리 본점 / 우각 스스키노점 / 칠륜야키니쿠 안안 삿포로 미나미3조점 · 각 후보 카드에 링크 포함"},
+    {"category":"식사","name":"첫날 저녁 SAPPORO NIKUAZABU","status":"예약 완료","detail":"2026.09.30 20:00 · 6명(성인 4명, 어린이 2명) · 예약번호 LTEGATYXQE · 테이블석 금연 · 2시간 · 코스 지정 없음 · 결제 당일"},
     {"category":"이벤트","name":"9월 30일 생일 케이크","status":"검토 중","detail":"공항 또는 삿포로 시내 홀케이크 후보 검토"}
   ],
   "dinnerCandidates": [
-    {"category":"가까움 우선 · 1순위","name":"토토리 본점 (Totori)","recommendation":"추천 ★★★★☆","detail":"베셀 호텔 캄파나 스스키노가 南5条西6, 토토리가 南5条西7이라 사실상 바로 옆 블록. 아주 저렴하진 않지만 이동 피로와 아이 동반을 생각하면 가장 안정적. 링크는 예약 가능한 Hotpepper 페이지로 연결.","price":"저녁 예산은 높게 잡힘 · 단품 주문으로 조절","url":"https://www.hotpepper.jp/strJ000100008/"},
-    {"category":"저렴한 체인 · 가족 대안","name":"牛角 すすきの店 (Gyukaku Susukino)","recommendation":"추천 ★★★★☆","detail":"스스키노역 쪽 체인 야키니쿠. 아이 동반 가능, 식べ放題/코스 선택지가 있어 두 가족 6명이 예산 맞추기 가장 쉬운 편. 링크는 공식 점포 페이지로 연결.","price":"일반 평균 약 ¥3,800 · 식べ放題 ¥3,718~","url":"https://map.reins.co.jp/gyukaku/detail/115224129"},
-    {"category":"최저가 우선 · 식べ放題","name":"七輪焼肉 安安 札幌南3条店","recommendation":"추천 ★★★☆☆","detail":"가격을 제일 낮추고 싶을 때 후보. 아이 동반·초등학생 가능. 호텔에서는 토토리/우각보다 더 걸어야 하지만 120분 식べ放題 코스가 저렴함. 링크는 공식 점포 페이지로 연결.","price":"식べ放題 약 ¥2,860~¥3,630","url":"https://anan.fuji-tatsu.co.jp/shop/sapporo-minamisanjo/"},
-    {"category":"저렴하지만 보류","name":"焼肉ライク 札幌狸小路店","recommendation":"보류 ★★☆☆☆","detail":"가격은 가장 싸지만 1인 1로스터 콘셉트라 두 가족 생일 저녁 분위기에는 덜 맞음. 정말 간단히 먹는 대안으로만 기록. 링크는 공식 점포 페이지로 연결.","price":"대략 ¥1,000~¥1,999","url":"https://www.yakiniku-like.com/access-sapporo-tanukikoji.html"}
+    {"category":"예약 완료 · 9/30 20:00","name":"SAPPORO NIKUAZABU","recommendation":"확정 ★★★★★","detail":"첫날 저녁 식사 확정. 식べログ 예약번호 LTEGATYXQE · 6명(성인 4명, 어린이 2명) · 테이블석 금연 · 체류 가능 2시간 · 코스 지정 없음 · 결제는 당일. 동행팀 호텔 도착 예상 이후라 시간 여유가 있는 편.","price":"예약 완료 · 당일 주문/결제","url":"https://tabelog.com/hokkaido/A0101/A010102/1077746/"},
+    {"category":"백업 · 가까움 우선","name":"토토리 본점 (Totori)","recommendation":"백업 ★★★★☆","detail":"베셀 호텔 캄파나 스스키노가 南5条西6, 토토리가 南5条西7이라 사실상 바로 옆 블록. NIKUAZABU 예약 변경 필요 시 가까운 대안으로 유지.","price":"저녁 예산은 높게 잡힘 · 단품 주문으로 조절","url":"https://www.hotpepper.jp/strJ000100008/"},
+    {"category":"백업 · 저렴한 체인","name":"牛角 すすきの店 (Gyukaku Susukino)","recommendation":"백업 ★★★☆☆","detail":"스스키노역 쪽 체인 야키니쿠. 식べ放題/코스 선택지가 있어 두 가족 6명이 예산 맞추기 쉬운 편. 예약 변경이 필요할 때 가성비 대안.","price":"일반 평균 약 ¥3,800 · 식べ放題 ¥3,718~","url":"https://map.reins.co.jp/gyukaku/detail/115224129"},
+    {"category":"백업 · 최저가","name":"七輪焼肉 安安 札幌南3条店","recommendation":"백업 ★★☆☆☆","detail":"가격을 제일 낮추고 싶을 때 후보. 아이 동반·초등학생 가능. 호텔에서는 토토리/우각보다 더 걸어야 하지만 120분 식べ放題 코스가 저렴함.","price":"食べ放題 약 ¥2,860~¥3,630","url":"https://anan.fuji-tatsu.co.jp/shop/sapporo-minamisanjo/"}
   ],
   "cakeCandidates": [
     {"category":"공항 수령 우선 후보","name":"KINOTOYA","recommendation":"추천 ★★★★★","detail":"신치토세공항 도착 직후 수령 가능 여부를 우선 확인할 후보. 시내에서 케이크를 다시 찾으러 갈 필요가 없어 첫날 동선이 가장 편함.","price":"홀케이크 사전예약 확인","url":"https://www.kinotoya.com/"},
     {"category":"치즈케이크 후보","name":"LeTAO","recommendation":"추천 ★★★★☆","detail":"치즈케이크로 유명한 홋카이도 브랜드. 공항점 상품과 홀 사이즈 여부 확인.","price":"치즈케이크·선물용 후보","url":"https://www.letao-brand.jp/"}
   ],
-  "checklist": ["여권 유효기간 확인","국제운전면허증 준비","렌터카 예약 완료","베셀 호텔 캄파나 스스키노 예약","인천공항 제2터미널 예약주차장 예약","첫날 야키니쿠 식당 확정 및 예약","생일 케이크 매장 확정 및 예약","클럽메드 공항/역 셔틀 확인","여행자보험 가입","좌석 지정"]
+  "checklist": ["여권 유효기간 확인","국제운전면허증 준비","렌터카 예약 완료","베셀 호텔 캄파나 스스키노 예약","인천공항 제2터미널 예약주차장 예약","첫날 야키니쿠 예약 완료","생일 케이크 매장 확정 및 예약","클럽메드 공항/역 셔틀 확인","여행자보험 가입","좌석 지정"]
 }
