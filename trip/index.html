@@ -8,7 +8,8 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>홋카이도 토마무 여행 관리</title>
-  <link rel="stylesheet" href="styles.css?v=20260909-1">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynJOP+vAB0XyA0YhB2XfJcX2P6xA=" crossorigin="">
+  <link rel="stylesheet" href="styles.css?v=20260929-1">
 </head>
 <body>
   <header class="hero">
@@ -32,6 +33,17 @@
       <div id="flightCards" class="flight-grid"></div>
       <div class="section-title spaced"><div><span class="kicker">COMPANION TEAM</span><h2>동행팀 항공 일정</h2></div></div>
       <div id="companionFlightCards" class="flight-grid"></div>
+      <div class="section-title spaced"><div><span class="kicker">FIRST DAY MAP</span><h2>첫날 스스키노 동선</h2></div></div>
+      <div class="route-map-card">
+        <div class="route-map-head">
+          <div><strong>호텔 → 식당 → 케이크 → PARCO</strong><span>장소를 누르면 지도 링크를 열 수 있어요.</span></div>
+          <a id="day1RouteGoogle" class="map-open-btn" target="_blank" rel="noopener noreferrer">전체 동선 열기 ↗</a>
+        </div>
+        <div id="day1Map" class="day1-map" aria-label="첫날 스스키노 동선 지도"></div>
+        <div id="day1RouteStrip" class="route-strip"></div>
+        <p id="day1RouteNote" class="route-note"></p>
+      </div>
+
       <div class="section-title spaced"><div><span class="kicker">AT A GLANCE</span><h2>여행 현황</h2></div></div>
       <div class="summary-grid">
         <article class="summary-card"><span>여행 기간</span><strong>5박 6일</strong><small>2026.09.30 ~ 10.05</small></article>
@@ -79,6 +91,7 @@
   </main>
   <footer><p>Hokkaido Trip Manager · Updated September 2026</p></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=20260909-1"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="app.js?v=20260929-1"></script>
 </body>
 </html>
