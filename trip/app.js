@@ -7,7 +7,7 @@ const koDate = (d) => new Intl.DateTimeFormat('ko-KR', {
 const SUPABASE_URL = 'https://gftydfeqpuavajjzaeun.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_35lefXRrUU4MFrAATfghjQ_2EPkUgGy';
 const TRIP_ID = 'hokkaido-2026';
-const DATA_VERSION = '20260909-1';
+const DATA_VERSION = '20260929-1';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 fetch(`trip-data.json?v=${DATA_VERSION}`, { cache: 'no-store' })
@@ -36,6 +36,7 @@ function render(data) {
 
   $('#dinnerList').innerHTML = (data.dinnerCandidates || []).map((x) => candidateCard(x, '예약/상세 링크')).join('');
   $('#cakeList').innerHTML = data.cakeCandidates.map((x) => candidateCard(x, '공식 페이지')).join('');
+  renderDay1Route(data.day1Route);
   initChecklist(data.checklist);
 }
 
@@ -46,6 +47,54 @@ function flightCard(f) {
 
 function candidateCard(x, linkText) {
   return `<article class="candidate-card"><div class="candidate-head"><span>${escapeHtml(x.category || '후보')}</span><span class="rating">${escapeHtml(x.recommendation || '후보')}</span></div><h3>${escapeHtml(x.name)}</h3><p>${escapeHtml(x.detail)}</p>${x.price ? `<strong class="candidate-price">${escapeHtml(x.price)}</strong>` : ''}<a class="link-button" href="${x.url}" target="_blank" rel="noopener noreferrer">${linkText} ↗</a></article>`;
+}
+
+function renderDay1Route(route) {
+  const mapEl = $('#day1Map');
+  const stripEl = $('#day1RouteStrip');
+  const noteEl = $('#day1RouteNote');
+  const googleEl = $('#day1RouteGoogle');
+  if (!route || !route.stops?.length || !mapEl || !window.L) return;
+
+  const stops = route.stops;
+  const waypoints = stops.slice(1, -1).map((s) => encodeURIComponent(s.name)).join('%7C');
+  googleEl.href = 'https://www.google.com/maps/dir/?api=1&travelmode=walking'
+    + '&origin=' + encodeURIComponent(stops[0].name)
+    + '&destination=' + encodeURIComponent(stops[stops.length - 1].name)
+    + (waypoints ? '&waypoints=' + waypoints : '');
+
+  stripEl.innerHTML = stops.map((s, i) =>
+    `<a class="route-stop" href="${s.url}" target="_blank" rel="noopener noreferrer">
+      <span class="route-number">${s.order}</span>
+      <span class="route-emoji">${s.icon}</span>
+      <strong>${escapeHtml(s.name)}</strong>
+      <small>${escapeHtml(s.short)}</small>
+    </a>${i < stops.length - 1 ? '<span class="route-arrow">→</span>' : ''}`
+  ).join('');
+  noteEl.textContent = route.note || '';
+
+  const map = L.map(mapEl, { scrollWheelZoom: false, zoomControl: true, attributionControl: true });
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; OpenStreetMap'
+  }).addTo(map);
+
+  const latlngs = stops.map((s) => [s.lat, s.lng]);
+  L.polyline(latlngs, { weight: 5, opacity: 0.8, dashArray: '10 8' }).addTo(map);
+
+  stops.forEach((s) => {
+    const icon = L.divIcon({
+      className: 'route-marker-wrap',
+      html: `<div class="route-marker"><span>${s.order}</span><b>${s.icon}</b></div>`,
+      iconSize: [42, 42],
+      iconAnchor: [21, 21]
+    });
+    L.marker([s.lat, s.lng], { icon })
+      .addTo(map)
+      .bindPopup(`<strong>${escapeHtml(s.name)}</strong><br><span>${escapeHtml(s.short)}</span><br><a href="${s.url}" target="_blank" rel="noopener noreferrer">지도에서 열기 ↗</a>`);
+  });
+
+  map.fitBounds(latlngs, { padding: [36, 36] });
 }
 
 function updateCountdown(start) {
