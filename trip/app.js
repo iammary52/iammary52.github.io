@@ -26,6 +26,10 @@ function render(data) {
     `<article class="summary-card"><span>${escapeHtml(x.label)}</span><strong>${escapeHtml(x.value)}</strong><small>${escapeHtml(x.detail)}</small></article>`
   ).join('');
 
+  const lodgingCards = $('#lodgingCards');
+  if (lodgingCards) lodgingCards.innerHTML = (data.lodgingPlan || []).map((x) => lodgingCard(x)).join('');
+  initTripCalendar(data);
+
   $('#scheduleList').innerHTML = data.schedule.map((d, i) => `
     <article class="day-card">
       <div class="day-head"><strong>DAY ${i + 1} · ${escapeHtml(d.dayTitle)}</strong><span>${koDate(d.date)}</span></div>
@@ -120,6 +124,61 @@ function candidateCard(x) {
     ${x.price ? `<strong class="candidate-price">${escapeHtml(x.price)}</strong>` : ''}
     ${x.url ? `<a class="link-button" href="${x.url}" target="_blank" rel="noopener noreferrer">열어보기 ↗</a>` : ''}
   </article>`;
+}
+
+function initTripCalendar(data) {
+  const root = $('#tripCalendar');
+  const title = $('#calendarMonthTitle');
+  if (!root || !title) return;
+
+  let viewYear = 2026;
+  let viewMonth = 11; // December, zero-based
+  const startDate = data.trip.startDate;
+  const endDate = data.trip.endDate;
+  const eventMap = {};
+  (data.calendarEvents || []).forEach((e) => {
+    if (!eventMap[e.date]) eventMap[e.date] = [];
+    eventMap[e.date].push(e);
+  });
+
+  const renderMonth = () => {
+    const first = new Date(viewYear, viewMonth, 1);
+    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+    const leading = first.getDay();
+    title.textContent = `${viewYear}년 ${viewMonth + 1}월`;
+    const cells = [];
+
+    for (let i = 0; i < leading; i++) cells.push('<div class="calendar-day outside"></div>');
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const date = `${viewYear}-${String(viewMonth + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+      const inTrip = date >= startDate && date <= endDate;
+      const events = eventMap[date] || [];
+      const classes = ['calendar-day', inTrip ? 'in-trip' : ''];
+      const eventHtml = events.map((e) =>
+        `<div class="cal-event ${escapeHtml(e.type)}" title="${escapeHtml(e.detail || '')}"><strong>${escapeHtml(e.title)}</strong><small>${escapeHtml(e.detail || '')}</small></div>`
+      ).join('');
+      cells.push(`<div class="${classes.filter(Boolean).join(' ')}"><div class="calendar-date"><span>${day}</span>${inTrip ? '<b>TRIP</b>' : ''}</div>${eventHtml}</div>`);
+    }
+
+    const used = leading + daysInMonth;
+    const trailing = (7 - (used % 7)) % 7;
+    for (let i = 0; i < trailing; i++) cells.push('<div class="calendar-day outside"></div>');
+    root.innerHTML = cells.join('');
+  };
+
+  $('#calendarPrev').onclick = () => {
+    viewMonth -= 1;
+    if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
+    renderMonth();
+  };
+  $('#calendarNext').onclick = () => {
+    viewMonth += 1;
+    if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
+    renderMonth();
+  };
+
+  renderMonth();
 }
 
 function updateCountdown(start) {
