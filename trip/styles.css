@@ -38,3 +38,13 @@ button,input,textarea{font:inherit}.hero{background:linear-gradient(135deg,#0d25
 .summary-day ul{margin:10px 0 0;padding-left:17px;color:#536179}.summary-day li{font-size:11px;line-height:1.45;margin:2px 0}
 @media(max-width:900px){.summary-calendar{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:560px){.summary-calendar{grid-template-columns:1fr}.summary-day{grid-template-columns:72px 1fr;min-height:138px}}
+
+.restaurant-groups{display:grid;gap:28px}.restaurant-group{display:grid;gap:12px}.restaurant-group-head h3{margin:4px 0 0;font-size:21px}.restaurant-group-head span{color:var(--muted);font-size:13px}
+.restaurant-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.restaurant-card{background:#fff;border:1px solid var(--line);border-radius:22px;padding:18px;box-shadow:0 8px 24px rgba(20,45,90,.06)}
+.restaurant-card-top{display:flex;justify-content:space-between;gap:10px;align-items:center}.restaurant-card-top span{color:var(--muted);font-size:12px}.restaurant-card-top strong{font-size:12px;color:#0d6975;background:#e6f5f3;padding:5px 8px;border-radius:999px}
+.restaurant-card h4{font-size:20px;margin:13px 0}.restaurant-meta{display:grid;gap:7px;background:#f7fafc;border-radius:14px;padding:11px}
+.restaurant-meta div{display:grid;grid-template-columns:64px 1fr;gap:8px;align-items:start}.restaurant-meta span{font-size:11px;color:var(--muted);font-weight:800}.restaurant-meta b{font-size:12px;line-height:1.45}
+.restaurant-card p{color:var(--muted);line-height:1.55;font-size:14px;margin:13px 0}.restaurant-tags{display:flex;flex-wrap:wrap;gap:6px}.restaurant-tags span{font-size:11px;font-weight:800;background:#edf7f5;color:#0d6975;border-radius:999px;padding:5px 8px}
+.summary-day.tour:before{background:#32a27b}
+@media(max-width:760px){.restaurant-grid{grid-template-columns:1fr}.restaurant-meta div{grid-template-columns:58px 1fr}}
