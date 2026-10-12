@@ -108,12 +108,27 @@
     },
     {
       "date": "2026-12-19",
-      "dayTitle": "달링하버 베이스",
+      "dayTitle": "포트스테판 · 와이너리 투어",
       "items": [
         {
-          "time": "종일",
-          "title": "Hyatt Regency Sydney 숙박 예정",
-          "detail": "토요일 시내 일정 후보 추가 예정"
+          "time": "아침",
+          "title": "시드니 출발",
+          "detail": "포트스테판 + 와이너리 포함 당일투어 예약 예정"
+        },
+        {
+          "time": "오전~오후",
+          "title": "포트스테판 투어",
+          "detail": "사막·해안 액티비티 중심으로 상품 비교 예정"
+        },
+        {
+          "time": "오후",
+          "title": "와이너리 방문",
+          "detail": "투어 상품에 포함되는 와이너리/시음 구성 확인 후 확정"
+        },
+        {
+          "time": "저녁",
+          "title": "Hyatt Regency Sydney 복귀",
+          "detail": "숙소 주변에서 가볍게 저녁 + 한잔 후보 확인"
         }
       ]
     },
@@ -354,10 +369,11 @@
       "stay": "Hyatt Regency Sydney",
       "stayStatus": "고려 중",
       "events": [
-        "시드니 시내 일정 예정",
-        "세부 일정 미정"
+        "포트스테판 당일투어",
+        "와이너리 방문 예정",
+        "저녁 Hyatt 복귀"
       ],
-      "type": "city"
+      "type": "tour"
     },
     {
       "date": "2026-12-20",
@@ -419,6 +435,141 @@
         "19:00 인천 도착"
       ],
       "type": "departure"
+    }
+  ],
+  "restaurantGroups": [
+    {
+      "id": "hotel",
+      "title": "호텔 안에서 편하게",
+      "subtitle": "아이와 같이 먹고 바로 객실로 올라가기 좋은 선택",
+      "items": [
+        {
+          "name": "Jackalberry",
+          "category": "호텔 바·레스토랑",
+          "walk": "호텔 내부",
+          "price": "약 A$35~60/인",
+          "hours": "월–목 07:00–22:00 · 금 07:00–24:00 · 토 10:30–24:00 · 일 10:30–22:00",
+          "note": "글로벌 퀴진 + 칵테일. Hyatt 공식 FAQ상 Zephyr를 제외한 호텔 식음장은 어린이 메뉴 제공.",
+          "tags": [
+            "가족 OK",
+            "한잔 OK",
+            "호텔 내부"
+          ],
+          "url": "https://www.hyatt.com/hyatt-regency/en-US/sydrs-hyatt-regency-sydney/dining"
+        },
+        {
+          "name": "Sailmaker",
+          "category": "호주식·호텔 다이닝",
+          "walk": "호텔 내부",
+          "price": "약 A$50~90/인",
+          "hours": "저녁 목–일 17:30–21:30 · 조식 평일 06:30–10:00 / 주말 06:30–11:00",
+          "note": "조금 차분하게 먹고 와인 한잔하기 좋은 호텔 레스토랑. 주말 조식 뷔페 성인 A$48, 어린이(6–12) A$24.",
+          "tags": [
+            "가족 OK",
+            "와인",
+            "조용한 편"
+          ],
+          "url": "https://www.hyatt.com/hyatt-regency/en-US/sydrs-hyatt-regency-sydney/sailmaker-restaurant"
+        },
+        {
+          "name": "Dundee Arms",
+          "category": "펍·캐주얼",
+          "walk": "호텔 내부/바로 옆",
+          "price": "약 A$25~45/인",
+          "hours": "월–토 12:00–20:00",
+          "note": "슈니첼·피시앤칩스·버거와 맥주. 늦은 저녁보다는 일찍 가볍게 먹기 좋은 곳.",
+          "tags": [
+            "캐주얼",
+            "맥주",
+            "가성비"
+          ],
+          "url": "https://www.hyatt.com/hyatt-regency/en-US/sydrs-hyatt-regency-sydney/dining"
+        },
+        {
+          "name": "Lobby Lounge",
+          "category": "라운지·와인",
+          "walk": "호텔 내부",
+          "price": "약 A$30~60/인",
+          "hours": "매일 05:15–23:30",
+          "note": "와인·클래식 칵테일 + 쉐어 메뉴. 가족 저녁 후 숙소에서 한잔 마무리할 때 편함.",
+          "tags": [
+            "한잔",
+            "늦게까지",
+            "호텔 내부"
+          ],
+          "url": "https://www.hyatt.com/hyatt-regency/en-US/sydrs-hyatt-regency-sydney/dining"
+        }
+      ]
+    },
+    {
+      "id": "nearby",
+      "title": "숙소 주변 저녁 + 한잔",
+      "subtitle": "Hyatt Regency Sydney에서 도보권으로 잡은 저녁 후보",
+      "items": [
+        {
+          "name": "Bopp & Tone",
+          "category": "호주식·그릴·바",
+          "walk": "도보 약 5~10분",
+          "price": "A$45~100+/인",
+          "hours": "월–목 11:30–23:00 · 금–토 11:30–24:00 · 주방 12:00–15:00 / 17:00–late",
+          "note": "현재 메뉴 기준 버거 A$28, steak & fries A$44, 주요 스테이크 A$74~108, Bopp’s Banquet A$102/인. 음식도 먹고 술도 마시기 가장 밸런스 좋음.",
+          "tags": [
+            "추천 1순위",
+            "칵테일",
+            "스테이크"
+          ],
+          "url": "https://boppandtone.com.au/menus/"
+        },
+        {
+          "name": "The Malaya",
+          "category": "말레이·동남아",
+          "walk": "도보 약 10~15분",
+          "price": "A$50~80+/인",
+          "hours": "월–토 점심 12:00부터 · 저녁 17:30부터 · 일요일 휴무",
+          "note": "쉐어하기 좋은 동남아 음식. 그룹 다이닝 메뉴는 A$78/인부터. 와인·맥주·칵테일 가능.",
+          "tags": [
+            "가족 OK",
+            "쉐어",
+            "술 OK"
+          ],
+          "url": "https://themalaya.com.au/"
+        },
+        {
+          "name": "Nick’s Seafood Restaurant",
+          "category": "해산물·하버뷰",
+          "walk": "도보 약 5~10분",
+          "price": "약 A$70~120+/인",
+          "hours": "월–토 11:30–15:00 / 17:00–22:00 · 일 11:30–22:00",
+          "note": "Cockle Bay Wharf의 해산물 레스토랑. 와인이나 샴페인 곁들여 조금 특별한 저녁으로 적합.",
+          "tags": [
+            "하버뷰",
+            "해산물",
+            "특별한 저녁"
+          ],
+          "url": "https://www.nicksgroup.com.au/venue/nicks-seafood-restaurant/"
+        }
+      ]
+    },
+    {
+      "id": "adult",
+      "title": "부부끼리만 가능하면",
+      "subtitle": "아들과 함께는 제외 — 성인용 옵션",
+      "items": [
+        {
+          "name": "Zephyr",
+          "category": "루프톱 바",
+          "walk": "Hyatt 12층",
+          "price": "약 A$30~60+/인",
+          "hours": "화–목 15:00–22:00 · 금 15:00–24:00 · 토 14:00–24:00 · 일 14:00–22:00",
+          "note": "Darling Harbour 전망의 루프톱 칵테일 바. Hyatt 공식 FAQ상 어린이 메뉴가 없고, 현재 안내는 18+ 전용이라 가족 3명 방문용으로는 제외.",
+          "tags": [
+            "18+",
+            "루프톱",
+            "칵테일"
+          ],
+          "url": "https://www.hyatt.com/hyatt-regency/en-US/sydrs-hyatt-regency-sydney/dining"
+        }
+      ]
     }
   ]
 }
