@@ -7,7 +7,7 @@ const koDate = (d) => new Intl.DateTimeFormat('ko-KR', {
 const SUPABASE_URL = 'https://gftydfeqpuavajjzaeun.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_35lefXRrUU4MFrAATfghjQ_2EPkUgGy';
 const TRIP_ID = 'sydney-2026';
-const DATA_VERSION = '20261012-1';
+const DATA_VERSION = '20261012-2';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 fetch(`trip-data.json?v=${DATA_VERSION}`, { cache: 'no-store' })
@@ -38,7 +38,9 @@ function render(data) {
       <h3>${escapeHtml(b.name)}</h3><p>${escapeHtml(b.detail)}</p>
     </article>`).join('');
 
+  $('#lodgingCards').innerHTML = (data.lodgingPlan || []).map((x) => lodgingCard(x)).join('');
   $('#planningList').innerHTML = (data.planning || []).map((x) => candidateCard(x)).join('');
+  renderCalendar(data.calendar);
   initChecklist(data.checklist);
 }
 
@@ -62,6 +64,52 @@ function flightCard(f) {
     </div>
     <div class="flight-meta">${meta.map((m) => `<span class="pill">${escapeHtml(m)}</span>`).join('')}</div>
   </article>`;
+}
+
+function lodgingCard(x) {
+  const statusClass = x.status.includes('예정') ? 'planned' : x.status.includes('고려') ? 'considering' : 'pending';
+  return `<article class="lodging-card">
+    <div class="lodging-top"><span class="lodging-period">${escapeHtml(x.period)}</span><span class="lodging-status ${statusClass}">${escapeHtml(x.status)}</span></div>
+    <h3>${escapeHtml(x.name)}</h3>
+    <strong class="lodging-nights">${escapeHtml(x.nights)}</strong>
+    <p class="lodging-area">${escapeHtml(x.area)}</p>
+    <p>${escapeHtml(x.detail)}</p>
+    ${x.url ? `<a class="link-button" href="${x.url}" target="_blank" rel="noopener noreferrer">호텔 보기 ↗</a>` : ''}
+  </article>`;
+}
+
+function renderCalendar(calendar) {
+  const el = $('#travelCalendar');
+  const title = $('#calendarTitle');
+  if (!el || !calendar) return;
+
+  title.textContent = calendar.title || '';
+  const year = Number(calendar.year);
+  const month = Number(calendar.month);
+  const firstDay = new Date(year, month - 1, 1).getDay();
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const eventsByDate = {};
+  (calendar.events || []).forEach((event) => {
+    (eventsByDate[event.date] ||= []).push(event);
+  });
+
+  const cells = [];
+  for (let i = 0; i < firstDay; i++) cells.push('<div class="calendar-day blank"></div>');
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const key = `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+    const events = eventsByDate[key] || [];
+    const inTrip = key >= '2026-12-17' && key <= '2026-12-24';
+    cells.push(`<div class="calendar-day ${inTrip ? 'trip-day' : ''}">
+      <div class="calendar-date">${day}</div>
+      <div class="calendar-events">
+        ${events.map((e) => `<div class="calendar-event ${escapeHtml(e.type || 'open')}"><strong>${escapeHtml(e.title)}</strong><span>${escapeHtml(e.detail || '')}</span></div>`).join('')}
+      </div>
+    </div>`);
+  }
+
+  while (cells.length % 7) cells.push('<div class="calendar-day blank"></div>');
+  el.innerHTML = cells.join('');
 }
 
 function candidateCard(x) {
