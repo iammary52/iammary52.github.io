@@ -321,127 +321,104 @@
       "url": "https://www.google.com/maps/search/?api=1&query=Sydney+hotel"
     }
   ],
-  "calendar": {
-    "year": 2026,
-    "month": 12,
-    "title": "2026년 12월 시드니 여행 캘린더",
-    "events": [
-      {
-        "date": "2026-12-17",
-        "type": "flight",
-        "title": "✈️ 08:00 인천 출발",
-        "detail": "OZ9801 / KE781 운항"
-      },
-      {
-        "date": "2026-12-17",
-        "type": "hotel",
-        "title": "🏨 Hyatt Regency Sydney",
-        "detail": "1/3박 · 고려 중"
-      },
-      {
-        "date": "2026-12-18",
-        "type": "hotel",
-        "title": "🏨 Hyatt Regency Sydney",
-        "detail": "2/3박 · 고려 중"
-      },
-      {
-        "date": "2026-12-19",
-        "type": "hotel",
-        "title": "🏨 Hyatt Regency Sydney",
-        "detail": "3/3박 · 고려 중"
-      },
-      {
-        "date": "2026-12-20",
-        "type": "stay",
-        "title": "🦒 Wildlife Retreat at Taronga",
-        "detail": "1박 예정"
-      },
-      {
-        "date": "2026-12-21",
-        "type": "open",
-        "title": "❓ 후반 숙소",
-        "detail": "1/3박 · 미정"
-      },
-      {
-        "date": "2026-12-22",
-        "type": "open",
-        "title": "❓ 후반 숙소",
-        "detail": "2/3박 · 미정"
-      },
-      {
-        "date": "2026-12-23",
-        "type": "open",
-        "title": "❓ 후반 숙소",
-        "detail": "3/3박 · 미정"
-      },
-      {
-        "date": "2026-12-24",
-        "type": "flight",
-        "title": "✈️ 10:20 시드니 출발",
-        "detail": "OZ602 · A380 비즈니스"
-      }
-    ]
-  },
-  "calendarEvents": [
+  "summaryCalendar": [
     {
       "date": "2026-12-17",
-      "type": "flight",
-      "title": "08:00 인천 출발",
-      "detail": "OZ9801 / KE781 운항"
-    },
-    {
-      "date": "2026-12-17",
-      "type": "hotel",
-      "title": "Hyatt Regency Sydney",
-      "detail": "체크인 · 3박 예정"
+      "day": "목",
+      "label": "DAY 1",
+      "stay": "Hyatt Regency Sydney",
+      "stayStatus": "고려 중",
+      "events": [
+        "08:00 인천 출발",
+        "20:05 시드니 도착",
+        "Hyatt 체크인 예정"
+      ],
+      "type": "arrival"
     },
     {
       "date": "2026-12-18",
-      "type": "hotel",
-      "title": "Hyatt Regency Sydney",
-      "detail": "숙박 예정"
+      "day": "금",
+      "label": "DAY 2",
+      "stay": "Hyatt Regency Sydney",
+      "stayStatus": "고려 중",
+      "events": [
+        "Darling Harbour 베이스",
+        "세부 일정 미정"
+      ],
+      "type": "city"
     },
     {
       "date": "2026-12-19",
-      "type": "hotel",
-      "title": "Hyatt Regency Sydney",
-      "detail": "숙박 예정"
+      "day": "토",
+      "label": "DAY 3",
+      "stay": "Hyatt Regency Sydney",
+      "stayStatus": "고려 중",
+      "events": [
+        "시드니 시내 일정 예정",
+        "세부 일정 미정"
+      ],
+      "type": "city"
     },
     {
       "date": "2026-12-20",
-      "type": "move",
-      "title": "Hyatt → Taronga",
-      "detail": "일요일 숙소 이동"
-    },
-    {
-      "date": "2026-12-20",
-      "type": "hotel-special",
-      "title": "Wildlife Retreat at Taronga",
-      "detail": "1박 예정"
+      "day": "일",
+      "label": "DAY 4",
+      "stay": "Wildlife Retreat at Taronga",
+      "stayStatus": "숙박 예정",
+      "events": [
+        "Hyatt 체크아웃",
+        "Taronga 이동",
+        "Wildlife Retreat 1박"
+      ],
+      "type": "special"
     },
     {
       "date": "2026-12-21",
-      "type": "tbd",
-      "title": "후반 숙소 시작",
-      "detail": "12/21~24 · 3박 미정"
+      "day": "월",
+      "label": "DAY 5",
+      "stay": "후반 3박 숙소",
+      "stayStatus": "미정",
+      "events": [
+        "Taronga 체크아웃",
+        "후반 숙소 이동"
+      ],
+      "type": "move"
     },
     {
       "date": "2026-12-22",
-      "type": "tbd",
-      "title": "후반 숙소",
-      "detail": "미정"
+      "day": "화",
+      "label": "DAY 6",
+      "stay": "후반 3박 숙소",
+      "stayStatus": "미정",
+      "events": [
+        "세부 일정 미정"
+      ],
+      "type": "tbd"
     },
     {
       "date": "2026-12-23",
-      "type": "tbd",
-      "title": "후반 숙소",
-      "detail": "미정"
+      "day": "수",
+      "label": "DAY 7",
+      "stay": "후반 3박 숙소",
+      "stayStatus": "미정",
+      "events": [
+        "마지막 전일",
+        "쇼핑·관광·귀국 준비"
+      ],
+      "type": "tbd"
     },
     {
       "date": "2026-12-24",
-      "type": "flight",
-      "title": "10:20 시드니 출발",
-      "detail": "OZ602 · A380 비즈니스"
+      "day": "목",
+      "label": "DAY 8",
+      "stay": "귀국",
+      "stayStatus": "확정",
+      "events": [
+        "숙소 체크아웃",
+        "10:20 시드니 출발",
+        "19:00 인천 도착"
+      ],
+      "type": "departure"
     }
   ]
 }
