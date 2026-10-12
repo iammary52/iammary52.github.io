@@ -3,59 +3,50 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#12306f">
+  <meta name="theme-color" content="#0d5964">
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
-  <title>홋카이도 토마무 여행 관리</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIINfQ3ynJOP+vAB0XyA0YhB2XfJcX2P6xA=" crossorigin="">
-  <link rel="stylesheet" href="styles.css?v=20260929-1">
+  <title>시드니 가족여행 관리</title>
+  <link rel="stylesheet" href="styles.css?v=20261012-1">
 </head>
 <body>
-  <header class="hero">
+  <header class="hero sydney-hero">
     <div class="hero-inner">
-      <div><span class="eyebrow">TRIP MANAGER</span><h1 id="tripTitle">홋카이도 토마무 가족여행</h1><p id="tripSubtitle"></p></div>
+      <div><span class="eyebrow">SYDNEY FAMILY TRIP</span><h1 id="tripTitle">시드니 가족여행</h1><p id="tripSubtitle"></p></div>
       <div class="date-card"><strong id="tripDates"></strong><span id="countdown"></span></div>
     </div>
   </header>
+
   <main class="container">
     <nav class="tabs" aria-label="페이지 메뉴">
       <button class="tab active" data-target="overview">요약</button>
       <button class="tab" data-target="schedule">일정</button>
       <button class="tab" data-target="bookings">예약</button>
-      <button class="tab" data-target="planning">후보</button>
+      <button class="tab" data-target="planning">준비</button>
       <button class="tab" data-target="checklist">체크리스트</button>
     </nav>
 
     <section id="overview" class="panel active">
-      <div id="eventBanner"></div>
-      <div class="section-title"><div><span class="kicker">FLIGHTS</span><h2>우리 가족 항공 일정</h2></div></div>
-      <div id="flightCards" class="flight-grid"></div>
-      <div class="section-title spaced"><div><span class="kicker">COMPANION TEAM</span><h2>동행팀 항공 일정</h2></div></div>
-      <div id="companionFlightCards" class="flight-grid"></div>
-      <div class="section-title spaced"><div><span class="kicker">FIRST DAY MAP</span><h2>첫날 스스키노 동선</h2></div></div>
-      <div class="route-map-card">
-        <div class="route-map-head">
-          <div><strong>호텔 → 식당 → 케이크 → PARCO</strong><span>장소를 누르면 지도 링크를 열 수 있어요.</span></div>
-          <a id="day1RouteGoogle" class="map-open-btn" target="_blank" rel="noopener noreferrer">전체 동선 열기 ↗</a>
+      <div class="welcome-card">
+        <div>
+          <span class="kicker">NEW TRIP</span>
+          <h2>2026년 12월, 세 가족의 시드니</h2>
+          <p>기존 홋카이도 여행 기록은 지우고 새 시드니 여행 기준으로 다시 시작했습니다.</p>
         </div>
-        <div id="day1Map" class="day1-map" aria-label="첫날 스스키노 동선 지도"></div>
-        <div id="day1RouteStrip" class="route-strip"></div>
-        <p id="day1RouteNote" class="route-note"></p>
+        <div class="trip-badge">🇦🇺 SYD</div>
       </div>
 
-      <div class="section-title spaced"><div><span class="kicker">AT A GLANCE</span><h2>여행 현황</h2></div></div>
-      <div class="summary-grid">
-        <article class="summary-card"><span>여행 기간</span><strong>5박 6일</strong><small>2026.09.30 ~ 10.05</small></article>
-        <article class="summary-card"><span>주요 숙소</span><strong>클럽메드 토마무</strong><small>10.01 ~ 10.05</small></article>
-        <article class="summary-card"><span>이동 · 예약 완료</span><strong>Nissan X-Trail급 SUV</strong><small>Klook · ZenWay · 9/30 14:00 → 10/5 13:00</small></article>
-        <article class="summary-card"><span>동행팀 합류</span><strong>CTS 16:25 도착</strong><small>호텔 도착 예상 18:15~18:45</small></article>
-        <article class="summary-card"><span>첫날 저녁</span><strong>NIKUAZABU 20:00</strong><small>6명 · 테이블석 금연 · 예약 완료</small></article>
-      </div>
+      <div class="section-title"><div><span class="kicker">FLIGHTS</span><h2>확정 항공 일정</h2></div></div>
+      <div id="flightCards" class="flight-grid"></div>
+
+      <div class="section-title spaced"><div><span class="kicker">AT A GLANCE</span><h2>여행 기본정보</h2></div></div>
+      <div id="travelerCards" class="summary-grid"></div>
     </section>
 
     <section id="schedule" class="panel">
       <div class="section-title"><div><span class="kicker">ITINERARY</span><h2>일자별 일정</h2></div></div>
+      <p class="section-note">항공 일정만 먼저 반영했고, 숙소와 관광 일정은 예약되는 대로 채우면 됩니다.</p>
       <div id="scheduleList" class="schedule-list"></div>
     </section>
 
@@ -65,21 +56,9 @@
     </section>
 
     <section id="planning" class="panel">
-      <div class="section-title"><div><span class="kicker">RENTAL PICKUP</span><h2>ZenWay 공항 픽업 안내</h2></div></div>
-      <article class="booking-card">
-        <div class="booking-head"><span class="booking-cat">신치토세공항</span><span class="status">예약 완료</span></div>
-        <h3>수하물 수령 후 연락 → 국제선 98번 승강장</h3>
-        <p>영업소는 공항 밖에 있습니다. 수하물을 찾은 다음 LINE · WeChat · WhatsApp · KakaoTalk 또는 +81-70-9086-7662로 연락하세요. 연락 후 약 15분 뒤 픽업 예정입니다. 국제선 98번 승강장 / 국내선 30번 승차장 / 셔틀 차량번호 6122.</p>
-      </article>
-      <p class="section-note">운전자 MR KYUMIN KIM · 예약번호 VJA163952 · SIPP CFAV · 영업시간 09:00~19:00.</p>
-
-      <div class="section-title spaced"><div><span class="kicker">DINNER</span><h2>첫날 야키니쿠 예약</h2></div></div>
-      <p class="section-note">9월 30일 20:00, SAPPORO NIKUAZABU 예약 완료. 6명(성인 4명, 어린이 2명), 테이블석 금연, 2시간 이용, 코스 지정 없음. 아래 카드에는 확정 예약과 백업 후보를 함께 기록했습니다.</p>
-      <div id="dinnerList" class="candidate-grid"></div>
-
-      <div class="section-title spaced"><div><span class="kicker">BIRTHDAY CAKE</span><h2>9월 30일 생일 케이크 후보</h2></div></div>
-      <p class="section-note">생일 케이크는 공항 수령을 우선 검토하고 있습니다.</p>
-      <div id="cakeList" class="candidate-grid"></div>
+      <div class="section-title"><div><span class="kicker">NEXT STEPS</span><h2>다음 준비 항목</h2></div></div>
+      <p class="section-note">지금은 항공만 확정된 상태로 보고, 숙소·입국 준비·공항 이동부터 정리했습니다.</p>
+      <div id="planningList" class="candidate-grid"></div>
     </section>
 
     <section id="checklist" class="panel">
@@ -89,9 +68,9 @@
       <p id="checkStatus" class="save-note">Supabase에서 체크리스트를 불러오는 중입니다.</p>
     </section>
   </main>
-  <footer><p>Hokkaido Trip Manager · Updated September 2026</p></footer>
+
+  <footer><p>Sydney Family Trip · Updated October 2026</p></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-  <script src="app.js?v=20260929-1"></script>
+  <script src="app.js?v=20261012-1"></script>
 </body>
 </html>
