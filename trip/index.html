@@ -8,7 +8,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>시드니 가족여행 관리</title>
-  <link rel="stylesheet" href="styles.css?v=20261012-1">
+  <link rel="stylesheet" href="styles.css?v=20261012-2">
 </head>
 <body>
   <header class="hero sydney-hero">
@@ -21,6 +21,7 @@
   <main class="container">
     <nav class="tabs" aria-label="페이지 메뉴">
       <button class="tab active" data-target="overview">요약</button>
+      <button class="tab" data-target="calendar">캘린더</button>
       <button class="tab" data-target="schedule">일정</button>
       <button class="tab" data-target="bookings">예약</button>
       <button class="tab" data-target="planning">준비</button>
@@ -42,6 +43,18 @@
 
       <div class="section-title spaced"><div><span class="kicker">AT A GLANCE</span><h2>여행 기본정보</h2></div></div>
       <div id="travelerCards" class="summary-grid"></div>
+      <div class="section-title spaced"><div><span class="kicker">STAYS</span><h2>숙박 구상</h2></div></div>
+      <div id="lodgingCards" class="lodging-grid"></div>
+    </section>
+
+    <section id="calendar" class="panel">
+      <div class="section-title"><div><span class="kicker">DECEMBER 2026</span><h2>여행 캘린더</h2></div></div>
+      <p class="section-note">항공과 숙박 구상을 날짜별로 한눈에 보이게 관리합니다. 숙소가 확정되면 상태만 바꿔 계속 업데이트하면 됩니다.</p>
+      <div class="calendar-shell">
+        <div class="calendar-head"><strong id="calendarTitle"></strong><div class="calendar-legend"><span class="legend flight">항공</span><span class="legend hotel">숙소</span><span class="legend open">미정</span></div></div>
+        <div class="calendar-weekdays"><span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span></div>
+        <div id="travelCalendar" class="travel-calendar"></div>
+      </div>
     </section>
 
     <section id="schedule" class="panel">
@@ -71,6 +84,6 @@
 
   <footer><p>Sydney Family Trip · Updated October 2026</p></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=20261012-1"></script>
+  <script src="app.js?v=20261012-2"></script>
 </body>
 </html>
