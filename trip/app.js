@@ -7,7 +7,7 @@ const koDate = (d) => new Intl.DateTimeFormat('ko-KR', {
 const SUPABASE_URL = 'https://gftydfeqpuavajjzaeun.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_35lefXRrUU4MFrAATfghjQ_2EPkUgGy';
 const TRIP_ID = 'sydney-2026';
-const DATA_VERSION = '20261012-3';
+const DATA_VERSION = '20261012-4';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 fetch(`trip-data.json?v=${DATA_VERSION}`, { cache: 'no-store' })
@@ -43,6 +43,7 @@ function render(data) {
     </article>`).join('');
 
   $('#planningList').innerHTML = (data.planning || []).map((x) => candidateCard(x)).join('');
+  renderRestaurantGroups(data.restaurantGroups || []);
   renderCalendar(data.calendar);
   initChecklist(data.checklist);
 }
@@ -105,6 +106,33 @@ function lodgingCard(x) {
     <p>${escapeHtml(x.detail)}</p>
     ${x.url ? `<a class="link-button" href="${x.url}" target="_blank" rel="noopener noreferrer">호텔 보기 ↗</a>` : ''}
   </article>`;
+}
+
+function renderRestaurantGroups(groups) {
+  const root = $('#restaurantGroups');
+  if (!root) return;
+  root.innerHTML = groups.map((group) => `
+    <section class="restaurant-group">
+      <div class="restaurant-group-head">
+        <div><span>${escapeHtml(group.subtitle || '')}</span><h3>${escapeHtml(group.title)}</h3></div>
+      </div>
+      <div class="restaurant-grid">
+        ${(group.items || []).map((x) => `
+          <article class="restaurant-card">
+            <div class="restaurant-card-top"><span>${escapeHtml(x.category)}</span><strong>${escapeHtml(x.walk)}</strong></div>
+            <h4>${escapeHtml(x.name)}</h4>
+            <div class="restaurant-meta">
+              <div><span>가격대</span><b>${escapeHtml(x.price)}</b></div>
+              <div><span>영업시간</span><b>${escapeHtml(x.hours)}</b></div>
+            </div>
+            <p>${escapeHtml(x.note)}</p>
+            <div class="restaurant-tags">${(x.tags || []).map(t=>`<span>${escapeHtml(t)}</span>`).join('')}</div>
+            <a class="link-button" href="${x.url}" target="_blank" rel="noopener noreferrer">상세/메뉴 보기 ↗</a>
+          </article>
+        `).join('')}
+      </div>
+    </section>
+  `).join('');
 }
 
 function candidateCard(x) {
