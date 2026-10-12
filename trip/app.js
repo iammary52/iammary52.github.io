@@ -7,7 +7,7 @@ const koDate = (d) => new Intl.DateTimeFormat('ko-KR', {
 const SUPABASE_URL = 'https://gftydfeqpuavajjzaeun.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_35lefXRrUU4MFrAATfghjQ_2EPkUgGy';
 const TRIP_ID = 'sydney-2026';
-const DATA_VERSION = '20261012-2';
+const DATA_VERSION = '20261012-3';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 fetch(`trip-data.json?v=${DATA_VERSION}`, { cache: 'no-store' })
@@ -28,7 +28,7 @@ function render(data) {
 
   const lodgingCards = $('#lodgingCards');
   if (lodgingCards) lodgingCards.innerHTML = (data.lodgingPlan || []).map((x) => lodgingCard(x)).join('');
-  initTripCalendar(data);
+  renderSummaryCalendar(data.summaryCalendar || []);
 
   $('#scheduleList').innerHTML = data.schedule.map((d, i) => `
     <article class="day-card">
@@ -42,10 +42,35 @@ function render(data) {
       <h3>${escapeHtml(b.name)}</h3><p>${escapeHtml(b.detail)}</p>
     </article>`).join('');
 
-  $('#lodgingCards').innerHTML = (data.lodgingPlan || []).map((x) => lodgingCard(x)).join('');
   $('#planningList').innerHTML = (data.planning || []).map((x) => candidateCard(x)).join('');
   renderCalendar(data.calendar);
   initChecklist(data.checklist);
+}
+
+function renderSummaryCalendar(items) {
+  const root = $('#summaryCalendar');
+  if (!root) return;
+  root.innerHTML = items.map((x) => {
+    const date = new Date(`${x.date}T00:00:00`);
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+    const eventHtml = (x.events || []).map((e) => `<li>${escapeHtml(e)}</li>`).join('');
+    return `<article class="summary-day ${escapeHtml(x.type || 'city')}">
+      <div class="summary-day-date">
+        <span>${escapeHtml(x.label)}</span>
+        <strong>${month}/${day}</strong>
+        <small>${escapeHtml(x.day)}</small>
+      </div>
+      <div class="summary-day-main">
+        <div class="summary-stay">
+          <span>숙박</span>
+          <strong>${escapeHtml(x.stay)}</strong>
+          <em>${escapeHtml(x.stayStatus)}</em>
+        </div>
+        <ul>${eventHtml}</ul>
+      </div>
+    </article>`;
+  }).join('');
 }
 
 function flightCard(f) {
@@ -82,40 +107,6 @@ function lodgingCard(x) {
   </article>`;
 }
 
-function renderCalendar(calendar) {
-  const el = $('#travelCalendar');
-  const title = $('#calendarTitle');
-  if (!el || !calendar) return;
-
-  title.textContent = calendar.title || '';
-  const year = Number(calendar.year);
-  const month = Number(calendar.month);
-  const firstDay = new Date(year, month - 1, 1).getDay();
-  const daysInMonth = new Date(year, month, 0).getDate();
-  const eventsByDate = {};
-  (calendar.events || []).forEach((event) => {
-    (eventsByDate[event.date] ||= []).push(event);
-  });
-
-  const cells = [];
-  for (let i = 0; i < firstDay; i++) cells.push('<div class="calendar-day blank"></div>');
-
-  for (let day = 1; day <= daysInMonth; day++) {
-    const key = `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-    const events = eventsByDate[key] || [];
-    const inTrip = key >= '2026-12-17' && key <= '2026-12-24';
-    cells.push(`<div class="calendar-day ${inTrip ? 'trip-day' : ''}">
-      <div class="calendar-date">${day}</div>
-      <div class="calendar-events">
-        ${events.map((e) => `<div class="calendar-event ${escapeHtml(e.type || 'open')}"><strong>${escapeHtml(e.title)}</strong><span>${escapeHtml(e.detail || '')}</span></div>`).join('')}
-      </div>
-    </div>`);
-  }
-
-  while (cells.length % 7) cells.push('<div class="calendar-day blank"></div>');
-  el.innerHTML = cells.join('');
-}
-
 function candidateCard(x) {
   return `<article class="candidate-card">
     <div class="candidate-head"><span>${escapeHtml(x.category || '준비')}</span><span class="rating">${escapeHtml(x.recommendation || '검토')}</span></div>
@@ -124,61 +115,6 @@ function candidateCard(x) {
     ${x.price ? `<strong class="candidate-price">${escapeHtml(x.price)}</strong>` : ''}
     ${x.url ? `<a class="link-button" href="${x.url}" target="_blank" rel="noopener noreferrer">열어보기 ↗</a>` : ''}
   </article>`;
-}
-
-function initTripCalendar(data) {
-  const root = $('#tripCalendar');
-  const title = $('#calendarMonthTitle');
-  if (!root || !title) return;
-
-  let viewYear = 2026;
-  let viewMonth = 11; // December, zero-based
-  const startDate = data.trip.startDate;
-  const endDate = data.trip.endDate;
-  const eventMap = {};
-  (data.calendarEvents || []).forEach((e) => {
-    if (!eventMap[e.date]) eventMap[e.date] = [];
-    eventMap[e.date].push(e);
-  });
-
-  const renderMonth = () => {
-    const first = new Date(viewYear, viewMonth, 1);
-    const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-    const leading = first.getDay();
-    title.textContent = `${viewYear}년 ${viewMonth + 1}월`;
-    const cells = [];
-
-    for (let i = 0; i < leading; i++) cells.push('<div class="calendar-day outside"></div>');
-
-    for (let day = 1; day <= daysInMonth; day++) {
-      const date = `${viewYear}-${String(viewMonth + 1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-      const inTrip = date >= startDate && date <= endDate;
-      const events = eventMap[date] || [];
-      const classes = ['calendar-day', inTrip ? 'in-trip' : ''];
-      const eventHtml = events.map((e) =>
-        `<div class="cal-event ${escapeHtml(e.type)}" title="${escapeHtml(e.detail || '')}"><strong>${escapeHtml(e.title)}</strong><small>${escapeHtml(e.detail || '')}</small></div>`
-      ).join('');
-      cells.push(`<div class="${classes.filter(Boolean).join(' ')}"><div class="calendar-date"><span>${day}</span>${inTrip ? '<b>TRIP</b>' : ''}</div>${eventHtml}</div>`);
-    }
-
-    const used = leading + daysInMonth;
-    const trailing = (7 - (used % 7)) % 7;
-    for (let i = 0; i < trailing; i++) cells.push('<div class="calendar-day outside"></div>');
-    root.innerHTML = cells.join('');
-  };
-
-  $('#calendarPrev').onclick = () => {
-    viewMonth -= 1;
-    if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
-    renderMonth();
-  };
-  $('#calendarNext').onclick = () => {
-    viewMonth += 1;
-    if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
-    renderMonth();
-  };
-
-  renderMonth();
 }
 
 function updateCountdown(start) {
