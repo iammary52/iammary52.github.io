@@ -8,7 +8,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>시드니 가족여행 관리</title>
-  <link rel="stylesheet" href="styles.css?v=20261012-3">
+  <link rel="stylesheet" href="styles.css?v=20261012-4">
 </head>
 <body>
   <header class="hero sydney-hero">
@@ -23,6 +23,7 @@
       <button class="tab active" data-target="overview">요약</button>
       <button class="tab" data-target="schedule">일정</button>
       <button class="tab" data-target="bookings">예약</button>
+      <button class="tab" data-target="restaurants">맛집·바</button>
       <button class="tab" data-target="planning">준비</button>
       <button class="tab" data-target="checklist">체크리스트</button>
     </nav>
@@ -62,6 +63,12 @@
       <div id="bookingList" class="booking-list"></div>
     </section>
 
+    <section id="restaurants" class="panel">
+      <div class="section-title"><div><span class="kicker">FOOD & DRINKS</span><h2>숙소 주변 맛집·한잔</h2></div></div>
+      <p class="section-note">Hyatt Regency Sydney 기준. 가격은 주문 구성과 주류에 따라 달라지는 대략적인 1인 예산이고, 영업시간은 현재 공식 안내 기준입니다.</p>
+      <div id="restaurantGroups" class="restaurant-groups"></div>
+    </section>
+
     <section id="planning" class="panel">
       <div class="section-title"><div><span class="kicker">NEXT STEPS</span><h2>다음 준비 항목</h2></div></div>
       <p class="section-note">숙박과 이동 계획이 정해지는 대로 업데이트합니다.</p>
@@ -78,6 +85,6 @@
 
   <footer><p>Sydney Family Trip · Updated October 2026</p></footer>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="app.js?v=20261012-3"></script>
+  <script src="app.js?v=20261012-4"></script>
 </body>
 </html>
