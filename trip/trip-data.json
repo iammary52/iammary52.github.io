@@ -81,17 +81,12 @@
         {
           "time": "20:05",
           "title": "시드니 도착",
-          "detail": "SYD 도착 · 입국심사 및 수하물 수령 후 숙소 이동"
+          "detail": "SYD 도착 · 입국심사 및 수하물 수령 후 달링하버 이동"
         },
         {
           "time": "밤",
-          "title": "Hyatt Regency Sydney 체크인",
-          "detail": "Darling Harbour 인접 · 12/17~12/20 3박 고려 중"
-        },
-        {
-          "time": "밤",
-          "title": "Hyatt Regency Sydney 체크인 예정",
-          "detail": "Darling Harbour 인접 · 12/17~12/20 3박 고려 중"
+          "title": "달링하버 레지던스 체크인 예정",
+          "detail": "12/17~12/20 3박 · 서비스드 아파트 후보 비교 중"
         }
       ]
     },
@@ -101,45 +96,40 @@
       "items": [
         {
           "time": "종일",
-          "title": "Hyatt Regency Sydney 숙박 예정",
-          "detail": "세부 관광 일정은 추후 추가"
+          "title": "달링하버·CBD 자유일정",
+          "detail": "첫 3박 레지던스 베이스. 세부 동선 추후 추가"
         }
       ]
     },
     {
       "date": "2026-12-19",
-      "dayTitle": "포트스테판 · 와이너리 투어",
+      "dayTitle": "달링하버 집중 · 불꽃놀이",
       "items": [
         {
-          "time": "아침",
-          "title": "시드니 출발",
-          "detail": "포트스테판 + 와이너리 포함 당일투어 예약 예정"
-        },
-        {
-          "time": "오전~오후",
-          "title": "포트스테판 투어",
-          "detail": "사막·해안 액티비티 중심으로 상품 비교 예정"
-        },
-        {
-          "time": "오후",
-          "title": "와이너리 방문",
-          "detail": "투어 상품에 포함되는 와이너리/시음 구성 확인 후 확정"
+          "time": "낮",
+          "title": "달링하버 중심 자유일정",
+          "detail": "Darling Quarter·Cockle Bay·Barangaroo 등 근거리 위주"
         },
         {
           "time": "저녁",
-          "title": "Hyatt Regency Sydney 복귀",
-          "detail": "숙소 주변에서 가볍게 저녁 + 한잔 후보 확인"
+          "title": "Cockle Bay 인근 저녁",
+          "detail": "불꽃놀이 보기 좋은 레스토랑/바 후보 추후 확정"
+        },
+        {
+          "time": "21:00",
+          "title": "Darling Harbour 불꽃놀이",
+          "detail": "공식 2026 일정: 토요일 12/19 21:00 · Cockle Bay · 무료 · 보통 5~10분 · 날씨 등에 따라 변경 가능"
         }
       ]
     },
     {
       "date": "2026-12-20",
-      "dayTitle": "타롱가 이동 · 특별 숙박",
+      "dayTitle": "Taronga 이동 · 특별 숙박",
       "items": [
         {
           "time": "아침",
-          "title": "Hyatt Regency Sydney 체크아웃 예정",
-          "detail": "3박 후 체크아웃"
+          "title": "달링하버 레지던스 체크아웃",
+          "detail": "첫 3박 종료"
         },
         {
           "time": "오후",
@@ -155,7 +145,7 @@
     },
     {
       "date": "2026-12-21",
-      "dayTitle": "타롱가 체크아웃 · 후반 숙소 이동",
+      "dayTitle": "Taronga 체크아웃 · 후반 숙소 이동",
       "items": [
         {
           "time": "오전",
@@ -171,12 +161,27 @@
     },
     {
       "date": "2026-12-22",
-      "dayTitle": "시드니 여행",
+      "dayTitle": "포트스테판 · 와이너리 투어",
       "items": [
         {
-          "time": "미정",
-          "title": "후반 숙소 베이스",
-          "detail": "숙소 위치 확정 후 일정 구성"
+          "time": "아침",
+          "title": "시드니 출발",
+          "detail": "포트스테판 + 와이너리 포함 당일투어 예약 고려"
+        },
+        {
+          "time": "오전~오후",
+          "title": "포트스테판 투어",
+          "detail": "사막·해안 액티비티 중심"
+        },
+        {
+          "time": "오후",
+          "title": "와이너리 방문",
+          "detail": "투어 상품에 포함되는 시음/식사 구성 확인 후 확정"
+        },
+        {
+          "time": "저녁",
+          "title": "시드니 복귀",
+          "detail": "후반 숙소로 귀환"
         }
       ]
     },
@@ -228,9 +233,15 @@
     },
     {
       "category": "숙박",
-      "name": "Hyatt Regency Sydney",
+      "name": "달링하버 레지던스 3박",
+      "status": "고려 중 · 미예약",
+      "detail": "12/17 체크인 → 12/20 체크아웃 · Darling Harbour 도보권 서비스드 아파트 우선 · 12/19 21:00 불꽃놀이 고려"
+    },
+    {
+      "category": "숙박",
+      "name": "Wildlife Retreat at Taronga",
       "status": "예정 · 미예약",
-      "detail": "12/17 체크인 → 12/20 체크아웃 · 3박 · Darling Harbour 인접"
+      "detail": "12/20 체크인 → 12/21 체크아웃 · 1박 · Taronga Zoo"
     },
     {
       "category": "숙박",
@@ -253,48 +264,49 @@
   ],
   "planning": [
     {
-      "category": "숙소 · 1차",
-      "name": "Hyatt Regency Sydney",
-      "recommendation": "12/17~20 예정",
-      "detail": "달링하버 인접. 첫 3박 베이스로 고려 중.",
-      "price": "예약 전",
-      "url": "https://www.hyatt.com/hyatt-regency/en-US/sydrs-hyatt-regency-sydney"
+      "category": "첫 3박 · 레지던스",
+      "name": "달링하버 레지던스 선택",
+      "recommendation": "우선 결정",
+      "detail": "12/17~20. 불꽃놀이를 위해 Cockle Bay/Darling Quarter/Sussex St 도보권 우선.",
+      "price": "Meriton / Metro / APX / Adina / YEHS 비교",
+      "url": "https://www.google.com/maps/search/?api=1&query=Darling+Harbour+serviced+apartment"
     },
     {
-      "category": "숙소 · 특별 1박",
-      "name": "Wildlife Retreat at Taronga",
-      "recommendation": "12/20~21 예정",
-      "detail": "일요일 1박. 타롱가 동물원과 시드니 하버를 함께 즐기는 숙박.",
-      "price": "예약 전",
-      "url": "https://taronga.org.au/sydney-zoo/accommodation"
+      "category": "토요일 밤",
+      "name": "Darling Harbour Fireworks",
+      "recommendation": "12/19 21:00",
+      "detail": "공식 2026 일정에 12월 5·12·19일 토요일 21:00로 공지. Cockle Bay에서 무료 관람. 기상 등에 따라 변경 가능.",
+      "price": "무료",
+      "url": "https://www.darlingharbour.com/whats-on/campaigns/fireworks"
     },
     {
-      "category": "숙소 · 후반",
+      "category": "화요일 투어",
+      "name": "포트스테판 + 와이너리",
+      "recommendation": "12/22 고려",
+      "detail": "Taronga 이후 화요일로 이동. 상품별 픽업 위치·와이너리 포함 여부·아이 동반 가능 여부를 비교 예정.",
+      "price": "투어 비교 필요",
+      "url": "https://www.google.com/search?q=Port+Stephens+winery+tour+Sydney"
+    },
+    {
+      "category": "후반 숙소",
       "name": "12/21~24 3박",
       "recommendation": "아직 고민 중",
-      "detail": "CBD 복귀 / 해변권 / 다른 지역 체류 중 비교해서 정할 예정.",
+      "detail": "화요일 투어 픽업과 12/24 오전 공항 이동이 편한 위치를 우선 비교.",
       "price": "후보 비교 필요",
       "url": "https://www.google.com/maps/search/?api=1&query=Sydney+hotel"
-    },
-    {
-      "category": "입국",
-      "name": "호주 입국 준비",
-      "recommendation": "확인 필요",
-      "detail": "여권 유효기간, 호주 입국 허가/비자, 세관 신고 품목을 출발 전에 확인.",
-      "price": "출발 전 체크",
-      "url": "https://immi.homeaffairs.gov.au/"
     }
   ],
   "checklist": [
     "여권 유효기간 확인",
     "호주 입국 허가/비자 확인",
-    "Hyatt Regency Sydney 3박 예약 확정",
+    "달링하버 레지던스 12/17~20 예약 확정",
+    "12/19 21:00 Darling Harbour 불꽃놀이 동선 확정",
     "Wildlife Retreat at Taronga 1박 예약 확정",
     "12/21~12/24 후반 3박 숙소 결정",
+    "12/22 포트스테판·와이너리 투어 예약",
     "공항 ↔ 숙소 이동 방법 결정",
-    "Hyatt → Taronga 이동 방법 결정",
+    "Taronga 이동 방법 결정",
     "여행자보험 가입",
-    "환전·해외결제 카드 준비",
     "좌석 및 기내식 확인",
     "아이 여행 준비물 체크"
   ],
@@ -304,12 +316,12 @@
       "endDate": "2026-12-20",
       "period": "12/17(목) → 12/20(일)",
       "nights": "3박",
-      "name": "Hyatt Regency Sydney",
-      "area": "Darling Harbour 인접",
-      "status": "숙박 예정 · 미예약",
+      "name": "달링하버 레지던스",
+      "area": "Darling Harbour · Sussex St / Darling Square권",
+      "status": "고려 중 · 미예약",
       "tone": "considering",
-      "detail": "도착일 밤부터 일요일 아침 체크아웃까지 베이스 숙소로 고려 중.",
-      "url": "https://www.hyatt.com/hyatt-regency/en-US/sydrs-hyatt-regency-sydney"
+      "detail": "첫 3박은 호텔보다 레지던스/서비스드 아파트 우선. 토요일 12/19 달링하버 21:00 불꽃놀이를 보기 쉽게 도보권을 유지.",
+      "url": "https://www.google.com/maps/search/?api=1&query=Darling+Harbour+serviced+apartments"
     },
     {
       "startDate": "2026-12-20",
@@ -320,7 +332,7 @@
       "area": "Taronga Zoo · Sydney Harbour",
       "status": "숙박 예정 · 미예약",
       "tone": "planned",
-      "detail": "일요일 하루는 타롱가 리트리트 1박 예정. 동물원·하버뷰 중심의 특별 숙박일.",
+      "detail": "일요일 1박. 동물원과 하버뷰 중심의 특별 숙박일.",
       "url": "https://taronga.org.au/sydney-zoo/accommodation"
     },
     {
@@ -332,7 +344,7 @@
       "area": "지역 미정",
       "status": "고민 중",
       "tone": "tbd",
-      "detail": "월요일부터 귀국일 아침까지 3박. CBD 재진입, 해변권, 다른 지역 체류 등 비교 예정.",
+      "detail": "화요일 투어를 고려해 이동 편의와 귀국일 공항 접근을 함께 보고 결정.",
       "url": "https://www.google.com/maps/search/?api=1&query=Sydney+hotel"
     }
   ],
@@ -341,12 +353,12 @@
       "date": "2026-12-17",
       "day": "목",
       "label": "DAY 1",
-      "stay": "Hyatt Regency Sydney",
+      "stay": "달링하버 레지던스",
       "stayStatus": "고려 중",
       "events": [
         "08:00 인천 출발",
         "20:05 시드니 도착",
-        "Hyatt 체크인 예정"
+        "레지던스 체크인"
       ],
       "type": "arrival"
     },
@@ -354,11 +366,10 @@
       "date": "2026-12-18",
       "day": "금",
       "label": "DAY 2",
-      "stay": "Hyatt Regency Sydney",
+      "stay": "달링하버 레지던스",
       "stayStatus": "고려 중",
       "events": [
-        "Darling Harbour 베이스",
-        "세부 일정 미정"
+        "달링하버·CBD 자유일정"
       ],
       "type": "city"
     },
@@ -366,14 +377,13 @@
       "date": "2026-12-19",
       "day": "토",
       "label": "DAY 3",
-      "stay": "Hyatt Regency Sydney",
+      "stay": "달링하버 레지던스",
       "stayStatus": "고려 중",
       "events": [
-        "포트스테판 당일투어",
-        "와이너리 방문 예정",
-        "저녁 Hyatt 복귀"
+        "달링하버 집중",
+        "21:00 Cockle Bay 불꽃놀이"
       ],
-      "type": "tour"
+      "type": "fireworks"
     },
     {
       "date": "2026-12-20",
@@ -382,7 +392,7 @@
       "stay": "Wildlife Retreat at Taronga",
       "stayStatus": "숙박 예정",
       "events": [
-        "Hyatt 체크아웃",
+        "레지던스 체크아웃",
         "Taronga 이동",
         "Wildlife Retreat 1박"
       ],
@@ -407,9 +417,10 @@
       "stay": "후반 3박 숙소",
       "stayStatus": "미정",
       "events": [
-        "세부 일정 미정"
+        "포트스테판 당일투어",
+        "와이너리 방문 예정"
       ],
-      "type": "tbd"
+      "type": "tour"
     },
     {
       "date": "2026-12-23",
@@ -430,7 +441,6 @@
       "stay": "귀국",
       "stayStatus": "확정",
       "events": [
-        "숙소 체크아웃",
         "10:20 시드니 출발",
         "19:00 인천 도착"
       ],
@@ -570,6 +580,48 @@
           "url": "https://www.hyatt.com/hyatt-regency/en-US/sydrs-hyatt-regency-sydney/dining"
         }
       ]
+    }
+  ],
+  "residenceCandidates": [
+    {
+      "category": "달링하버 레지던스 · 1순위",
+      "name": "Meriton Suites Sussex Street",
+      "recommendation": "추천 ★★★★★",
+      "detail": "Darling Harbour와 Darling Quarter가 가깝고, 넓은 서비스드 아파트형 객실·주방·세탁시설이 강점. 공식 안내상 Darling Quarter 약 650m. 가족 3명이라면 객실 정원 확인이 중요해 스튜디오/1베드보다 2베드 옵션까지 함께 비교 권장.",
+      "price": "대략 중상급 · 날짜별 변동 큼",
+      "url": "https://www.meritonsuites.com.au/our-hotels/nsw/sydney-cbd/sussex-street/"
+    },
+    {
+      "category": "가성비 · 가족형",
+      "name": "Metro Apartments on Darling Harbour",
+      "recommendation": "추천 ★★★★☆",
+      "detail": "Sussex Street의 아파트 호텔. Darling Harbour 중심 접근성이 좋고 주방·패밀리룸이 있어 첫 3박 생활형 숙소로 편함.",
+      "price": "대략 중급",
+      "url": "https://www.darlingharbour.com/stay/metro-apartments"
+    },
+    {
+      "category": "Darling Square 접근",
+      "name": "APX Apartments Darling Harbour",
+      "recommendation": "추천 ★★★★☆",
+      "detail": "Darling Square·Chinatown 도보권. 스튜디오/1베드 아파트와 주방, 패밀리룸이 있어 가성비를 챙기기 좋은 후보.",
+      "price": "대략 중급",
+      "url": "https://www.darlingharbour.com/stay/apx-apartments-darling-harbour"
+    },
+    {
+      "category": "시설·위치 균형",
+      "name": "Adina Apartment Hotel Darling Harbour",
+      "recommendation": "추천 ★★★★☆",
+      "detail": "55 Shelley St. Darling Harbour/Barangaroo 접근이 좋고 아파트형 객실 + 수영장 조합이라 가족 3명에게 균형이 좋음.",
+      "price": "대략 중상급",
+      "url": "https://www.google.com/maps/search/?api=1&query=Adina+Apartment+Hotel+Darling+Harbour"
+    },
+    {
+      "category": "가성비 보조 후보",
+      "name": "YEHS Hotel Sydney Harbour Suites",
+      "recommendation": "추천 ★★★☆☆",
+      "detail": "Sussex Street. 주방/키친넷 객실, 실내 수영장·짐 등이 있고 위치 대비 가격을 보기 좋은 후보.",
+      "price": "대략 중급~가성비",
+      "url": "https://www.google.com/maps/search/?api=1&query=YEHS+Hotel+Sydney+Harbour+Suites"
     }
   ]
 }
