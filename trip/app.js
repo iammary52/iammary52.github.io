@@ -7,7 +7,7 @@ const koDate = (d) => new Intl.DateTimeFormat('ko-KR', {
 const SUPABASE_URL = 'https://gftydfeqpuavajjzaeun.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_35lefXRrUU4MFrAATfghjQ_2EPkUgGy';
 const TRIP_ID = 'sydney-2026';
-const DATA_VERSION = '20261012-4';
+const DATA_VERSION = '20261013-1';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 fetch(`trip-data.json?v=${DATA_VERSION}`, { cache: 'no-store' })
@@ -42,6 +42,8 @@ function render(data) {
       <h3>${escapeHtml(b.name)}</h3><p>${escapeHtml(b.detail)}</p>
     </article>`).join('');
 
+  const residenceList = $('#residenceList');
+  if (residenceList) residenceList.innerHTML = (data.residenceCandidates || []).map((x) => candidateCard(x)).join('');
   $('#planningList').innerHTML = (data.planning || []).map((x) => candidateCard(x)).join('');
   renderRestaurantGroups(data.restaurantGroups || []);
   renderCalendar(data.calendar);
