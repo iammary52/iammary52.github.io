@@ -48,3 +48,6 @@ button,input,textarea{font:inherit}.hero{background:linear-gradient(135deg,#0d25
 .restaurant-card p{color:var(--muted);line-height:1.55;font-size:14px;margin:13px 0}.restaurant-tags{display:flex;flex-wrap:wrap;gap:6px}.restaurant-tags span{font-size:11px;font-weight:800;background:#edf7f5;color:#0d6975;border-radius:999px;padding:5px 8px}
 .summary-day.tour:before{background:#32a27b}
 @media(max-width:760px){.restaurant-grid{grid-template-columns:1fr}.restaurant-meta div{grid-template-columns:58px 1fr}}
+
+.summary-day.fireworks:before{background:#e34d73}
+.summary-day.fireworks .summary-stay em{color:#9b234a;background:#ffe8f0}
