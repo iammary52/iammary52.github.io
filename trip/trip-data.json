@@ -92,22 +92,27 @@
     },
     {
       "date": "2026-12-18",
-      "dayTitle": "달링하버 베이스 · 시내",
+      "dayTitle": "달링하버 · 시드니 수산시장",
       "items": [
         {
           "time": "아침",
           "title": "숙소에서 아침",
-          "detail": "레지던스 조식/간단 조리"
+          "detail": "Adina 레지던스에서 간단 조식"
         },
         {
-          "time": "낮",
+          "time": "오전~점심",
+          "title": "Sydney Fish Market",
+          "detail": "시장 구경 + 점심. 저녁에 먹을 해산물도 함께 구매 예정"
+        },
+        {
+          "time": "오후",
           "title": "달링하버·CBD 자유일정",
-          "detail": "Darling Quarter·Barangaroo·시내 중심"
+          "detail": "Darling Quarter·Barangaroo 등 가볍게 이동"
         },
         {
           "time": "저녁",
-          "title": "숙소 저녁 또는 근처 외식",
-          "detail": "테이크아웃/간단 조리 중심"
+          "title": "수산시장 해산물 숙소 저녁",
+          "detail": "Sydney Fish Market에서 사온 해산물을 Adina에서 간단 조리/포장 상태로 먹기"
         }
       ]
     },
@@ -159,7 +164,12 @@
         {
           "time": "저녁",
           "title": "시드니 복귀",
-          "detail": "Adina Apartment Hotel Darling Harbour 숙박"
+          "detail": "Adina Apartment Hotel Darling Harbour 복귀"
+        },
+        {
+          "time": "저녁",
+          "title": "숙소에서 스테이크 구워 먹기",
+          "detail": "마트/정육 코너에서 고기와 곁들임을 사서 레지던스 주방에서 저녁"
         }
       ]
     },
@@ -294,6 +304,22 @@
       "url": "https://www.google.com/maps/search/?api=1&query=Bondi+Beach"
     },
     {
+      "category": "레지던스 식사",
+      "name": "Sydney Fish Market 장보기",
+      "recommendation": "12/18 예정",
+      "detail": "시장 구경과 점심을 겸하고, 저녁에 Adina에서 먹을 해산물도 함께 구매.",
+      "price": "가족 3명 장보기 예산 A$70~110",
+      "url": "https://www.google.com/maps/search/?api=1&query=Sydney+Fish+Market"
+    },
+    {
+      "category": "레지던스 식사",
+      "name": "레지던스 스테이크 저녁",
+      "recommendation": "12/20 예정",
+      "detail": "Blue Mountains에서 돌아온 뒤 고기와 곁들임을 사서 Adina 주방에서 간단히 조리.",
+      "price": "가족 3명 장보기 예산 A$50~80",
+      "url": "https://www.google.com/maps/search/?api=1&query=Woolworths+near+Darling+Harbour"
+    },
+    {
       "category": "일요일",
       "name": "Blue Mountains 기차 당일치기",
       "recommendation": "12/20 예정",
@@ -329,7 +355,9 @@
     "공항 ↔ 숙소 이동 방법 결정",
     "호주 입국 허가/비자 확인",
     "여행자보험 가입",
-    "아이 여행 준비물 체크"
+    "아이 여행 준비물 체크",
+    "12/18 Sydney Fish Market 해산물 장보기 계획",
+    "12/20 스테이크용 고기·곁들임 장보기"
   ],
   "lodgingPlan": [
     {
@@ -390,8 +418,9 @@
       "stay": "Adina Darling Harbour",
       "stayStatus": "1순위 플랜",
       "events": [
-        "달링하버·CBD 자유일정",
-        "숙소 아침·저녁 활용"
+        "Sydney Fish Market",
+        "해산물 구매",
+        "숙소에서 해산물 저녁"
       ],
       "type": "city"
     },
@@ -415,7 +444,8 @@
       "stayStatus": "1순위 플랜",
       "events": [
         "Blue Mountains 기차 당일치기",
-        "저녁 시드니 복귀"
+        "저녁 Adina 복귀",
+        "숙소에서 스테이크"
       ],
       "type": "tour"
     },
