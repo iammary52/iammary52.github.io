@@ -81,39 +81,54 @@
         {
           "time": "20:05",
           "title": "시드니 도착",
-          "detail": "SYD 도착 · 입국심사 및 수하물 수령 후 달링하버 이동"
+          "detail": "SYD 도착 · 입국심사 후 달링하버 이동"
         },
         {
           "time": "밤",
           "title": "Adina Apartment Hotel Darling Harbour 체크인 예정",
-          "detail": "12/17~12/20 3박 · 1순위 플랜"
+          "detail": "12/17~12/21 4박 · 1순위 플랜"
         }
       ]
     },
     {
       "date": "2026-12-18",
-      "dayTitle": "달링하버 베이스",
+      "dayTitle": "달링하버 베이스 · 시내",
       "items": [
         {
-          "time": "종일",
+          "time": "아침",
+          "title": "숙소에서 아침",
+          "detail": "레지던스 조식/간단 조리"
+        },
+        {
+          "time": "낮",
           "title": "달링하버·CBD 자유일정",
-          "detail": "Adina Apartment Hotel Darling Harbour 베이스"
+          "detail": "Darling Quarter·Barangaroo·시내 중심"
+        },
+        {
+          "time": "저녁",
+          "title": "숙소 저녁 또는 근처 외식",
+          "detail": "테이크아웃/간단 조리 중심"
         }
       ]
     },
     {
       "date": "2026-12-19",
-      "dayTitle": "달링하버 집중 · 불꽃놀이",
+      "dayTitle": "Bondi Beach · Darling Harbour 불꽃놀이",
       "items": [
         {
-          "time": "낮",
-          "title": "달링하버 중심 자유일정",
-          "detail": "Adina 베이스 · Darling Quarter·Cockle Bay·Barangaroo 등"
+          "time": "아침",
+          "title": "숙소에서 아침",
+          "detail": "가볍게 식사 후 이동"
+        },
+        {
+          "time": "오전~오후",
+          "title": "Bondi Beach",
+          "detail": "Bondi Beach 중심 일정 · 해변 산책/식사"
         },
         {
           "time": "저녁",
-          "title": "Cockle Bay 인근 저녁",
-          "detail": "불꽃놀이 보기 좋은 레스토랑/바 후보 추후 확정"
+          "title": "달링하버 복귀",
+          "detail": "Cockle Bay 주변 저녁"
         },
         {
           "time": "21:00",
@@ -124,75 +139,80 @@
     },
     {
       "date": "2026-12-20",
-      "dayTitle": "Taronga 이동 · 특별 숙박",
+      "dayTitle": "Blue Mountains 기차 당일치기",
       "items": [
         {
           "time": "아침",
-          "title": "달링하버 레지던스 체크아웃",
-          "detail": "첫 3박 종료"
+          "title": "Central Station 이동",
+          "detail": "Adina에서 기차역으로 이동"
         },
         {
-          "time": "오후",
-          "title": "Wildlife Retreat at Taronga 이동",
-          "detail": "타롱가 동물원·하버뷰 중심 1박 예정"
+          "time": "오전",
+          "title": "Blue Mountains행 기차",
+          "detail": "Katoomba 방향 기차 이동 예정"
         },
         {
-          "time": "밤",
-          "title": "Wildlife Retreat at Taronga 숙박",
-          "detail": "12/20~12/21 1박 예정"
+          "time": "낮",
+          "title": "Blue Mountains 관광",
+          "detail": "Three Sisters·Scenic World 등 후보"
+        },
+        {
+          "time": "저녁",
+          "title": "시드니 복귀",
+          "detail": "Adina Apartment Hotel Darling Harbour 숙박"
         }
       ]
     },
     {
       "date": "2026-12-21",
-      "dayTitle": "Taronga 체크아웃 · 후반 숙소 이동",
+      "dayTitle": "Taronga 이동 · 특별 숙박",
       "items": [
         {
-          "time": "오전",
-          "title": "Wildlife Retreat at Taronga 체크아웃",
-          "detail": "1박 후 이동"
+          "time": "아침",
+          "title": "Adina 체크아웃",
+          "detail": "4박 후 체크아웃"
         },
         {
-          "time": "오후",
-          "title": "The Sebel Quay West Suites Sydney 체크인 예정",
-          "detail": "12/21~12/24 3박 · The Rocks/Circular Quay · 1순위 플랜"
+          "time": "오전~오후",
+          "title": "Taronga Zoo 이동 및 관람",
+          "detail": "Wildlife Retreat 숙박 일정과 연계"
+        },
+        {
+          "time": "저녁",
+          "title": "Wildlife Retreat at Taronga 체크인",
+          "detail": "12/21~12/22 1박 예정"
         }
       ]
     },
     {
       "date": "2026-12-22",
-      "dayTitle": "포트스테판 · 와이너리 투어",
+      "dayTitle": "Circular Quay 이동 · 오페라하우스",
       "items": [
         {
-          "time": "아침",
-          "title": "포트스테판 + 와이너리 당일투어 출발",
-          "detail": "투어 픽업 위치 확인 필요 · Sebel Quay West 베이스"
-        },
-        {
-          "time": "오전~오후",
-          "title": "포트스테판 투어",
-          "detail": "사막·해안 액티비티 중심"
+          "time": "오전",
+          "title": "Wildlife Retreat 체크아웃",
+          "detail": "Circular Quay/The Rocks 쪽으로 이동"
         },
         {
           "time": "오후",
-          "title": "와이너리 방문",
-          "detail": "시음/식사 구성 확인 후 확정"
+          "title": "Circular Quay 근처 호텔 체크인",
+          "detail": "12/22~12/24 2박 · 호텔 미정"
         },
         {
-          "time": "저녁",
-          "title": "시드니 복귀",
-          "detail": "The Sebel Quay West Suites Sydney 숙박"
+          "time": "오후~저녁",
+          "title": "Sydney Opera House · Circular Quay",
+          "detail": "오페라하우스·하버브리지·The Rocks 중심 일정"
         }
       ]
     },
     {
       "date": "2026-12-23",
-      "dayTitle": "시드니 마지막 전일",
+      "dayTitle": "Circular Quay · 마지막 전일",
       "items": [
         {
           "time": "종일",
-          "title": "The Rocks·Circular Quay 중심 마지막 전일",
-          "detail": "오페라하우스·하버브리지·쇼핑·귀국 준비"
+          "title": "The Rocks·Circular Quay 자유일정",
+          "detail": "오페라하우스 주변 재방문·쇼핑·식사·귀국 준비"
         }
       ]
     },
@@ -202,7 +222,7 @@
       "items": [
         {
           "time": "아침",
-          "title": "The Sebel Quay West Suites Sydney 체크아웃",
+          "title": "Circular Quay 숙소 체크아웃",
           "detail": "공항 이동"
         },
         {
@@ -235,19 +255,19 @@
       "category": "숙박",
       "name": "Adina Apartment Hotel Darling Harbour",
       "status": "1순위 · 미예약",
-      "detail": "12/17 체크인 → 12/20 체크아웃 · 3박 · Darling Harbour"
+      "detail": "12/17 체크인 → 12/21 체크아웃 · 4박 · Darling Harbour"
     },
     {
       "category": "숙박",
       "name": "Wildlife Retreat at Taronga",
       "status": "예정 · 미예약",
-      "detail": "12/20 체크인 → 12/21 체크아웃 · 1박"
+      "detail": "12/21 체크인 → 12/22 체크아웃 · 1박"
     },
     {
       "category": "숙박",
-      "name": "The Sebel Quay West Suites Sydney",
-      "status": "1순위 · 미예약",
-      "detail": "12/21 체크인 → 12/24 체크아웃 · 3박 · The Rocks / Circular Quay"
+      "name": "Circular Quay 근처 호텔",
+      "status": "후보 검토",
+      "detail": "12/22 체크인 → 12/24 체크아웃 · 2박 · The Rocks / Circular Quay"
     },
     {
       "category": "교통",
@@ -258,80 +278,95 @@
   ],
   "planning": [
     {
-      "category": "숙소 플랜",
-      "name": "Adina → Taronga → Sebel Quay West",
+      "category": "첫 4박",
+      "name": "Adina Darling Harbour",
       "recommendation": "현재 1순위",
-      "detail": "12/17~20 Adina Darling Harbour 3박 → 12/20~21 Taronga 1박 → 12/21~24 Sebel Quay West 3박.",
-      "price": "예약가 비교 후 확정",
-      "url": "https://www.google.com/maps/search/?api=1&query=Adina+Darling+Harbour+Sebel+Quay+West+Sydney"
+      "detail": "12/17~21. 달링하버 베이스 + 숙소 조식/저녁 활용 + 토요일 불꽃놀이.",
+      "price": "예약가 확인",
+      "url": "https://www.google.com/maps/search/?api=1&query=Adina+Apartment+Hotel+Darling+Harbour"
     },
     {
-      "category": "토요일 밤",
-      "name": "Darling Harbour Fireworks",
-      "recommendation": "12/19 21:00",
-      "detail": "공식 2026 일정에 12월 5·12·19일 토요일 21:00로 공지. Cockle Bay에서 무료 관람. 기상 등에 따라 변경 가능.",
-      "price": "무료",
-      "url": "https://www.darlingharbour.com/whats-on/campaigns/fireworks"
+      "category": "토요일",
+      "name": "Bondi Beach",
+      "recommendation": "12/19 예정",
+      "detail": "낮에는 Bondi Beach, 저녁엔 달링하버 복귀 후 21:00 불꽃놀이.",
+      "price": "교통/식비 별도",
+      "url": "https://www.google.com/maps/search/?api=1&query=Bondi+Beach"
     },
     {
-      "category": "화요일 투어",
-      "name": "포트스테판 + 와이너리",
-      "recommendation": "12/22 고려",
-      "detail": "Taronga 이후 화요일로 이동. 상품별 픽업 위치·와이너리 포함 여부·아이 동반 가능 여부를 비교 예정.",
-      "price": "투어 비교 필요",
-      "url": "https://www.google.com/search?q=Port+Stephens+winery+tour+Sydney"
+      "category": "일요일",
+      "name": "Blue Mountains 기차 당일치기",
+      "recommendation": "12/20 예정",
+      "detail": "Central Station에서 Katoomba 방향 기차 이용 예정. 세부 동선은 추후 확정.",
+      "price": "기차+현지 교통",
+      "url": "https://www.google.com/maps/search/?api=1&query=Katoomba+Blue+Mountains"
+    },
+    {
+      "category": "중간 1박",
+      "name": "Wildlife Retreat at Taronga",
+      "recommendation": "12/21~22 예정",
+      "detail": "Taronga Zoo 관람과 숙박을 묶어서 진행.",
+      "price": "예약가 확인",
+      "url": "https://taronga.org.au/sydney-zoo/accommodation"
+    },
+    {
+      "category": "후반 2박",
+      "name": "Circular Quay 근처 호텔",
+      "recommendation": "후보 검토",
+      "detail": "12/22~24. 오페라하우스·The Rocks·하버브리지 중심.",
+      "price": "호텔 비교 필요",
+      "url": "https://www.google.com/maps/search/?api=1&query=Circular+Quay+hotel"
     }
   ],
   "checklist": [
-    "여권 유효기간 확인",
-    "호주 입국 허가/비자 확인",
-    "Adina Apartment Hotel Darling Harbour 3박 예약 확정",
-    "12/19 21:00 Darling Harbour 불꽃놀이 동선 확정",
-    "Wildlife Retreat at Taronga 1박 예약 확정",
-    "The Sebel Quay West Suites Sydney 3박 예약 확정",
-    "12/22 포트스테판·와이너리 투어 예약",
+    "Adina Darling Harbour 12/17~21 예약 확정",
+    "12/19 Bondi Beach 이동 동선 정리",
+    "12/19 21:00 Darling Harbour 불꽃놀이 위치 확정",
+    "12/20 Blue Mountains 기차 일정 확정",
+    "Wildlife Retreat at Taronga 12/21~22 예약 확정",
+    "Circular Quay 12/22~24 호텔 결정",
+    "Opera House 일정 세부 확정",
     "공항 ↔ 숙소 이동 방법 결정",
-    "Taronga 이동 방법 결정",
+    "호주 입국 허가/비자 확인",
     "여행자보험 가입",
-    "좌석 및 기내식 확인",
     "아이 여행 준비물 체크"
   ],
   "lodgingPlan": [
     {
       "startDate": "2026-12-17",
-      "endDate": "2026-12-20",
-      "period": "12/17(목) → 12/20(일)",
-      "nights": "3박",
+      "endDate": "2026-12-21",
+      "period": "12/17(목) → 12/21(월)",
+      "nights": "4박",
       "name": "Adina Apartment Hotel Darling Harbour",
-      "area": "Darling Harbour · King Street Wharf 인접",
+      "area": "Darling Harbour",
       "status": "1순위 플랜 · 미예약",
       "tone": "planned",
-      "detail": "첫 3박은 달링하버 베이스. 토요일 12/19 21:00 Cockle Bay 불꽃놀이를 보기 편하고, 아파트형 객실이라 가족 3명 체류에 유리.",
+      "detail": "첫 4박은 달링하버 베이스. 숙소 조식과 일부 저녁은 레지던스에서 해결하고, 12/19 토요일은 Bondi Beach, 12/20 일요일은 Blue Mountains 당일치기.",
       "url": "https://www.google.com/maps/search/?api=1&query=Adina+Apartment+Hotel+Darling+Harbour"
     },
     {
-      "startDate": "2026-12-20",
-      "endDate": "2026-12-21",
-      "period": "12/20(일) → 12/21(월)",
+      "startDate": "2026-12-21",
+      "endDate": "2026-12-22",
+      "period": "12/21(월) → 12/22(화)",
       "nights": "1박",
       "name": "Wildlife Retreat at Taronga",
       "area": "Taronga Zoo · Sydney Harbour",
       "status": "숙박 예정 · 미예약",
       "tone": "planned",
-      "detail": "일요일 1박. 동물원·하버뷰 중심의 특별 숙박일.",
+      "detail": "월요일 1박. 동물원과 하버뷰 중심의 특별 숙박.",
       "url": "https://taronga.org.au/sydney-zoo/accommodation"
     },
     {
-      "startDate": "2026-12-21",
+      "startDate": "2026-12-22",
       "endDate": "2026-12-24",
-      "period": "12/21(월) → 12/24(목)",
-      "nights": "3박",
-      "name": "The Sebel Quay West Suites Sydney",
+      "period": "12/22(화) → 12/24(목)",
+      "nights": "2박",
+      "name": "Circular Quay 근처 호텔",
       "area": "The Rocks · Circular Quay",
-      "status": "1순위 플랜 · 미예약",
-      "tone": "planned",
-      "detail": "후반 3박은 The Rocks/Circular Quay 베이스. 달링하버와 분위기가 달라지고, 오페라하우스·하버브리지·공항 접근까지 균형이 좋음.",
-      "url": "https://all.accor.com/hotel/8764/index.en.shtml"
+      "status": "후보 검토 중",
+      "tone": "tbd",
+      "detail": "오페라하우스·하버브리지·The Rocks 중심. 12/22 체크인 후 오페라하우스 일정은 이 숙박 구간에 배치.",
+      "url": "https://www.google.com/maps/search/?api=1&query=Circular+Quay+hotel"
     }
   ],
   "summaryCalendar": [
@@ -339,12 +374,12 @@
       "date": "2026-12-17",
       "day": "목",
       "label": "DAY 1",
-      "stay": "Adina Apartment Hotel Darling Harbour",
+      "stay": "Adina Darling Harbour",
       "stayStatus": "1순위 플랜",
       "events": [
         "08:00 인천 출발",
         "20:05 시드니 도착",
-        "레지던스 체크인"
+        "Adina 체크인"
       ],
       "type": "arrival"
     },
@@ -352,10 +387,11 @@
       "date": "2026-12-18",
       "day": "금",
       "label": "DAY 2",
-      "stay": "Adina Apartment Hotel Darling Harbour",
+      "stay": "Adina Darling Harbour",
       "stayStatus": "1순위 플랜",
       "events": [
-        "달링하버·CBD 자유일정"
+        "달링하버·CBD 자유일정",
+        "숙소 아침·저녁 활용"
       ],
       "type": "city"
     },
@@ -363,11 +399,11 @@
       "date": "2026-12-19",
       "day": "토",
       "label": "DAY 3",
-      "stay": "Adina Apartment Hotel Darling Harbour",
+      "stay": "Adina Darling Harbour",
       "stayStatus": "1순위 플랜",
       "events": [
-        "달링하버 집중",
-        "21:00 Cockle Bay 불꽃놀이"
+        "Bondi Beach",
+        "21:00 Darling Harbour 불꽃놀이"
       ],
       "type": "fireworks"
     },
@@ -375,50 +411,51 @@
       "date": "2026-12-20",
       "day": "일",
       "label": "DAY 4",
-      "stay": "Wildlife Retreat at Taronga",
-      "stayStatus": "숙박 예정",
+      "stay": "Adina Darling Harbour",
+      "stayStatus": "1순위 플랜",
       "events": [
-        "레지던스 체크아웃",
-        "Taronga 이동",
-        "Wildlife Retreat 1박"
+        "Blue Mountains 기차 당일치기",
+        "저녁 시드니 복귀"
       ],
-      "type": "special"
+      "type": "tour"
     },
     {
       "date": "2026-12-21",
       "day": "월",
       "label": "DAY 5",
-      "stay": "The Sebel Quay West Suites Sydney",
-      "stayStatus": "1순위 플랜",
+      "stay": "Wildlife Retreat at Taronga",
+      "stayStatus": "숙박 예정",
       "events": [
-        "Taronga 체크아웃",
-        "Sebel Quay West 이동·체크인"
+        "Adina 체크아웃",
+        "Taronga Zoo",
+        "Wildlife Retreat 1박"
       ],
-      "type": "move"
+      "type": "special"
     },
     {
       "date": "2026-12-22",
       "day": "화",
       "label": "DAY 6",
-      "stay": "The Sebel Quay West Suites Sydney",
-      "stayStatus": "1순위 플랜",
+      "stay": "Circular Quay 근처 호텔",
+      "stayStatus": "후보 검토",
       "events": [
-        "포트스테판 당일투어",
-        "와이너리 방문 예정"
+        "Taronga 체크아웃",
+        "Circular Quay 이동",
+        "Opera House"
       ],
-      "type": "tour"
+      "type": "move"
     },
     {
       "date": "2026-12-23",
       "day": "수",
       "label": "DAY 7",
-      "stay": "The Sebel Quay West Suites Sydney",
-      "stayStatus": "1순위 플랜",
+      "stay": "Circular Quay 근처 호텔",
+      "stayStatus": "후보 검토",
       "events": [
-        "마지막 전일",
-        "쇼핑·관광·귀국 준비"
+        "The Rocks·Circular Quay",
+        "마지막 전일"
       ],
-      "type": "tbd"
+      "type": "city"
     },
     {
       "date": "2026-12-24",
