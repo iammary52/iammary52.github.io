@@ -86,7 +86,7 @@
         {
           "time": "밤",
           "title": "Adina Apartment Hotel Darling Harbour 체크인",
-          "detail": "예약 완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 확인번호 CI63XP20"
+          "detail": "예약 완료 · 1 Bedroom Premier Apartment View · 예약번호 CI63XP20 · 총 A$1,880.81"
         }
       ]
     },
@@ -265,7 +265,7 @@
       "category": "숙박",
       "name": "Adina Apartment Hotel Darling Harbour",
       "status": "예약 완료",
-      "detail": "12/17 체크인 → 12/21 체크아웃 · 4박 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 총 A$1,880.81 (세금·수수료 포함) · 예약확인 CI63XP20 · 일정번호 14687B10442230"
+      "detail": "12/17 체크인 → 12/21 체크아웃 · 4박 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 총 A$1,880.81 · 예약번호 CI63XP20 · 투숙객 KYUMIN KIM"
     },
     {
       "category": "숙박",
@@ -291,7 +291,7 @@
       "category": "첫 4박 · 예약 완료",
       "name": "Adina Darling Harbour",
       "recommendation": "확정",
-      "detail": "12/17~21 예약 완료. 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 총 A$1,880.81. 달링하버 베이스 + 숙소 조식/저녁 활용 + 토요일 불꽃놀이.",
+      "detail": "12/17~21 예약 완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 예약번호 CI63XP20",
       "price": "총 A$1,880.81",
       "url": "https://www.google.com/maps/search/?api=1&query=Adina+Sydney+Darling+Harbour+55+Shelley+St"
     },
@@ -369,7 +369,7 @@
       "area": "Darling Harbour",
       "status": "예약 완료",
       "tone": "planned",
-      "detail": "예약 완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 총 A$1,880.81 (세금·수수료 포함) · 확인번호 CI63XP20",
+      "detail": "예약 완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 발코니(부분 워터뷰) · 풀 키친/거실·다이닝/세탁시설 · 총 A$1,880.81 · 예약번호 CI63XP20",
       "url": "https://www.google.com/maps/search/?api=1&query=Adina+Sydney+Darling+Harbour+55+Shelley+St"
     },
     {
@@ -671,7 +671,7 @@
       "category": "예약 완료",
       "name": "Adina Apartment Hotel Darling Harbour",
       "recommendation": "확정 ★★★★★",
-      "detail": "12/17~21 4박 예약 완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 55 Shelley St, Sydney NSW 2000",
+      "detail": "1 Bedroom Premier Apartment View · 발코니 부분 워터뷰 · 풀 키친/거실·다이닝/세탁시설 · 예약번호 CI63XP20",
       "price": "총 A$1,880.81 · 세금·수수료 포함",
       "url": "https://www.google.com/maps/search/?api=1&query=Adina+Sydney+Darling+Harbour+55+Shelley+St"
     },
@@ -711,14 +711,21 @@
   "confirmedStays": [
     {
       "name": "Adina Apartment Hotel Darling Harbour",
-      "address": "55 Shelley St, Sydney NSW 2000",
+      "guestName": "KYUMIN KIM",
+      "confirmationNumber": "CI63XP20",
       "period": "2026.12.17 ~ 12.21 · 4박",
-      "room": "1 Bedroom Premier Apartment View",
-      "guests": "성인 2명 + 아동 1명",
-      "total": "A$1,880.81",
-      "confirmation": "CI63XP20",
-      "itinerary": "14687B10442230",
-      "detail": "세금·수수료 포함 · 도착 시 와인 1병 포함"
+      "roomType": "1 Bedroom Premier Apartment View",
+      "roomInfo": "Balcony with partial water view · Full kitchen · living/dining · laundry facilities",
+      "guests": "Adult 2 · Child 1",
+      "rate": "eClub Member Rate",
+      "nightlyRates": [
+        "12/17 A$465.75",
+        "12/18 A$498.35",
+        "12/19 A$514.34",
+        "12/20 A$402.37"
+      ],
+      "totalCost": "A$1,880.81",
+      "extras": "A bottle of wine on arrival · A$0.00"
     }
   ]
 }
