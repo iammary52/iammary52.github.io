@@ -85,8 +85,8 @@
         },
         {
           "time": "밤",
-          "title": "Adina Apartment Hotel Darling Harbour 체크인 예정",
-          "detail": "12/17~12/21 4박 · 1순위 플랜"
+          "title": "Adina Apartment Hotel Darling Harbour 체크인",
+          "detail": "예약 완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 확인번호 CI63XP20"
         }
       ]
     },
@@ -264,8 +264,8 @@
     {
       "category": "숙박",
       "name": "Adina Apartment Hotel Darling Harbour",
-      "status": "1순위 · 미예약",
-      "detail": "12/17 체크인 → 12/21 체크아웃 · 4박 · Darling Harbour"
+      "status": "예약 완료",
+      "detail": "12/17 체크인 → 12/21 체크아웃 · 4박 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 총 A$1,880.81 (세금·수수료 포함) · 예약확인 CI63XP20 · 일정번호 14687B10442230"
     },
     {
       "category": "숙박",
@@ -288,12 +288,12 @@
   ],
   "planning": [
     {
-      "category": "첫 4박",
+      "category": "첫 4박 · 예약 완료",
       "name": "Adina Darling Harbour",
-      "recommendation": "현재 1순위",
-      "detail": "12/17~21. 달링하버 베이스 + 숙소 조식/저녁 활용 + 토요일 불꽃놀이.",
-      "price": "예약가 확인",
-      "url": "https://www.google.com/maps/search/?api=1&query=Adina+Apartment+Hotel+Darling+Harbour"
+      "recommendation": "확정",
+      "detail": "12/17~21 예약 완료. 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 총 A$1,880.81. 달링하버 베이스 + 숙소 조식/저녁 활용 + 토요일 불꽃놀이.",
+      "price": "총 A$1,880.81",
+      "url": "https://www.google.com/maps/search/?api=1&query=Adina+Sydney+Darling+Harbour+55+Shelley+St"
     },
     {
       "category": "토요일",
@@ -345,7 +345,7 @@
     }
   ],
   "checklist": [
-    "Adina Darling Harbour 12/17~21 예약 확정",
+    "Adina Darling Harbour 예약 완료 · CI63XP20",
     "12/19 Bondi Beach 이동 동선 정리",
     "12/19 21:00 Darling Harbour 불꽃놀이 위치 확정",
     "12/20 Blue Mountains 기차 일정 확정",
@@ -367,10 +367,10 @@
       "nights": "4박",
       "name": "Adina Apartment Hotel Darling Harbour",
       "area": "Darling Harbour",
-      "status": "1순위 플랜 · 미예약",
+      "status": "예약 완료",
       "tone": "planned",
-      "detail": "첫 4박은 달링하버 베이스. 숙소 조식과 일부 저녁은 레지던스에서 해결하고, 12/19 토요일은 Bondi Beach, 12/20 일요일은 Blue Mountains 당일치기.",
-      "url": "https://www.google.com/maps/search/?api=1&query=Adina+Apartment+Hotel+Darling+Harbour"
+      "detail": "예약 완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 총 A$1,880.81 (세금·수수료 포함) · 확인번호 CI63XP20",
+      "url": "https://www.google.com/maps/search/?api=1&query=Adina+Sydney+Darling+Harbour+55+Shelley+St"
     },
     {
       "startDate": "2026-12-21",
@@ -403,7 +403,7 @@
       "day": "목",
       "label": "DAY 1",
       "stay": "Adina Darling Harbour",
-      "stayStatus": "1순위 플랜",
+      "stayStatus": "예약 완료",
       "events": [
         "08:00 인천 출발",
         "20:05 시드니 도착",
@@ -416,7 +416,7 @@
       "day": "금",
       "label": "DAY 2",
       "stay": "Adina Darling Harbour",
-      "stayStatus": "1순위 플랜",
+      "stayStatus": "예약 완료",
       "events": [
         "Sydney Fish Market",
         "해산물 구매",
@@ -429,7 +429,7 @@
       "day": "토",
       "label": "DAY 3",
       "stay": "Adina Darling Harbour",
-      "stayStatus": "1순위 플랜",
+      "stayStatus": "예약 완료",
       "events": [
         "Bondi Beach",
         "21:00 Darling Harbour 불꽃놀이"
@@ -441,7 +441,7 @@
       "day": "일",
       "label": "DAY 4",
       "stay": "Adina Darling Harbour",
-      "stayStatus": "1순위 플랜",
+      "stayStatus": "예약 완료",
       "events": [
         "Blue Mountains 기차 당일치기",
         "저녁 Adina 복귀",
@@ -504,7 +504,7 @@
     {
       "id": "adina",
       "title": "Adina Apartment Hotel Darling Harbour",
-      "subtitle": "12/17~20 · 달링하버 베이스",
+      "subtitle": "12/17~21 · 달링하버 베이스",
       "hotelNote": "불꽃놀이 있는 토요일은 Cockle Bay/King Street Wharf 쪽에서 저녁 먹고 21:00 불꽃놀이로 이어가기 좋음.",
       "items": [
         {
@@ -568,7 +568,7 @@
     {
       "id": "taronga",
       "title": "Wildlife Retreat at Taronga",
-      "subtitle": "12/20~21 · 특별 1박",
+      "subtitle": "12/21~22 · 특별 1박",
       "hotelNote": "이 날은 멀리 나가기보다 Retreat 안에서 저녁 먹는 게 동선상 가장 편함.",
       "items": [
         {
@@ -589,9 +589,9 @@
     },
     {
       "id": "sebel",
-      "title": "The Sebel Quay West Suites Sydney",
-      "subtitle": "12/21~24 · The Rocks / Circular Quay 베이스",
-      "hotelNote": "The Rocks는 펍·해산물·칵테일 바가 밀집해 있어 마지막 3박 저녁 선택지가 가장 많음.",
+      "title": "Circular Quay / The Rocks 후반 숙소",
+      "subtitle": "12/22~24 · 호텔 미정",
+      "hotelNote": "후반 2박 호텔이 확정되면 숙소 기준으로 다시 세분화 예정. 현재는 Circular Quay/The Rocks 도보권 후보.",
       "items": [
         {
           "name": "Quartier Bistro & Bar",
@@ -668,6 +668,14 @@
   ],
   "residenceCandidates": [
     {
+      "category": "예약 완료",
+      "name": "Adina Apartment Hotel Darling Harbour",
+      "recommendation": "확정 ★★★★★",
+      "detail": "12/17~21 4박 예약 완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 55 Shelley St, Sydney NSW 2000",
+      "price": "총 A$1,880.81 · 세금·수수료 포함",
+      "url": "https://www.google.com/maps/search/?api=1&query=Adina+Sydney+Darling+Harbour+55+Shelley+St"
+    },
+    {
       "category": "달링하버 레지던스 · 1순위",
       "name": "Meriton Suites Sussex Street",
       "recommendation": "추천 ★★★★★",
@@ -692,20 +700,25 @@
       "url": "https://www.darlingharbour.com/stay/apx-apartments-darling-harbour"
     },
     {
-      "category": "달링하버 레지던스 · 현재 1순위",
-      "name": "Adina Apartment Hotel Darling Harbour",
-      "recommendation": "1순위 ★★★★★",
-      "detail": "55 Shelley St. Darling Harbour/Barangaroo 접근이 좋고 아파트형 객실 + 수영장 조합이라 가족 3명에게 균형이 좋음.",
-      "price": "대략 중상급",
-      "url": "https://www.google.com/maps/search/?api=1&query=Adina+Apartment+Hotel+Darling+Harbour"
-    },
-    {
       "category": "가성비 보조 후보",
       "name": "YEHS Hotel Sydney Harbour Suites",
       "recommendation": "추천 ★★★☆☆",
       "detail": "Sussex Street. 주방/키친넷 객실, 실내 수영장·짐 등이 있고 위치 대비 가격을 보기 좋은 후보.",
       "price": "대략 중급~가성비",
       "url": "https://www.google.com/maps/search/?api=1&query=YEHS+Hotel+Sydney+Harbour+Suites"
+    }
+  ],
+  "confirmedStays": [
+    {
+      "name": "Adina Apartment Hotel Darling Harbour",
+      "address": "55 Shelley St, Sydney NSW 2000",
+      "period": "2026.12.17 ~ 12.21 · 4박",
+      "room": "1 Bedroom Premier Apartment View",
+      "guests": "성인 2명 + 아동 1명",
+      "total": "A$1,880.81",
+      "confirmation": "CI63XP20",
+      "itinerary": "14687B10442230",
+      "detail": "세금·수수료 포함 · 도착 시 와인 1병 포함"
     }
   ]
 }
