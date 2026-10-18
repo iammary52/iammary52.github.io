@@ -7,7 +7,7 @@ const koDate = (d) => new Intl.DateTimeFormat('ko-KR', {
 const SUPABASE_URL = 'https://gftydfeqpuavajjzaeun.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_35lefXRrUU4MFrAATfghjQ_2EPkUgGy';
 const TRIP_ID = 'sydney-2026';
-const DATA_VERSION = '20261016-2';
+const DATA_VERSION = '20261018-1';
 const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 fetch(`trip-data.json?v=${DATA_VERSION}`, { cache: 'no-store' })
@@ -38,7 +38,7 @@ function render(data) {
 
   $('#bookingList').innerHTML = data.bookings.map((b) => `
     <article class="booking-card">
-      <div class="booking-head"><span class="booking-cat">${escapeHtml(b.category)}</span><span class="status ${b.status.includes('미정') ? 'pending' : ''}">${escapeHtml(b.status)}</span></div>
+      <div class="booking-head"><span class="booking-cat">${escapeHtml(b.category)}</span><span class="status ${(b.status.includes('미정') || b.status.includes('후보') || b.status.includes('고민')) ? 'pending' : ''}">${escapeHtml(b.status)}</span></div>
       <h3>${escapeHtml(b.name)}</h3><p>${escapeHtml(b.detail)}</p>
     </article>`).join('');
 
