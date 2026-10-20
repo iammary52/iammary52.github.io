@@ -175,7 +175,7 @@
     },
     {
       "date": "2026-12-21",
-      "dayTitle": "Taronga 이동 · 특별 숙박",
+      "dayTitle": "Taronga Zoo · Wildlife Retreat 숙박",
       "items": [
         {
           "time": "아침",
@@ -185,12 +185,22 @@
         {
           "time": "오전~오후",
           "title": "Taronga Zoo 이동 및 관람",
-          "detail": "Wildlife Retreat 숙박 일정과 연계"
+          "detail": "Wildlife Retreat 숙박과 연계"
+        },
+        {
+          "time": "오후",
+          "title": "Wildlife Retreat at Taronga 체크인",
+          "detail": "예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · 객실 A$868.00"
         },
         {
           "time": "저녁",
-          "title": "Wildlife Retreat at Taronga 체크인",
-          "detail": "12/21~12/22 1박 예정"
+          "title": "Walk in the Wild - Evening Walk",
+          "detail": "예약 완료 · 3명 · A$75.00"
+        },
+        {
+          "time": "밤",
+          "title": "Animal View Room 숙박",
+          "detail": "Retreat Experience · 총 결제 A$943.00 · 세금·수수료 포함"
         }
       ]
     },
@@ -270,8 +280,8 @@
     {
       "category": "숙박",
       "name": "Wildlife Retreat at Taronga",
-      "status": "예정 · 미예약",
-      "detail": "12/21 체크인 → 12/22 체크아웃 · 1박"
+      "status": "예약 완료",
+      "detail": "12/21 체크인 → 12/22 체크아웃 · Animal View Room · 성인 2명 + 아동 1명 · 객실 A$868.00 + Evening Walk A$75.00 · 총 A$943.00 (세금·수수료 포함)"
     },
     {
       "category": "숙박",
@@ -328,11 +338,11 @@
       "url": "https://www.google.com/maps/search/?api=1&query=Katoomba+Blue+Mountains"
     },
     {
-      "category": "중간 1박",
+      "category": "중간 1박 · 예약 완료",
       "name": "Wildlife Retreat at Taronga",
-      "recommendation": "12/21~22 예정",
-      "detail": "Taronga Zoo 관람과 숙박을 묶어서 진행.",
-      "price": "예약가 확인",
+      "recommendation": "확정",
+      "detail": "12/21~22 예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · Evening Walk 3명 추가",
+      "price": "총 A$943.00",
       "url": "https://taronga.org.au/sydney-zoo/accommodation"
     },
     {
@@ -349,7 +359,7 @@
     "12/19 Bondi Beach 이동 동선 정리",
     "12/19 21:00 Darling Harbour 불꽃놀이 위치 확정",
     "12/20 Blue Mountains 기차 일정 확정",
-    "Wildlife Retreat at Taronga 12/21~22 예약 확정",
+    "Wildlife Retreat at Taronga 예약 완료 · Animal View Room · A$943.00",
     "Circular Quay 12/22~24 호텔 결정",
     "Opera House 일정 세부 확정",
     "공항 ↔ 숙소 이동 방법 결정",
@@ -379,9 +389,9 @@
       "nights": "1박",
       "name": "Wildlife Retreat at Taronga",
       "area": "Taronga Zoo · Sydney Harbour",
-      "status": "숙박 예정 · 미예약",
+      "status": "예약 완료",
       "tone": "planned",
-      "detail": "월요일 1박. 동물원과 하버뷰 중심의 특별 숙박.",
+      "detail": "예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · 객실 A$868.00 + Evening Walk A$75.00 · 총 A$943.00 (세금·수수료 포함)",
       "url": "https://taronga.org.au/sydney-zoo/accommodation"
     },
     {
@@ -454,11 +464,12 @@
       "day": "월",
       "label": "DAY 5",
       "stay": "Wildlife Retreat at Taronga",
-      "stayStatus": "숙박 예정",
+      "stayStatus": "예약 완료",
       "events": [
         "Adina 체크아웃",
         "Taronga Zoo",
-        "Wildlife Retreat 1박"
+        "Animal View Room 체크인",
+        "Evening Walk 3명"
       ],
       "type": "special"
     },
@@ -568,8 +579,8 @@
     {
       "id": "taronga",
       "title": "Wildlife Retreat at Taronga",
-      "subtitle": "12/21~22 · 특별 1박",
-      "hotelNote": "이 날은 멀리 나가기보다 Retreat 안에서 저녁 먹는 게 동선상 가장 편함.",
+      "subtitle": "12/21~22 · 예약 완료",
+      "hotelNote": "Animal View Room 예약 완료. 저녁 Evening Walk도 3명 추가되어 있어, 이 날은 Retreat 내부에서 동선을 짧게 가져가는 게 가장 자연스러움.",
       "items": [
         {
           "name": "Me-Gal Restaurant",
@@ -726,6 +737,19 @@
       ],
       "totalCost": "A$1,842.03",
       "extras": "Twin A$0.00 · A bottle of wine on arrival A$0.00"
+    },
+    {
+      "name": "Wildlife Retreat at Taronga",
+      "period": "2026.12.21 ~ 12.22 · 1박",
+      "roomType": "Animal View Room",
+      "experience": "Retreat Experience",
+      "guests": "성인 2명 + 아동 1명",
+      "roomRate": "A$868.00",
+      "addOn": "Walk in the Wild - Evening Walk",
+      "addOnQuantity": "3명",
+      "addOnTotal": "A$75.00",
+      "totalCost": "A$943.00",
+      "detail": "세금·수수료 포함"
     }
   ]
 }
