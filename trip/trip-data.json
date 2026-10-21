@@ -190,12 +190,12 @@
         {
           "time": "오후",
           "title": "Wildlife Retreat at Taronga 체크인",
-          "detail": "예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · 객실 A$868.00"
+          "detail": "예약 완료 · Animal View Room · 예약자 Jeongmi Lee · 성인 2명 + 아동 1명 · 객실 A$868.00"
         },
         {
           "time": "저녁",
           "title": "Walk in the Wild - Evening Walk",
-          "detail": "예약 완료 · 3명 · A$75.00"
+          "detail": "예약 완료 · 수량 3명 · A$75.00"
         },
         {
           "time": "밤",
@@ -281,7 +281,7 @@
       "category": "숙박",
       "name": "Wildlife Retreat at Taronga",
       "status": "예약 완료",
-      "detail": "12/21 체크인 → 12/22 체크아웃 · Animal View Room · 성인 2명 + 아동 1명 · 객실 A$868.00 + Evening Walk A$75.00 · 총 A$943.00 (세금·수수료 포함)"
+      "detail": "12/21 체크인 → 12/22 체크아웃 · Animal View Room · 성인 2명 + 아동 1명 · 예약자 Jeongmi Lee · 객실 A$868.00 + Evening Walk A$75.00 · 총 A$943.00 (세금·수수료 포함)"
     },
     {
       "category": "숙박",
@@ -341,7 +341,7 @@
       "category": "중간 1박 · 예약 완료",
       "name": "Wildlife Retreat at Taronga",
       "recommendation": "확정",
-      "detail": "12/21~22 예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · Evening Walk 3명 추가",
+      "detail": "12/21~22 예약 완료 · Animal View Room · 예약자 Jeongmi Lee · 성인 2명 + 아동 1명 · Evening Walk 3명",
       "price": "총 A$943.00",
       "url": "https://taronga.org.au/sydney-zoo/accommodation"
     },
@@ -391,7 +391,7 @@
       "area": "Taronga Zoo · Sydney Harbour",
       "status": "예약 완료",
       "tone": "planned",
-      "detail": "예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · 객실 A$868.00 + Evening Walk A$75.00 · 총 A$943.00 (세금·수수료 포함)",
+      "detail": "예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · 예약자 Jeongmi Lee · 객실 A$868.00 + Evening Walk A$75.00 · 총 A$943.00 (세금·수수료 포함)",
       "url": "https://taronga.org.au/sydney-zoo/accommodation"
     },
     {
@@ -743,13 +743,14 @@
       "period": "2026.12.21 ~ 12.22 · 1박",
       "roomType": "Animal View Room",
       "experience": "Retreat Experience",
-      "guests": "성인 2명 + 아동 1명",
+      "guests": "Adult 2 · Child 1",
       "roomRate": "A$868.00",
       "addOn": "Walk in the Wild - Evening Walk",
       "addOnQuantity": "3명",
       "addOnTotal": "A$75.00",
       "totalCost": "A$943.00",
-      "detail": "세금·수수료 포함"
+      "detail": "Retreat Experience · 세금·수수료 포함",
+      "guestName": "Jeongmi Lee"
     }
   ]
 }
