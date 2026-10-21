@@ -306,6 +306,14 @@
       "url": "https://www.google.com/maps/search/?api=1&query=Adina+Sydney+Darling+Harbour+55+Shelley+St"
     },
     {
+      "category": "숙소 가격 비교",
+      "name": "Adina Town Hall 가격 비교",
+      "recommendation": "Darling Harbour 유지 쪽",
+      "detail": "12/17~12/21 같은 기간 Town Hall은 약 A$2,200 수준. 현재 Darling Harbour 예약 A$1,842.03보다 약 A$358 비쌈.",
+      "price": "Town Hall 약 A$2,200 vs Darling Harbour A$1,842.03",
+      "url": "https://adinahotels.com/en/apartments/sydney-town-hall/"
+    },
+    {
       "category": "토요일",
       "name": "Bondi Beach",
       "recommendation": "12/19 예정",
@@ -717,6 +725,14 @@
       "detail": "Sussex Street. 주방/키친넷 객실, 실내 수영장·짐 등이 있고 위치 대비 가격을 보기 좋은 후보.",
       "price": "대략 중급~가성비",
       "url": "https://www.google.com/maps/search/?api=1&query=YEHS+Hotel+Sydney+Harbour+Suites"
+    },
+    {
+      "category": "비교 참고 · 더 비쌈",
+      "name": "Adina Apartment Hotel Sydney Town Hall",
+      "recommendation": "비교용",
+      "detail": "같은 12/17~12/21 기간 기준으로 약 A$2,200 수준으로 확인. 현재 예약한 Adina Darling Harbour(A$1,842.03)보다 약 A$358 정도 비싸서, 가격까지 고려하면 Darling Harbour 쪽이 더 유리.",
+      "price": "약 A$2,200 / 4박 · Darling Harbour 대비 약 +A$358",
+      "url": "https://adinahotels.com/en/apartments/sydney-town-hall/"
     }
   ],
   "confirmedStays": [
@@ -751,6 +767,24 @@
       "totalCost": "A$943.00",
       "detail": "Retreat Experience · 세금·수수료 포함",
       "guestName": "Jeongmi Lee"
+    }
+  ],
+  "stayComparisons": [
+    {
+      "name": "Adina Apartment Hotel Darling Harbour",
+      "period": "12/17~12/21 · 4박",
+      "status": "예약 완료",
+      "price": "A$1,842.03",
+      "difference": "기준",
+      "note": "1 Bedroom Premier Apartment View · 발코니 · 부분 워터뷰"
+    },
+    {
+      "name": "Adina Apartment Hotel Sydney Town Hall",
+      "period": "12/17~12/21 · 4박",
+      "status": "비교가",
+      "price": "약 A$2,200",
+      "difference": "약 +A$358",
+      "note": "동일 기간 기준 사용자가 확인한 가격"
     }
   ]
 }
