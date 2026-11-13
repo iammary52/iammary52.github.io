@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#0a0620">
+<title>SUNSTONE ISLE · 태양석의 섬</title>
+<meta name="description" content="쿼터뷰 액션 어드벤처. 뛰고, 베고, 수수께끼를 풀며 전설의 보물 태양석을 찾아라.">
+<meta property="og:title" content="SUNSTONE ISLE · 태양석의 섬">
+<meta property="og:description" content="그 시절 쿼터뷰 모험의 감성을 담은 액션 어드벤처. 브라우저에서 바로 플레이.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Cinzel:wght@700&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;height:100%;background:#05030f;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+.tb{position:fixed;display:none;align-items:center;justify-content:center;border-radius:50%;color:#fff;font:400 17px 'Jua',sans-serif;
+  border:2px solid rgba(255,255,255,.6);z-index:5;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.touch .tb{display:flex}
+.tb.on{filter:brightness(1.6)}
+#bA{right:20px;bottom:calc(30px + env(safe-area-inset-bottom));width:84px;height:84px;background:rgba(80,160,255,.3)}
+#bB{right:112px;bottom:calc(74px + env(safe-area-inset-bottom));width:74px;height:74px;background:rgba(255,120,80,.3)}
+#bM{right:12px;top:calc(10px + env(safe-area-inset-top));width:40px;height:40px;font-size:13px;background:rgba(20,10,60,.4)}
+#pre{position:fixed;left:-999px;font-family:'Jua';}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+<div class="tb" id="bB" data-k="B">검</div>
+<div class="tb" id="bA" data-k="A">점프</div>
+<div class="tb" id="bM" data-k="M">Ⅱ</div>
+<div id="pre">가<span style="font-family:'Cinzel';font-weight:700">A</span></div>
+<script src="js/gfx.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/data.js"></script>
+<script src="js/game.js"></script>
+</body>
+</html>
