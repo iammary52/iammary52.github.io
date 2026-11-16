@@ -86,7 +86,7 @@
         {
           "time": "밤",
           "title": "Adina Apartment Hotel Darling Harbour 체크인",
-          "detail": "예약 완료 · 1 Bedroom Premier Apartment View · 예약번호 CI63XYYZ · 총 A$1,842.03"
+          "detail": "예약 완료 · 1 Bedroom Premier Apartment View · 총 A$1,842.03"
         }
       ]
     },
@@ -190,7 +190,7 @@
         {
           "time": "오후",
           "title": "Wildlife Retreat at Taronga 체크인",
-          "detail": "예약 완료 · Animal View Room · 예약자 Jeongmi Lee · 성인 2명 + 아동 1명 · 객실 A$868.00"
+          "detail": "예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · 객실 A$868.00"
         },
         {
           "time": "저녁",
@@ -275,13 +275,13 @@
       "category": "숙박",
       "name": "Adina Apartment Hotel Darling Harbour",
       "status": "예약 완료",
-      "detail": "12/17 체크인 → 12/21 체크아웃 · 4박 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 총 A$1,842.03 · 예약번호 CI63XYYZ · 투숙객 KYUMIN KIM"
+      "detail": "12/17 체크인 → 12/21 체크아웃 · 4박 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 총 A$1,842.03"
     },
     {
       "category": "숙박",
       "name": "Wildlife Retreat at Taronga",
       "status": "예약 완료",
-      "detail": "12/21 체크인 → 12/22 체크아웃 · Animal View Room · 성인 2명 + 아동 1명 · 예약자 Jeongmi Lee · 객실 A$868.00 + Evening Walk A$75.00 · 총 A$943.00 (세금·수수료 포함)"
+      "detail": "12/21 체크인 → 12/22 체크아웃 · Animal View Room · 성인 2명 + 아동 1명 · 객실 A$868.00 + Evening Walk A$75.00 · 총 A$943.00 (세금·수수료 포함)"
     },
     {
       "category": "숙박",
@@ -301,7 +301,7 @@
       "category": "첫 4박 · 예약 완료",
       "name": "Adina Darling Harbour",
       "recommendation": "확정",
-      "detail": "12/17~21 재예약 완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 예약번호 CI63XYYZ",
+      "detail": "12/17~21 재예약 완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명",
       "price": "총 A$1,842.03",
       "url": "https://www.google.com/maps/search/?api=1&query=Adina+Sydney+Darling+Harbour+55+Shelley+St"
     },
@@ -349,7 +349,7 @@
       "category": "중간 1박 · 예약 완료",
       "name": "Wildlife Retreat at Taronga",
       "recommendation": "확정",
-      "detail": "12/21~22 예약 완료 · Animal View Room · 예약자 Jeongmi Lee · 성인 2명 + 아동 1명 · Evening Walk 3명",
+      "detail": "12/21~22 예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · Evening Walk 3명",
       "price": "총 A$943.00",
       "url": "https://taronga.org.au/sydney-zoo/accommodation"
     },
@@ -363,7 +363,7 @@
     }
   ],
   "checklist": [
-    "Adina Darling Harbour 예약 완료 · CI63XYYZ",
+    "Adina Darling Harbour 예약 완료",
     "12/19 Bondi Beach 이동 동선 정리",
     "12/19 21:00 Darling Harbour 불꽃놀이 위치 확정",
     "12/20 Blue Mountains 기차 일정 확정",
@@ -387,7 +387,7 @@
       "area": "Darling Harbour",
       "status": "예약 완료",
       "tone": "planned",
-      "detail": "예약 재완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 발코니(부분 워터뷰) · 풀 키친/거실·다이닝/세탁시설 · 총 A$1,842.03 · 예약번호 CI63XYYZ",
+      "detail": "예약 재완료 · 1 Bedroom Premier Apartment View · 성인 2명 + 아동 1명 · 발코니(부분 워터뷰) · 풀 키친/거실·다이닝/세탁시설 · 총 A$1,842.03",
       "url": "https://www.google.com/maps/search/?api=1&query=Adina+Sydney+Darling+Harbour+55+Shelley+St"
     },
     {
@@ -399,7 +399,7 @@
       "area": "Taronga Zoo · Sydney Harbour",
       "status": "예약 완료",
       "tone": "planned",
-      "detail": "예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · 예약자 Jeongmi Lee · 객실 A$868.00 + Evening Walk A$75.00 · 총 A$943.00 (세금·수수료 포함)",
+      "detail": "예약 완료 · Animal View Room · 성인 2명 + 아동 1명 · 객실 A$868.00 + Evening Walk A$75.00 · 총 A$943.00 (세금·수수료 포함)",
       "url": "https://taronga.org.au/sydney-zoo/accommodation"
     },
     {
@@ -690,7 +690,7 @@
       "category": "예약 완료",
       "name": "Adina Apartment Hotel Darling Harbour",
       "recommendation": "확정 ★★★★★",
-      "detail": "1 Bedroom Premier Apartment View · 발코니 부분 워터뷰 · 풀 키친/거실·다이닝/세탁시설 · 예약번호 CI63XYYZ",
+      "detail": "1 Bedroom Premier Apartment View · 발코니 부분 워터뷰 · 풀 키친/거실·다이닝/세탁시설",
       "price": "총 A$1,842.03 · 세금·수수료 포함",
       "url": "https://www.google.com/maps/search/?api=1&query=Adina+Sydney+Darling+Harbour+55+Shelley+St"
     },
@@ -738,8 +738,6 @@
   "confirmedStays": [
     {
       "name": "Adina Apartment Hotel Darling Harbour",
-      "guestName": "KYUMIN KIM",
-      "confirmationNumber": "CI63XYYZ",
       "period": "2026.12.17 ~ 12.21 · 4박",
       "roomType": "1 Bedroom Premier Apartment View",
       "roomInfo": "Balcony with partial water view · Full kitchen · living/dining · laundry facilities",
@@ -765,8 +763,7 @@
       "addOnQuantity": "3명",
       "addOnTotal": "A$75.00",
       "totalCost": "A$943.00",
-      "detail": "Retreat Experience · 세금·수수료 포함",
-      "guestName": "Jeongmi Lee"
+      "detail": "Retreat Experience · 세금·수수료 포함"
     }
   ],
   "stayComparisons": [
